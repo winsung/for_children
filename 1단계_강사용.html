@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1단계 강사용 — AI 코딩 홈클래스</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #252836;
+  --border: #2e3347;
+  --purple: #8b5cf6;
+  --purple-l: #a78bfa;
+  --teal: #14b8a6;
+  --amber: #f59e0b;
+  --coral: #f87171;
+  --blue: #60a5fa;
+  --green: #4ade80;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #475569;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:'Noto Sans KR', sans-serif; }
+
+/* ── 슬라이드 컨테이너 ── */
+#deck { width:100vw; height:100vh; position:relative; overflow:hidden; }
+.slide { position:absolute; inset:0; display:flex; flex-direction:column; padding:48px 60px; opacity:0; pointer-events:none; transition:opacity .35s ease; }
+.slide.active { opacity:1; pointer-events:all; }
+
+/* ── 공통 헤더 ── */
+.slide-header { display:flex; align-items:center; gap:16px; margin-bottom:36px; }
+.session-badge { font-size:12px; font-weight:700; letter-spacing:.1em; padding:6px 14px; border-radius:99px; text-transform:uppercase; }
+.badge-1 { background:rgba(139,92,246,.2); color:var(--purple-l); border:1px solid rgba(139,92,246,.4); }
+.badge-2 { background:rgba(20,184,166,.2); color:var(--teal); border:1px solid rgba(20,184,166,.4); }
+.badge-3 { background:rgba(245,158,11,.2); color:var(--amber); border:1px solid rgba(245,158,11,.4); }
+.badge-4 { background:rgba(96,165,250,.2); color:var(--blue); border:1px solid rgba(96,165,250,.4); }
+.slide-title { font-size:36px; font-weight:900; line-height:1.1; }
+.slide-sub { font-size:18px; color:var(--text-muted); margin-top:6px; font-weight:400; }
+.timer-badge { margin-left:auto; font-size:14px; font-weight:700; color:var(--amber); background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); padding:6px 16px; border-radius:99px; }
+
+/* ── 레이아웃 ── */
+.col-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; }
+.col-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; flex:1; }
+.col-main { display:grid; grid-template-columns:2fr 1fr; gap:24px; flex:1; }
+
+/* ── 카드 ── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; display:flex; flex-direction:column; gap:14px; }
+.card.accent-purple { border-color:rgba(139,92,246,.4); background:rgba(139,92,246,.06); }
+.card.accent-teal { border-color:rgba(20,184,166,.4); background:rgba(20,184,166,.06); }
+.card.accent-amber { border-color:rgba(245,158,11,.4); background:rgba(245,158,11,.06); }
+.card.accent-coral { border-color:rgba(248,113,113,.4); background:rgba(248,113,113,.06); }
+.card.accent-blue { border-color:rgba(96,165,250,.4); background:rgba(96,165,250,.06); }
+.card-title { font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+.card-title.c-purple { color:var(--purple-l); }
+.card-title.c-teal { color:var(--teal); }
+.card-title.c-amber { color:var(--amber); }
+.card-title.c-coral { color:var(--coral); }
+.card-title.c-blue { color:var(--blue); }
+
+/* ── 텍스트 ── */
+.big-text { font-size:24px; font-weight:700; line-height:1.4; }
+.body-text { font-size:18px; line-height:1.7; color:var(--text-muted); }
+.body-text b { color:var(--text); }
+.highlight { color:var(--text); font-weight:700; }
+
+/* ── 활동 리스트 ── */
+.activity-list { display:flex; flex-direction:column; gap:12px; }
+.activity-item { display:flex; align-items:flex-start; gap:12px; }
+.activity-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; margin-top:2px; }
+.num-purple { background:rgba(139,92,246,.25); color:var(--purple-l); }
+.num-teal { background:rgba(20,184,166,.25); color:var(--teal); }
+.num-amber { background:rgba(245,158,11,.25); color:var(--amber); }
+.num-blue { background:rgba(96,165,250,.25); color:var(--blue); }
+.activity-text { font-size:17px; line-height:1.6; color:var(--text-muted); }
+.activity-text b { color:var(--text); }
+
+/* ── 코드 블록 ── */
+.code-block { background:#0d1117; border:1px solid #30363d; border-radius:10px; padding:16px 20px; font-family:'Fira Code', monospace; font-size:15px; line-height:1.8; color:#e6edf3; }
+.code-comment { color:#8b949e; }
+.code-key { color:#ff7b72; }
+.code-str { color:#a5d6ff; }
+.code-fn { color:#d2a8ff; }
+.code-num { color:#79c0ff; }
+
+/* ── 팁 박스 ── */
+.tip-box { background:rgba(139,92,246,.08); border-left:4px solid var(--purple); border-radius:0 12px 12px 0; padding:16px 20px; }
+.tip-box.amber { background:rgba(245,158,11,.08); border-color:var(--amber); }
+.tip-box.teal { background:rgba(20,184,166,.08); border-color:var(--teal); }
+.tip-box.coral { background:rgba(248,113,113,.08); border-color:var(--coral); }
+.tip-label { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--purple-l); margin-bottom:6px; }
+.tip-label.amber { color:var(--amber); }
+.tip-label.teal { color:var(--teal); }
+.tip-label.coral { color:var(--coral); }
+.tip-text { font-size:16px; line-height:1.6; color:var(--text-muted); }
+.tip-text b { color:var(--text); }
+
+/* ── 강조 텍스트 ── */
+.em-text { font-size:22px; font-weight:700; line-height:1.5; }
+.em-text .accent { color:var(--purple-l); }
+.em-text .accent-t { color:var(--teal); }
+.em-text .accent-a { color:var(--amber); }
+
+/* ── 타임라인 ── */
+.timeline { display:flex; flex-direction:column; gap:0; }
+.timeline-row { display:flex; gap:16px; align-items:stretch; }
+.timeline-left { display:flex; flex-direction:column; align-items:center; width:40px; flex-shrink:0; }
+.timeline-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:6px; }
+.timeline-line { width:2px; flex:1; background:var(--border); margin-top:4px; margin-bottom:-2px; }
+.timeline-content { padding-bottom:20px; flex:1; }
+.timeline-time { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
+.timeline-title { font-size:17px; font-weight:700; margin-bottom:4px; }
+.timeline-desc { font-size:15px; color:var(--text-muted); line-height:1.6; }
+
+/* ── 네비게이션 ── */
+#nav { position:fixed; bottom:32px; right:40px; display:flex; align-items:center; gap:12px; z-index:100; }
+.nav-btn { width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:.2s; }
+.nav-btn:hover { background:var(--surface2); border-color:var(--purple); }
+.nav-btn:active { transform:scale(.93); }
+#slide-counter { font-size:13px; color:var(--text-dim); min-width:52px; text-align:center; }
+
+/* ── 진행 바 ── */
+#progress { position:fixed; bottom:0; left:0; width:0%; height:3px; background:var(--purple); transition:width .35s ease; }
+
+/* ── 키 힌트 ── */
+#keyhint { position:fixed; bottom:32px; left:40px; font-size:12px; color:var(--text-dim); }
+#keyhint kbd { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:2px 7px; font-family:'Fira Code',monospace; }
+
+/* ── 타이머 ── */
+#timer-display { position:fixed; top:28px; right:40px; font-family:'Fira Code',monospace; font-size:15px; color:var(--text-dim); display:flex; gap:10px; align-items:center; }
+.timer-btn { font-size:11px; background:var(--surface); border:1px solid var(--border); color:var(--text-muted); border-radius:6px; padding:3px 10px; cursor:pointer; transition:.2s; }
+.timer-btn:hover { border-color:var(--purple); color:var(--purple-l); }
+#timer-time { color:var(--amber); font-weight:700; font-size:17px; min-width:60px; }
+
+/* ── 표지 슬라이드 ── */
+#cover { justify-content:center; align-items:center; text-align:center; background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,92,246,.12) 0%, transparent 70%); }
+#cover .logo { font-size:72px; margin-bottom:24px; }
+#cover h1 { font-size:52px; font-weight:900; line-height:1.1; margin-bottom:12px; }
+#cover h1 span { color:var(--purple-l); }
+#cover .sub { font-size:22px; color:var(--text-muted); margin-bottom:40px; }
+#cover .meta-row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
+#cover .meta-item { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 24px; font-size:14px; color:var(--text-muted); }
+#cover .meta-item b { color:var(--text); display:block; font-size:16px; margin-bottom:2px; }
+
+/* ── 목차 ── */
+.toc-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; flex:1; margin-top:8px; }
+.toc-item { border:1px solid var(--border); border-radius:14px; padding:22px 24px; display:flex; gap:16px; align-items:flex-start; cursor:pointer; transition:.2s; }
+.toc-item:hover { border-color:var(--purple); background:rgba(139,92,246,.05); }
+.toc-num { font-size:28px; font-weight:900; line-height:1; }
+.toc-info .toc-title { font-size:18px; font-weight:700; margin-bottom:4px; }
+.toc-info .toc-sub { font-size:14px; color:var(--text-muted); line-height:1.5; }
+.toc-time { margin-left:auto; font-size:12px; color:var(--text-dim); white-space:nowrap; padding-top:4px; }
+
+/* ── 질문 카드 ── */
+.q-card { border:1px solid var(--border); border-radius:12px; padding:20px 22px; background:var(--surface2); }
+.q-label { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--text-dim); margin-bottom:8px; }
+.q-text { font-size:19px; font-weight:700; line-height:1.4; color:var(--purple-l); }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+<!-- 슬라이드 0: 표지 -->
+<div class="slide active" id="cover">
+  <div class="logo">🤖</div>
+  <h1>AI 코딩 홈클래스<br><span>1단계 강사용 자료</span></h1>
+  <p class="sub">AI와 친해지기 · 4회차 수업 가이드</p>
+  <div class="meta-row">
+    <div class="meta-item"><b>대상</b>11세 · 초등 5학년</div>
+    <div class="meta-item"><b>총 회차</b>4회차</div>
+    <div class="meta-item"><b>교구</b>TV + iPad</div>
+    <div class="meta-item"><b>도구</b>Claude AI · 엔트리</div>
+  </div>
+</div>
+
+<!-- 슬라이드 1: 1단계 목표 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1">1단계 개요</span>
+    <div>
+      <div class="slide-title">이번 단계에서 배울 것들</div>
+      <div class="slide-sub">4회차 · 약 1개월</div>
+    </div>
+  </div>
+  <div class="toc-grid">
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--purple-l)">1</div>
+      <div class="toc-info">
+        <div class="toc-title">AI가 뭔지 물어보기</div>
+        <div class="toc-sub">Claude에 접속해서 직접 대화<br>AI의 능력과 한계 체험</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal)">2</div>
+      <div class="toc-info">
+        <div class="toc-title">컴퓨터처럼 생각하기</div>
+        <div class="toc-sub">알고리즘 = 순서대로 지시하기<br>로봇 게임 + 엔트리 첫 접속</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--amber)">3</div>
+      <div class="toc-info">
+        <div class="toc-title">AI에게 그림 그리게 하기</div>
+        <div class="toc-sub">프롬프트 실험 · 이미지 생성<br>"정확한 설명"의 중요성</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--blue)">4</div>
+      <div class="toc-info">
+        <div class="toc-title">엔트리로 첫 작품 만들기</div>
+        <div class="toc-sub">블록코딩 · 조건문 · 반복문<br>미니 게임 완성 + 발표</div>
+      </div>
+      <div class="toc-time">90분</div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 2: 강사 주의사항 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1">강사 원칙</span>
+    <div class="slide-title">수업 전 꼭 기억할 것</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box amber">
+        <div class="tip-label amber">✋ 절대 하지 말 것</div>
+        <div class="tip-text">아이가 막혔을 때 <b>바로 답을 알려주지 않기</b><br>AI에게 코드 짜달라고 하게 두지 않기<br>복붙을 허용하지 않기</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">✅ 꼭 해야 할 것</div>
+        <div class="tip-text">막히면 <b>"에러 메시지에 뭐라고 나와있어?"</b><br>완성 후 <b>"왜 이렇게 했어?" 설명 요청</b><br>매 수업 후 <b>노트 한 줄 정리</b></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-purple">3단계 도움 규칙</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-purple">1</div>
+            <div class="activity-text"><b>10분 혼자</b> — 에러 읽고, 코드 다시 보기</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-amber">2</div>
+            <div class="activity-text"><b>AI에게 힌트만</b> — "답 말고 원인만" 요청</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">3</div>
+            <div class="activity-text"><b>직접 수정 + 설명</b> — 말로 설명 못 하면 재도전</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🎯 핵심 기준</div>
+        <div class="tip-text"><b>"이걸 왜 이렇게 했는지 설명할 수 있어?"</b><br>YES → 다음 진행 / NO → 다시 해보기</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 3: 1회차 도입 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1">1회차</span>
+    <div>
+      <div class="slide-title">AI가 뭔지 물어보기</div>
+      <div class="slide-sub">Claude.ai 첫 접속 · AI 능력과 한계 체험</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--purple-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 10분</div>
+          <div class="timeline-title">대화 시작</div>
+          <div class="timeline-desc">"AI가 뭔지 알아?" 로 시작. 아이 대답 충분히 듣기.<br>→ <b>"그럼 직접 물어보자!"</b> 로 전환</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">활동 1 · 20분</div>
+          <div class="timeline-title">Claude 직접 질문하기</div>
+          <div class="timeline-desc">아이패드에서 claude.ai 접속. 아래 질문들 직접 입력.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">활동 2 · 20분</div>
+          <div class="timeline-title">AI vs 나 비교 실험</div>
+          <div class="timeline-desc">수학 문제 속도 비교 + 취향 질문 → AI의 한계 발견</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 10분</div>
+          <div class="timeline-title">노트 정리</div>
+          <div class="timeline-desc">"오늘 알게 된 것 1가지" 종이에 직접 쓰기</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-purple">
+        <div class="card-title c-purple">활동 1 — 질문 목록</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-purple">Q</div>
+            <div class="activity-text">"AI가 뭐야? 초등학생에게 설명해줘"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-purple">Q</div>
+            <div class="activity-text">"너는 어떻게 공부했어?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-purple">Q</div>
+            <div class="activity-text">"틀린 대답을 하기도 해?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-purple">Q</div>
+            <div class="activity-text">"너한테 물어보면 안 되는 게 있어?"</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 부모 팁</div>
+        <div class="tip-text">"AI가 다 해주면 되잖아요" → <b>"AI한테 공원 놀러가달라고 해봐. 할 수 있을까?"</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 4: 1회차 활동2 상세 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1">1회차 · 활동 2</span>
+    <div class="slide-title">AI vs 나 비교 실험</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-purple" style="gap:20px;">
+      <div class="card-title c-purple">실험 1 — 속도 비교</div>
+      <div class="em-text"><span class="accent">"1부터 100까지 더하면?"</span></div>
+      <div class="body-text">아이한테 먼저 물어보기 → 시간 측정<br>AI한테 같은 질문 → 속도 비교<br><br><b>핵심 발견:</b> AI는 계산이 엄청 빠르다!</div>
+      <div class="q-card">
+        <div class="q-label">부모 질문</div>
+        <div class="q-text">"AI가 더 빠른 건 알겠는데,<br>AI가 못 하는 건 뭘까?"</div>
+      </div>
+    </div>
+    <div class="card accent-amber" style="gap:20px;">
+      <div class="card-title c-amber">실험 2 — 취향 질문</div>
+      <div class="em-text"><span class="accent-a">"파란색이 예뻐,<br>빨간색이 예뻐?"</span></div>
+      <div class="body-text">AI에게 동일 질문<br>→ AI가 취향에는 약하다는 것 발견<br><br><b>핵심 발견:</b> AI에게는 "내 것"이 없다!</div>
+      <div class="q-card">
+        <div class="q-label">부모 질문</div>
+        <div class="q-text">"왜 AI는 취향을 모를까?<br>어떻게 만들어졌기 때문일까?"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 5: 2회차 도입 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1" style="background:rgba(20,184,166,.2);color:var(--teal);border-color:rgba(20,184,166,.4)">2회차</span>
+    <div>
+      <div class="slide-title">컴퓨터처럼 생각하기</div>
+      <div class="slide-sub">알고리즘 개념 체험 · 엔트리 첫 접속</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎮 도입 게임 (10분) — 로봇 놀이</div>
+        <div class="body-text">
+          <b>부모 = 로봇, 아이 = 프로그래머</b><br><br>
+          아이가 지시하는 대로 <b>정확하게만</b> 움직이기.<br>
+          "앞으로 가" → "얼마나요?" 라고 되묻기.<br>
+          지시가 모호하면 엉뚱하게 실행.<br><br>
+          <b>핵심 메시지:</b> 컴퓨터는 정확하게 시켜야 한다!
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title c-teal">📋 활동 1 (15분) — 알고리즘 카드</div>
+        <div class="body-text">종이 카드에 아침 루틴 순서 쓰기<br>"일어나기 → 세수 → 아침 → 등교"<br>순서를 섞으면 어떻게 될지 이야기하기</div>
+      </div>
+      <div class="card">
+        <div class="card-title c-teal">💻 활동 2 (25분) — 엔트리 첫 접속</div>
+        <div class="body-text">
+          <b>playentry.org</b> 접속 → 새 작품 만들기<br>
+          고양이 캐릭터 → 블록 드래그 → "앞으로 이동"<br>
+          목표: 캐릭터를 원하는 위치로 이동시키기
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">핵심 질문 모음</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-teal">Q</div>
+            <div class="activity-text">"이 블록 순서를 바꾸면 어떻게 될 것 같아?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">Q</div>
+            <div class="activity-text">"왜 이 블록을 먼저 넣어야 할까?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">Q</div>
+            <div class="activity-text">"알고리즘이란 뭐라고 생각해?"</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">✏️ 수업 마무리</div>
+        <div class="tip-text">노트에 <b>"알고리즘이란 _____ 이다"</b> 완성하기<br>예: "컴퓨터한테 순서대로 시키는 방법"</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 부모 팁</div>
+        <div class="tip-text">블록 순서를 바꿔보게 하기. <b>실행 전에 예측</b>하게 하는 게 핵심!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 6: 3회차 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-3">3회차</span>
+    <div>
+      <div class="slide-title">AI에게 그림 그리게 하기</div>
+      <div class="slide-sub">프롬프트 실험 · 이미지 생성 AI · 정확한 설명의 힘</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card">
+        <div class="card-title c-amber">도구 접속 (미리 준비)</div>
+        <div class="body-text">
+          <b>Microsoft Designer</b> (designer.microsoft.com)<br>
+          또는 <b>Canva AI</b> (canva.com) — 둘 다 무료<br>
+          아이패드 Safari에서 접속 가능
+        </div>
+      </div>
+      <div class="card accent-amber">
+        <div class="card-title c-amber">🎨 활동 1 (25분) — 프롬프트 3단계 실험</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-amber">1</div>
+            <div class="activity-text"><b>짧게:</b> "고양이 그림" → 결과 저장</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-amber">2</div>
+            <div class="activity-text"><b>구체적으로:</b> "주황색 고양이가 파란 우산을 들고 빗속을 걷는 그림, 귀여운 만화 스타일" → 결과 저장</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-amber">3</div>
+            <div class="activity-text"><b>아이가 원하는 것:</b> 직접 설명하게 하기</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title c-amber">🖼️ 활동 2 (15분) — 엔트리 배경으로 쓰기</div>
+        <div class="body-text">생성한 이미지 저장 → 엔트리 배경 업로드<br>간단한 캐릭터 움직임 추가<br><b>"내가 만든 세계"</b> 경험 제공</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="q-card">
+        <div class="q-label">핵심 질문</div>
+        <div class="q-text">"왜 2단계가 더 원하는 그림이 나왔을까?<br>코딩이랑 비슷한 점이 뭘까?"</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 연결 포인트</div>
+        <div class="tip-text"><b>"코딩도 컴퓨터한테 지시하는 거야.<br>그래서 정확하게 써야 해!"</b><br><br>프롬프트 → 코드 자연스러운 연결</div>
+      </div>
+      <div class="card accent-teal">
+        <div class="card-title c-teal">수업 마무리</div>
+        <div class="body-text">노트에 <b>"좋은 프롬프트의 조건 2가지"</b> 쓰기<br>예: ① 구체적으로 / ② 원하는 스타일 명시</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 7: 4회차 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">4회차</span>
+    <div>
+      <div class="slide-title">엔트리로 첫 작품 만들기</div>
+      <div class="slide-sub">블록코딩 · 조건문 · 반복문 · 첫 완성 경험</div>
+    </div>
+    <span class="timer-badge">⏱ 90분</span>
+  </div>
+  <div class="col-3" style="flex:1;">
+    <div class="card accent-blue">
+      <div class="card-title c-blue">🚀 도입 (10분)</div>
+      <div class="body-text">
+        <b>AI에게 아이디어 요청</b><br>(학습형 질문 연습)<br><br>
+        "엔트리로 만들 수 있는<br>간단한 작품 아이디어 5개 알려줘"<br><br>
+        아이가 고른 아이디어로 진행
+      </div>
+    </div>
+    <div class="card accent-blue">
+      <div class="card-title c-blue">🎮 활동 (60분)</div>
+      <div class="body-text">
+        <b>예시: 고양이 피하기 게임</b><br><br>
+        • 캐릭터가 마우스 따라 이동<br>• 장애물 반복 등장 (반복문)<br>• 닿으면 게임오버 (조건문)<br><br>
+        <span style="color:var(--coral)"><b>⚠️ 막히면 규칙:</b><br>10분 혼자 → AI 힌트 → 직접 수정</span>
+      </div>
+    </div>
+    <div class="card accent-blue">
+      <div class="card-title c-blue">🎤 발표 (10분) + 정리 (10분)</div>
+      <div class="body-text">
+        <b>발표 질문:</b><br>
+        "이 블록이 뭘 하는 거야?"<br>핵심 블록 3개 설명하게<br><br>
+        <b>노트 정리:</b><br>
+        "배운 블록 이름과 역할" 2~3개<br><br>
+        <span style="color:var(--green)">🏆 완성한 것 무조건 칭찬!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 8: 엔트리 핵심 블록 가이드 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">4회차 참고</span>
+    <div class="slide-title">엔트리 핵심 블록 빠른 참고</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-purple">이동 블록</div>
+        <div class="code-block">
+<span class="code-comment">// 마우스 따라다니기</span>
+<span class="code-key">계속 반복하기</span> {
+  <span class="code-fn">마우스 포인터</span> 위치로 이동
+}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title c-teal">반복 블록</div>
+        <div class="code-block">
+<span class="code-comment">// 장애물 계속 만들기</span>
+<span class="code-key">계속 반복하기</span> {
+  장애물 <span class="code-fn">복제하기</span>
+  <span class="code-num">1</span>초 기다리기
+}
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-amber">조건 블록</div>
+        <div class="code-block">
+<span class="code-comment">// 닿으면 게임오버</span>
+<span class="code-key">만약</span> 장애물에 <span class="code-fn">닿았는가?</span> <span class="code-key">라면</span> {
+  "<span class="code-str">게임 오버!</span>" 말하기
+  모든 코드 <span class="code-fn">멈추기</span>
+}
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 자주 막히는 곳</div>
+        <div class="tip-text"><b>복제본이 너무 빨리 생길 때:</b> "기다리기" 블록 추가<br><b>캐릭터가 안 움직일 때:</b> "계속 반복" 확인<br><b>게임이 안 끝날 때:</b> 닿음 감지 조건 확인</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 9: 1단계 마무리 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1">1단계 완료</span>
+    <div class="slide-title">1단계 완료 체크리스트</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card" style="gap:16px;">
+      <div class="card-title c-purple">아이가 할 수 있어야 할 것</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-purple">✓</div>
+          <div class="activity-text">AI가 무엇인지 <b>나만의 말로</b> 설명할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text">알고리즘 = <b>순서대로 지시하기</b> 라고 설명할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-amber">✓</div>
+          <div class="activity-text">엔트리/스크래치로 <b>캐릭터를 움직이게</b> 할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-purple">✓</div>
+          <div class="activity-text"><b>조건문과 반복문</b> 블록을 사용해봤다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text">프롬프트가 <b>구체적일수록</b> AI 결과가 좋아짐을 체험했다</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-purple">
+        <div class="card-title c-purple">2단계 예고</div>
+        <div class="body-text">
+          <b>다음엔 Python 텍스트 코딩 시작!</b><br><br>
+          • Replit에서 print("Hello, 세계!") 첫 실행<br>
+          • 변수 = 상자 비유로 이해<br>
+          • AI에게 "이 오류가 왜 나?" 물어보기<br><br>
+          <span style="color:var(--purple-l)">복붙 절대 금지 — 직접 타이핑!</span>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🎉 수고하셨어요!</div>
+        <div class="tip-text">1단계의 핵심은 <b>"재미"</b>입니다.<br>아이가 "다음엔 뭘 만들어?"라고 물어본다면<br>1단계는 성공입니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- 네비게이션 -->
+<div id="nav">
+  <button class="nav-btn" onclick="prevSlide()" title="이전 (←)">&#8592;</button>
+  <span id="slide-counter">1 / 10</span>
+  <button class="nav-btn" onclick="nextSlide()" title="다음 (→)">&#8594;</button>
+</div>
+<div id="progress"></div>
+<div id="keyhint"><kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동 &nbsp;|&nbsp; <kbd>T</kbd> 타이머</div>
+
+<!-- 타이머 -->
+<div id="timer-display">
+  <span id="timer-time">00:00</span>
+  <button class="timer-btn" onclick="startTimer()">시작</button>
+  <button class="timer-btn" onclick="resetTimer()">리셋</button>
+</div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let timerInterval = null, timerSec = 0, timerRunning = false;
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(n, total-1));
+  slides[current].classList.add('active');
+  document.getElementById('slide-counter').textContent = `${current+1} / ${total}`;
+  document.getElementById('progress').style.width = `${((current+1)/total)*100}%`;
+}
+function nextSlide() { goTo(current+1); }
+function prevSlide() { goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); nextSlide(); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if(e.key==='t'||e.key==='T') { timerRunning ? pauseTimer() : startTimer(); }
+});
+
+function startTimer() {
+  if(timerRunning) return;
+  timerRunning = true;
+  timerInterval = setInterval(() => {
+    timerSec++;
+    const m = String(Math.floor(timerSec/60)).padStart(2,'0');
+    const s = String(timerSec%60).padStart(2,'0');
+    document.getElementById('timer-time').textContent = `${m}:${s}`;
+  }, 1000);
+}
+function pauseTimer() { timerRunning = false; clearInterval(timerInterval); }
+function resetTimer() { pauseTimer(); timerSec=0; document.getElementById('timer-time').textContent='00:00'; }
+
+// 초기화
+goTo(0);
+</script>
+</body>
+</html>

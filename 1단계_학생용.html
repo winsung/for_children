@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>1단계 — AI와 친해지기 🤖</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --white: #ffffff;
+  --purple: #7c3aed;
+  --purple-l: #a78bfa;
+  --purple-bg: #ede9fe;
+  --teal: #0d9488;
+  --teal-l: #5eead4;
+  --teal-bg: #ccfbf1;
+  --amber: #d97706;
+  --amber-l: #fbbf24;
+  --amber-bg: #fef3c7;
+  --blue: #1d4ed8;
+  --blue-l: #60a5fa;
+  --blue-bg: #dbeafe;
+  --coral: #dc2626;
+  --coral-bg: #fee2e2;
+  --green: #15803d;
+  --green-bg: #dcfce7;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { font-size:16px; }
+body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; min-height:100vh; }
+
+/* ── 상단 헤더 ── */
+.top-bar { background:var(--white); border-bottom:2px solid var(--border); padding:0 20px; position:sticky; top:0; z-index:100; display:flex; align-items:center; height:64px; gap:12px; }
+.top-bar .logo { font-size:28px; }
+.top-bar h1 { font-size:20px; font-weight:900; color:var(--purple); }
+.top-bar .step-info { margin-left:auto; font-size:13px; color:var(--text-muted); background:var(--purple-bg); padding:4px 12px; border-radius:99px; font-weight:700; color:var(--purple); }
+
+/* ── 진행 탭 ── */
+.session-tabs { display:flex; gap:0; background:var(--white); border-bottom:2px solid var(--border); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.session-tabs::-webkit-scrollbar { display:none; }
+.tab { flex:1; min-width:90px; padding:14px 8px; text-align:center; font-size:13px; font-weight:700; color:var(--text-muted); cursor:pointer; border-bottom:3px solid transparent; transition:.2s; white-space:nowrap; }
+.tab.active { color:var(--purple); border-bottom-color:var(--purple); }
+.tab .tab-num { font-size:20px; display:block; margin-bottom:2px; }
+
+/* ── 페이지 ── */
+.page { display:none; padding:24px 20px 100px; max-width:800px; margin:0 auto; }
+.page.active { display:block; }
+
+/* ── 섹션 헤더 ── */
+.section-hero { background:linear-gradient(135deg, var(--purple) 0%, #6d28d9 100%); color:white; border-radius:20px; padding:28px 24px; margin-bottom:24px; position:relative; overflow:hidden; }
+.section-hero.teal { background:linear-gradient(135deg, var(--teal) 0%, #0f766e 100%); }
+.section-hero.amber { background:linear-gradient(135deg, var(--amber) 0%, #b45309 100%); }
+.section-hero.blue { background:linear-gradient(135deg, var(--blue) 0%, #1e40af 100%); }
+.hero-emoji { font-size:48px; margin-bottom:12px; display:block; }
+.hero-session { font-size:12px; font-weight:700; letter-spacing:.1em; opacity:.8; margin-bottom:6px; }
+.hero-title { font-size:26px; font-weight:900; margin-bottom:6px; line-height:1.2; }
+.hero-sub { font-size:15px; opacity:.85; }
+.hero-time { position:absolute; top:20px; right:20px; background:rgba(255,255,255,.2); padding:6px 14px; border-radius:99px; font-size:13px; font-weight:700; }
+
+/* ── 카드 ── */
+.card { background:var(--white); border:2px solid var(--border); border-radius:16px; padding:20px; margin-bottom:16px; }
+.card.purple { border-color:var(--purple-l); background:var(--purple-bg); }
+.card.teal { border-color:var(--teal-l); background:var(--teal-bg); }
+.card.amber { border-color:var(--amber-l); background:var(--amber-bg); }
+.card.blue { border-color:var(--blue-l); background:var(--blue-bg); }
+.card.coral { border-color:#fca5a5; background:var(--coral-bg); }
+.card.green { border-color:#86efac; background:var(--green-bg); }
+.card-label { font-size:11px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.label-purple { color:var(--purple); }
+.label-teal { color:var(--teal); }
+.label-amber { color:var(--amber); }
+.label-blue { color:var(--blue); }
+.label-coral { color:var(--coral); }
+.label-green { color:var(--green); }
+.card-title { font-size:18px; font-weight:900; margin-bottom:8px; color:var(--text); }
+.card-body { font-size:15px; line-height:1.8; color:var(--text-muted); }
+.card-body b { color:var(--text); }
+.card-body .em { color:var(--purple); font-weight:700; }
+
+/* ── 활동 스텝 ── */
+.step-list { display:flex; flex-direction:column; gap:12px; margin-top:4px; }
+.step-item { display:flex; gap:14px; align-items:flex-start; }
+.step-circle { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:900; flex-shrink:0; }
+.sc-purple { background:var(--purple); color:white; }
+.sc-teal { background:var(--teal); color:white; }
+.sc-amber { background:var(--amber); color:white; }
+.sc-blue { background:var(--blue); color:white; }
+.step-content { flex:1; }
+.step-title { font-size:16px; font-weight:700; margin-bottom:3px; }
+.step-desc { font-size:14px; color:var(--text-muted); line-height:1.6; }
+
+/* ── 체크리스트 ── */
+.checklist { display:flex; flex-direction:column; gap:10px; }
+.check-item { display:flex; align-items:center; gap:14px; background:var(--white); border:2px solid var(--border); border-radius:12px; padding:14px 16px; cursor:pointer; transition:.2s; -webkit-tap-highlight-color:transparent; }
+.check-item.done { background:var(--green-bg); border-color:#86efac; }
+.check-box { width:28px; height:28px; border:2px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; transition:.2s; }
+.check-item.done .check-box { background:var(--green); border-color:var(--green); color:white; }
+.check-label { font-size:15px; font-weight:700; flex:1; }
+.check-item.done .check-label { color:var(--green); text-decoration:line-through; text-decoration-color:rgba(21,128,61,.3); }
+
+/* ── 질문 말풍선 ── */
+.bubble { background:var(--purple-bg); border:2px solid var(--purple-l); border-radius:16px 16px 16px 4px; padding:16px 18px; margin-bottom:12px; }
+.bubble.amber { background:var(--amber-bg); border-color:var(--amber-l); border-radius:16px 16px 16px 4px; }
+.bubble.teal { background:var(--teal-bg); border-color:var(--teal-l); }
+.bubble-label { font-size:11px; font-weight:900; letter-spacing:.08em; color:var(--purple); margin-bottom:6px; }
+.bubble-label.amber { color:var(--amber); }
+.bubble-label.teal { color:var(--teal); }
+.bubble-text { font-size:16px; font-weight:700; line-height:1.5; color:var(--text); }
+
+/* ── 구분선 ── */
+.divider { height:2px; background:var(--border); border-radius:99px; margin:24px 0; }
+
+/* ── 노트 영역 ── */
+.note-area { background:linear-gradient(180deg, #fef9c3 0%, #fefce8 100%); border:2px solid #fde047; border-radius:16px; padding:20px; margin-bottom:16px; }
+.note-area .note-label { font-size:12px; font-weight:900; color:#854d0e; letter-spacing:.08em; margin-bottom:12px; }
+.note-line { border-bottom:2px dashed #fde047; height:36px; margin-bottom:4px; }
+
+/* ── AI 링크 버튼 ── */
+.link-btn { display:flex; align-items:center; gap:12px; background:var(--white); border:2px solid var(--purple-l); border-radius:14px; padding:16px 18px; text-decoration:none; color:var(--text); margin-bottom:12px; transition:.2s; cursor:pointer; }
+.link-btn:hover, .link-btn:active { background:var(--purple-bg); }
+.link-icon { font-size:28px; flex-shrink:0; }
+.link-info .link-title { font-size:16px; font-weight:900; color:var(--purple); margin-bottom:2px; }
+.link-info .link-url { font-size:12px; color:var(--text-muted); }
+.link-arrow { margin-left:auto; font-size:20px; color:var(--purple-l); }
+
+/* ── 완료 배지 ── */
+.complete-banner { background:linear-gradient(135deg, #15803d, #16a34a); color:white; border-radius:16px; padding:24px; text-align:center; margin-bottom:16px; }
+.complete-banner .trophy { font-size:48px; margin-bottom:8px; }
+.complete-banner h2 { font-size:22px; font-weight:900; margin-bottom:6px; }
+.complete-banner p { font-size:14px; opacity:.9; }
+
+/* ── 타임 태그 ── */
+.time-tag { display:inline-block; background:rgba(0,0,0,.08); border-radius:99px; padding:4px 12px; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:12px; }
+
+/* ── 진행 표시 ── */
+.progress-bar-wrap { background:var(--white); border-bottom:2px solid var(--border); padding:10px 20px; }
+.progress-label { font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:700; }
+.progress-bar { height:8px; background:var(--border); border-radius:99px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg, var(--purple), var(--purple-l)); border-radius:99px; transition:.4s; }
+</style>
+</head>
+<body>
+
+<!-- 상단 헤더 -->
+<div class="top-bar">
+  <span class="logo">🤖</span>
+  <h1>AI 코딩 클래스</h1>
+  <span class="step-info">1단계 · AI와 친해지기</span>
+</div>
+
+<!-- 진행 탭 -->
+<div class="session-tabs">
+  <div class="tab active" onclick="showPage(0)">
+    <span class="tab-num">1️⃣</span>AI 질문하기
+  </div>
+  <div class="tab" onclick="showPage(1)">
+    <span class="tab-num">2️⃣</span>생각하기
+  </div>
+  <div class="tab" onclick="showPage(2)">
+    <span class="tab-num">3️⃣</span>그림 그리기
+  </div>
+  <div class="tab" onclick="showPage(3)">
+    <span class="tab-num">4️⃣</span>작품 만들기
+  </div>
+</div>
+
+<!-- 진행 바 -->
+<div class="progress-bar-wrap">
+  <div class="progress-label">전체 진행 상황 — <span id="prog-text">0 / 4 완료</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!--  1회차 페이지                      -->
+<!-- ══════════════════════════════════ -->
+<div class="page active" id="page-0">
+
+  <div class="section-hero">
+    <span class="hero-emoji">🤖</span>
+    <div class="hero-session">1회차</div>
+    <div class="hero-title">AI가 뭔지 물어보기</div>
+    <div class="hero-sub">Claude랑 직접 대화해보자!</div>
+    <div class="hero-time">⏱ 60분</div>
+  </div>
+
+  <!-- Claude 접속 -->
+  <div class="card purple">
+    <div class="card-label label-purple">🔗 지금 접속하기</div>
+    <div class="card-title">Claude에 접속해봐</div>
+    <a class="link-btn" href="https://claude.ai" target="_blank">
+      <span class="link-icon">🤖</span>
+      <div class="link-info">
+        <div class="link-title">Claude AI</div>
+        <div class="link-url">claude.ai</div>
+      </div>
+      <span class="link-arrow">↗</span>
+    </a>
+    <div class="card-body">접속하면 메시지를 입력할 수 있어. 아래 질문들을 <b>직접 타이핑</b>해서 보내봐!</div>
+  </div>
+
+  <!-- 질문 목록 -->
+  <div class="card">
+    <div class="card-label label-purple">📝 활동 1 — AI에게 질문하기 (20분)</div>
+    <div class="card-title">아래 질문을 하나씩 해봐!</div>
+    <div class="divider"></div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle sc-purple">Q1</div>
+        <div class="step-content">
+          <div class="step-title">"AI가 뭐야? 초등학생에게 설명해줘"</div>
+          <div class="step-desc">AI가 어떻게 대답하는지 읽어봐. 이해가 돼?</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-purple">Q2</div>
+        <div class="step-content">
+          <div class="step-title">"너는 어떻게 공부했어?"</div>
+          <div class="step-desc">사람이랑 다르게 공부했다고 해. 어떻게 다를까?</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-purple">Q3</div>
+        <div class="step-content">
+          <div class="step-title">"틀린 대답을 하기도 해?"</div>
+          <div class="step-desc">항상 맞는 건 아니래! 왜 그럴까?</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-purple">Q4</div>
+        <div class="step-content">
+          <div class="step-title">"파란색이 예뻐, 빨간색이 예뻐?"</div>
+          <div class="step-desc">이건 좀 다른 반응이 나올 거야. 왜 그럴까?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 발견한 것 -->
+  <div class="card amber">
+    <div class="card-label label-amber">💡 활동 2 — AI vs 나 비교 실험 (20분)</div>
+    <div class="card-title">AI가 잘하는 것 vs 못하는 것</div>
+    <div class="card-body">
+      Claude에게 이것도 물어봐:<br><br>
+      <b>"1부터 100까지 다 더하면 얼마야?"</b><br>
+      → 너도 직접 계산해보고 누가 더 빠른지 비교!<br><br>
+      <b>"지금 기분이 어때?"</b><br>
+      → AI는 감정이 있을까? 없을까?
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 1회차 체크리스트</div>
+    <div class="card-title">다 했으면 체크해봐!</div>
+    <div style="height:12px;"></div>
+    <div class="checklist" id="check-0">
+      <div class="check-item" onclick="toggleCheck(this, 0)">
+        <div class="check-box">✓</div>
+        <div class="check-label">Claude에 접속해서 질문 4개를 다 해봤다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 0)">
+        <div class="check-box">✓</div>
+        <div class="check-label">AI가 수학 계산을 나보다 빨리 한다는 걸 봤다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 0)">
+        <div class="check-box">✓</div>
+        <div class="check-label">AI가 취향이나 감정에는 약하다는 걸 발견했다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 노트 -->
+  <div class="note-area">
+    <div class="note-label">📓 오늘의 노트 — 종이에 직접 써봐!</div>
+    <div class="card-body" style="color:#854d0e; margin-bottom:12px;">오늘 AI에 대해 알게 된 것 중 가장 신기한 것 1가지를 써봐.</div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!--  2회차 페이지                      -->
+<!-- ══════════════════════════════════ -->
+<div class="page" id="page-1">
+
+  <div class="section-hero teal">
+    <span class="hero-emoji">🤔</span>
+    <div class="hero-session">2회차</div>
+    <div class="hero-title">컴퓨터처럼 생각하기</div>
+    <div class="hero-sub">알고리즘 = 순서대로 지시하기!</div>
+    <div class="hero-time">⏱ 60분</div>
+  </div>
+
+  <!-- 로봇 게임 -->
+  <div class="card teal">
+    <div class="card-label label-teal">🎮 도입 게임 (10분) — 로봇 놀이</div>
+    <div class="card-title">아빠/엄마를 로봇으로 만들어봐!</div>
+    <div class="card-body">
+      <b>규칙:</b> 아빠/엄마는 로봇이야. 네가 지시하는 대로만 움직여.<br><br>
+      "앞으로 가" → 로봇: "얼마나요?"<br>
+      "오른쪽으로" → 로봇: "몇 도요?"<br><br>
+      <b>정확하게 말하지 않으면 로봇이 엉뚱하게 움직여!</b>
+    </div>
+  </div>
+
+  <!-- 알고리즘 카드 -->
+  <div class="card">
+    <div class="card-label label-teal">📋 활동 1 (15분) — 알고리즘 카드 만들기</div>
+    <div class="card-title">아침 루틴 순서를 맞춰봐!</div>
+    <div class="card-body">종이를 잘라서 카드를 만들어봐. 아래 순서가 맞을까?</div>
+    <div style="height:12px;"></div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle sc-teal">1</div>
+        <div class="step-content"><div class="step-title">일어나기</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">2</div>
+        <div class="step-content"><div class="step-title">세수하기</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">3</div>
+        <div class="step-content"><div class="step-title">아침 먹기</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">4</div>
+        <div class="step-content"><div class="step-title">학교 가기</div></div>
+      </div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="bubble teal">
+      <div class="bubble-label teal">💭 생각해봐</div>
+      <div class="bubble-text">"세수하기"를 "학교 가기" 뒤로 옮기면 어떻게 될까? 😂</div>
+    </div>
+  </div>
+
+  <!-- 엔트리 접속 -->
+  <div class="card">
+    <div class="card-label label-teal">💻 활동 2 (25분) — 엔트리 첫 접속</div>
+    <div class="card-title">블록으로 고양이를 움직여봐!</div>
+    <a class="link-btn" href="https://playentry.org" target="_blank" style="border-color:var(--teal-l);">
+      <span class="link-icon">🐱</span>
+      <div class="link-info">
+        <div class="link-title" style="color:var(--teal);">엔트리 접속하기</div>
+        <div class="link-url">playentry.org</div>
+      </div>
+      <span class="link-arrow" style="color:var(--teal-l);">↗</span>
+    </a>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle sc-teal">1</div>
+        <div class="step-content">
+          <div class="step-title">새 작품 만들기 클릭</div>
+          <div class="step-desc">오른쪽 위에 있어!</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">2</div>
+        <div class="step-content">
+          <div class="step-title">왼쪽에서 블록을 드래그</div>
+          <div class="step-desc">"앞으로 10 이동하기" 블록을 가져와봐</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">3</div>
+        <div class="step-content">
+          <div class="step-title">▶ 실행 버튼 누르기</div>
+          <div class="step-desc">고양이가 움직이면 성공!</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">4</div>
+        <div class="step-content">
+          <div class="step-title">블록 순서 바꿔보기</div>
+          <div class="step-desc">어떻게 달라지는지 관찰해봐!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 2회차 체크리스트</div>
+    <div class="checklist" id="check-1">
+      <div class="check-item" onclick="toggleCheck(this, 1)">
+        <div class="check-box">✓</div>
+        <div class="check-label">로봇 게임에서 정확한 지시가 중요하다는 걸 알았다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 1)">
+        <div class="check-box">✓</div>
+        <div class="check-label">엔트리에서 블록으로 고양이를 움직였다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 1)">
+        <div class="check-box">✓</div>
+        <div class="check-label">블록 순서를 바꾸면 결과가 달라진다는 걸 봤다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 노트 -->
+  <div class="note-area">
+    <div class="note-label">📓 오늘의 노트 — 종이에 직접 써봐!</div>
+    <div class="card-body" style="color:#854d0e; margin-bottom:12px;"><b>"알고리즘이란 _______ 이다"</b> 를 완성해봐!</div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!--  3회차 페이지                      -->
+<!-- ══════════════════════════════════ -->
+<div class="page" id="page-2">
+
+  <div class="section-hero amber">
+    <span class="hero-emoji">🎨</span>
+    <div class="hero-session">3회차</div>
+    <div class="hero-title">AI에게 그림 그리게 하기</div>
+    <div class="hero-sub">어떻게 말하느냐에 따라 그림이 달라져!</div>
+    <div class="hero-time">⏱ 60분</div>
+  </div>
+
+  <!-- 도구 접속 -->
+  <div class="card amber">
+    <div class="card-label label-amber">🔗 이미지 AI 접속하기</div>
+    <div class="card-title">아래 사이트에서 그림을 만들 수 있어!</div>
+    <a class="link-btn" href="https://designer.microsoft.com" target="_blank" style="border-color:var(--amber-l);">
+      <span class="link-icon">🖼️</span>
+      <div class="link-info">
+        <div class="link-title" style="color:var(--amber);">Microsoft Designer</div>
+        <div class="link-url">designer.microsoft.com (무료)</div>
+      </div>
+      <span class="link-arrow" style="color:var(--amber-l);">↗</span>
+    </a>
+    <a class="link-btn" href="https://www.canva.com" target="_blank" style="border-color:var(--amber-l);">
+      <span class="link-icon">✨</span>
+      <div class="link-info">
+        <div class="link-title" style="color:var(--amber);">Canva AI</div>
+        <div class="link-url">canva.com (무료)</div>
+      </div>
+      <span class="link-arrow" style="color:var(--amber-l);">↗</span>
+    </a>
+  </div>
+
+  <!-- 프롬프트 실험 -->
+  <div class="card">
+    <div class="card-label label-amber">🧪 활동 1 (25분) — 프롬프트 3단계 실험</div>
+    <div class="card-title">어떻게 말하면 더 잘 나올까?</div>
+    <div style="height:12px;"></div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle sc-amber">1</div>
+        <div class="step-content">
+          <div class="step-title">짧게 말해봐</div>
+          <div class="step-desc">이렇게 입력해봐 → <b>"고양이 그림"</b><br>어떤 그림이 나오는지 스크린샷 찍어둬!</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-amber">2</div>
+        <div class="step-content">
+          <div class="step-title">자세하게 말해봐</div>
+          <div class="step-desc"><b>"주황색 고양이가 파란 우산을 들고 빗속을 걷는 그림, 귀여운 만화 스타일"</b></div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-amber">3</div>
+        <div class="step-content">
+          <div class="step-title">내가 원하는 거 말해봐</div>
+          <div class="step-desc">네가 그리고 싶은 그림을 직접 설명해봐!</div>
+        </div>
+      </div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="bubble amber">
+      <div class="bubble-label amber">💭 생각해봐</div>
+      <div class="bubble-text">1단계랑 2단계 그림 중 어느 쪽이 더 마음에 들어? 왜 그럴까?</div>
+    </div>
+  </div>
+
+  <!-- 연결 포인트 -->
+  <div class="card purple">
+    <div class="card-label label-purple">💡 코딩이랑 연결!</div>
+    <div class="card-title">프롬프트 = 코딩의 지시</div>
+    <div class="card-body">
+      AI 그림에서 <b>자세하게 말할수록 원하는 결과</b>가 나왔지?<br><br>
+      코딩도 똑같아! 컴퓨터한테 <b>정확하게 지시</b>할수록 내가 원하는 대로 작동해.<br><br>
+      <span class="em">프롬프트 잘 쓰기 = 코딩 잘 하기!</span>
+    </div>
+  </div>
+
+  <!-- 엔트리 연동 -->
+  <div class="card teal">
+    <div class="card-label label-teal">🎮 활동 2 (15분) — 엔트리에서 써보기</div>
+    <div class="card-title">만든 그림을 엔트리 배경으로!</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle sc-teal">1</div>
+        <div class="step-content">
+          <div class="step-title">마음에 드는 그림 저장하기</div>
+          <div class="step-desc">꾹 눌러서 이미지 저장</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">2</div>
+        <div class="step-content">
+          <div class="step-title">엔트리 → 배경 → 파일 업로드</div>
+          <div class="step-desc">저장한 그림을 배경으로 넣기</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-teal">3</div>
+        <div class="step-content">
+          <div class="step-title">캐릭터 움직임 추가하기</div>
+          <div class="step-desc">내가 만든 세계에서 캐릭터가 움직여!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 3회차 체크리스트</div>
+    <div class="checklist" id="check-2">
+      <div class="check-item" onclick="toggleCheck(this, 2)">
+        <div class="check-box">✓</div>
+        <div class="check-label">짧은 프롬프트 vs 긴 프롬프트 결과를 비교해봤다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 2)">
+        <div class="check-box">✓</div>
+        <div class="check-label">내가 원하는 그림을 직접 설명해서 만들었다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 2)">
+        <div class="check-box">✓</div>
+        <div class="check-label">만든 그림을 엔트리 배경으로 써봤다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 노트 -->
+  <div class="note-area">
+    <div class="note-label">📓 오늘의 노트</div>
+    <div class="card-body" style="color:#854d0e; margin-bottom:12px;"><b>"좋은 프롬프트의 조건 2가지"</b>를 써봐!</div>
+    <div class="card-body" style="color:#a16207; margin-bottom:8px;">① </div>
+    <div class="note-line"></div>
+    <div class="card-body" style="color:#a16207; margin-top:8px; margin-bottom:8px;">② </div>
+    <div class="note-line"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!--  4회차 페이지                      -->
+<!-- ══════════════════════════════════ -->
+<div class="page" id="page-3">
+
+  <div class="section-hero blue">
+    <span class="hero-emoji">🎮</span>
+    <div class="hero-session">4회차</div>
+    <div class="hero-title">엔트리로 첫 작품 만들기</div>
+    <div class="hero-sub">조건문 + 반복문으로 미니 게임 완성!</div>
+    <div class="hero-time">⏱ 90분</div>
+  </div>
+
+  <!-- AI 아이디어 요청 -->
+  <div class="card blue">
+    <div class="card-label label-blue">🚀 도입 (10분) — AI에게 아이디어 물어보기</div>
+    <div class="card-title">먼저 Claude에게 이렇게 질문해봐!</div>
+    <div class="bubble">
+      <div class="bubble-label">Claude에게 이렇게 말해봐</div>
+      <div class="bubble-text">"엔트리로 만들 수 있는 간단한 작품 아이디어 5개 알려줘. 나는 11살이야."</div>
+    </div>
+    <div class="card-body">아이디어 중에 <b>가장 만들고 싶은 것 1개</b>를 골라봐!</div>
+  </div>
+
+  <!-- 예시 게임 -->
+  <div class="card">
+    <div class="card-label label-blue">💻 활동 (60분) — 예시: 피하기 게임</div>
+    <div class="card-title">아이디어가 없으면 이걸 만들어봐!</div>
+    <div style="height:12px;"></div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle sc-blue">1</div>
+        <div class="step-content">
+          <div class="step-title">주인공 캐릭터 추가</div>
+          <div class="step-desc">마우스 포인터를 따라다니게 만들기<br>→ <b>"마우스 포인터 위치로 이동" 블록</b></div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-blue">2</div>
+        <div class="step-content">
+          <div class="step-title">장애물 만들기 (반복문!)</div>
+          <div class="step-desc">계속 새로운 장애물이 나타나게<br>→ <b>"계속 반복하기" + "복제하기"</b></div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle sc-blue">3</div>
+        <div class="step-content">
+          <div class="step-title">충돌 감지 (조건문!)</div>
+          <div class="step-desc">닿으면 게임오버가 되게<br>→ <b>"만약 ~ 에 닿았는가? 라면" 블록</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="card coral">
+    <div class="card-label label-coral">⚠️ 막혔을 때 규칙 — 꼭 지켜야 해!</div>
+    <div class="card-title">순서대로 해봐!</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-circle" style="background:#dc2626;color:white;font-size:13px;">10분</div>
+        <div class="step-content">
+          <div class="step-title">먼저 혼자 생각해봐</div>
+          <div class="step-desc">에러 메시지를 읽어보고, 블록을 다시 봐봐</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" style="background:#f59e0b;color:white;font-size:13px;">힌트</div>
+        <div class="step-content">
+          <div class="step-title">Claude에게 이렇게만 물어봐</div>
+          <div class="step-desc"><b>"이런 문제가 생겼는데 왜 그런지 원인만 알려줘"</b><br>코드 짜달라고 하면 안 돼!</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" style="background:#15803d;color:white;font-size:13px;">직접</div>
+        <div class="step-content">
+          <div class="step-title">직접 고쳐봐</div>
+          <div class="step-desc">고친 다음에 왜 이렇게 했는지 설명할 수 있어야 해!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 발표 준비 -->
+  <div class="card purple">
+    <div class="card-label label-purple">🎤 발표 준비 (10분)</div>
+    <div class="card-title">완성하면 발표해봐!</div>
+    <div class="card-body">
+      아빠/엄마한테 이것을 설명해봐:<br><br>
+      <b>"이 블록이 뭘 하는 거야?"</b><br>
+      → 핵심 블록 3개를 골라서 설명해봐!<br><br>
+      <b>"왜 이 블록을 이 순서로 넣었어?"</b><br>
+      → 이유를 말할 수 있으면 진짜 이해한 거야!
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 4회차 체크리스트</div>
+    <div class="checklist" id="check-3">
+      <div class="check-item" onclick="toggleCheck(this, 3)">
+        <div class="check-box">✓</div>
+        <div class="check-label">AI에게 아이디어를 요청했다 (코드는 직접!)</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 3)">
+        <div class="check-box">✓</div>
+        <div class="check-label">반복문 블록을 사용해봤다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 3)">
+        <div class="check-box">✓</div>
+        <div class="check-label">조건문 블록을 사용해봤다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 3)">
+        <div class="check-box">✓</div>
+        <div class="check-label">완성한 작품을 아빠/엄마에게 설명했다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 완료 배너 -->
+  <div id="complete-all" class="complete-banner" style="display:none;">
+    <div class="trophy">🏆</div>
+    <h2>1단계 완료! 대단해!</h2>
+    <p>AI와 친해지기 4회차를 모두 마쳤어.<br>다음은 Python으로 직접 코딩하는 2단계야!</p>
+  </div>
+
+  <!-- 노트 -->
+  <div class="note-area">
+    <div class="note-label">📓 오늘의 노트</div>
+    <div class="card-body" style="color:#854d0e; margin-bottom:12px;">이번에 배운 블록 이름과 역할 2~3개를 써봐!</div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+    <div class="note-line"></div>
+  </div>
+
+</div><!-- /page-3 -->
+
+<script>
+// 탭 전환
+const tabs = document.querySelectorAll('.tab');
+const pages = document.querySelectorAll('.page');
+const pageChecks = [0, 0, 0, 0]; // 각 페이지 완료 여부
+
+function showPage(i) {
+  tabs.forEach((t,j) => t.classList.toggle('active', i===j));
+  pages.forEach((p,j) => p.classList.toggle('active', i===j));
+  window.scrollTo(0,0);
+}
+
+// 체크 토글
+function toggleCheck(el, pageIdx) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+// 진행 상황 업데이트
+function updateProgress() {
+  let completed = 0;
+  for(let i=0;i<4;i++) {
+    const checks = document.querySelectorAll(`#page-${i} .check-item`);
+    const done = document.querySelectorAll(`#page-${i} .check-item.done`);
+    if(checks.length > 0 && done.length === checks.length) {
+      completed++;
+      tabs[i].style.background = 'rgba(21,128,61,.08)';
+    }
+  }
+  document.getElementById('prog-text').textContent = `${completed} / 4 완료`;
+  document.getElementById('prog-fill').style.width = `${completed*25}%`;
+  if(completed===4) {
+    document.getElementById('complete-all').style.display='block';
+  }
+}
+
+// 초기화
+updateProgress();
+</script>
+</body>
+</html>
