@@ -375,7 +375,15 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
             <div class="activity-num num-purple">Q</div>
             <div class="activity-text">"너한테 물어보면 안 되는 게 있어?"</div>
           </div>
+          <div class="activity-item">
+            <div class="activity-num num-purple">Q</div>
+            <div class="activity-text">"반말이 좋아? 존댓말이 좋아?"</div>
+          </div>
         </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🧠 AI 학습 방식 설명 가이드</div>
+        <div class="tip-text">AI는 엄청나게 많은 글을 읽고 <b>"패턴"을 기억</b>한 거야.<br>질문을 받으면 그 패턴으로 <b>가장 어울리는 다음 단어</b>를 만들어내.<br>인터넷에서 실시간으로 찾아보는 건 아니야.<br><br><b>비유:</b> "수천 권의 책을 읽은 뒤 시험 볼 때 기억나는 대로 쓰는 것"<br>→ 그래서 가끔 <b>그럴듯하지만 틀린 말</b>도 해! (환각 현상)</div>
       </div>
       <div class="tip-box amber">
         <div class="tip-label amber">💡 부모 팁</div>
@@ -404,10 +412,50 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
     <div class="card accent-amber" style="gap:20px;">
       <div class="card-title c-amber">실험 2 — 취향 질문</div>
       <div class="em-text"><span class="accent-a">"파란색이 예뻐,<br>빨간색이 예뻐?"</span></div>
-      <div class="body-text">AI에게 동일 질문<br>→ AI가 취향에는 약하다는 것 발견<br><br><b>핵심 발견:</b> AI에게는 "내 것"이 없다!</div>
+      <div class="body-text">AI에게 동일 질문<br>→ AI가 취향에는 약하다는 것 발견<br><br><b>심화:</b> "사람들이 가장 좋아하는 색이 뭐야?" 로 다시 질문<br>→ 통계 기반 답변은 가능! <b>취향 vs 데이터</b> 차이 발견<br><br><b>핵심 발견:</b> AI에게는 "내 것"이 없다!</div>
       <div class="q-card">
         <div class="q-label">부모 질문</div>
         <div class="q-text">"왜 AI는 취향을 모를까?<br>어떻게 만들어졌기 때문일까?"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 4-1: 1회차 보너스 활동 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-1">1회차 · 보너스</span>
+    <div class="slide-title">AI의 한계 실험 + 환각 현상</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-coral" style="gap:16px;">
+      <div class="card-title c-coral">실험 3 — 이상한 입력 테스트</div>
+      <div class="body-text">아이에게 <b>의미 없는 문자</b>를 입력하게 해보기</div>
+      <div class="code-block">
+<span class="code-str">\/\/\/\/\/\</span>
+<span class="code-str">asdfghjkl</span>
+<span class="code-str">ㅋㅋㅋㅋㅋㅋ</span>
+      </div>
+      <div class="body-text">AI의 반응: <b>"무슨 의미인지 모르겠어요"</b><br><br>→ AI는 명확한 질문이 있어야 좋은 답을 줄 수 있다!</div>
+      <div class="q-card">
+        <div class="q-label">핵심 연결</div>
+        <div class="q-text">"프롬프트가 정확할수록 결과가 좋아져.<br>이건 나중에 코딩할 때도 똑같아!"</div>
+      </div>
+    </div>
+    <div class="card accent-amber" style="gap:16px;">
+      <div class="card-title c-amber">실험 4 — 환각(Hallucination) 체험</div>
+      <div class="body-text">AI가 <b>자신감 있지만 틀린 답</b>을 하는 경우를 직접 확인!</div>
+      <div class="code-block">
+<span class="code-comment">// 이 질문을 해봐</span>
+<span class="code-str">"동그란 삼각형이 뭐야?"</span>
+
+<span class="code-comment">// 또는</span>
+<span class="code-str">"바나나가 파란색인 이유를 알려줘"</span>
+      </div>
+      <div class="body-text">AI가 그럴듯하게 설명하려고 하면 → <b>이게 환각!</b><br><br>AI는 패턴으로 답을 만들어내기 때문에,<br>말이 안 되는 질문에도 <b>"있는 척"</b> 답할 수 있다.</div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 강사 포인트</div>
+        <div class="tip-text"><b>"AI가 자신있게 말해도 틀릴 수 있어.<br>그래서 항상 직접 확인하는 습관이 중요해!"</b><br><br>이 개념이 나중에 코딩할 때 "AI가 준 코드를 그대로 쓰면 안 되는 이유"로 연결됨</div>
       </div>
     </div>
   </div>
@@ -425,6 +473,18 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
   </div>
   <div class="col-main" style="flex:1;">
     <div style="display:flex;flex-direction:column;gap:20px;">
+      <div class="card accent-purple" style="border-style:dashed;">
+        <div class="card-title c-purple">🔄 1회차 복습 (5분)</div>
+        <div class="body-text">
+          수업 시작 전 간단히 복습하기:<br><br>
+          <b>"지난 시간에 AI에 대해 뭘 알게 됐어?"</b><br>
+          → 아이 대답 들은 후 핵심 정리<br><br>
+          • AI는 패턴을 학습해서 답을 만들어낸다<br>
+          • 그래서 가끔 그럴듯하지만 틀린 말도 한다 (환각)<br>
+          • 명확하게 질문할수록 좋은 답이 나온다<br>
+          • AI에게는 취향이 없지만 통계는 알려줄 수 있다
+        </div>
+      </div>
       <div class="card accent-teal">
         <div class="card-title c-teal">🎮 도입 게임 (10분) — 로봇 놀이</div>
         <div class="body-text">

@@ -271,6 +271,13 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
           <div class="step-desc">이건 좀 다른 반응이 나올 거야. 왜 그럴까?</div>
         </div>
       </div>
+      <div class="step-item">
+        <div class="step-circle sc-purple">Q5</div>
+        <div class="step-content">
+          <div class="step-title">"반말이 좋아? 존댓말이 좋아?"</div>
+          <div class="step-desc">AI는 어떤 말투를 더 좋아할까? 신기한 대답이 나올 거야!</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -283,7 +290,40 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
       <b>"1부터 100까지 다 더하면 얼마야?"</b><br>
       → 너도 직접 계산해보고 누가 더 빠른지 비교!<br><br>
       <b>"지금 기분이 어때?"</b><br>
-      → AI는 감정이 있을까? 없을까?
+      → AI는 감정이 있을까? 없을까?<br><br>
+      <b>"사람들이 가장 좋아하는 색이 뭐야?"</b><br>
+      → 아까 취향을 몰랐는데, 이렇게 물어보면 어떻게 될까?
+    </div>
+  </div>
+
+  <!-- 이상한 입력 실험 -->
+  <div class="card coral">
+    <div class="card-label label-coral">🧪 보너스 — 이상한 것 물어보기</div>
+    <div class="card-title">AI가 이건 알아들을까?</div>
+    <div class="card-body">
+      이것들을 입력해봐! AI가 어떻게 반응하는지 봐!<br><br>
+      <b>\/\/\/\/\/\</b><br>
+      <b>asdfghjkl</b><br>
+      <b>ㅋㅋㅋㅋㅋㅋ</b><br><br>
+      → AI가 뭐라고 해? 알아듣지 못하지?<br>
+      <b>AI한테 질문할 때는 명확하게 해야 좋은 답이 나와!</b>
+    </div>
+  </div>
+
+  <!-- 환각 체험 -->
+  <div class="card coral">
+    <div class="card-label label-coral">🤥 보너스 — AI가 거짓말을 해?!</div>
+    <div class="card-title">AI의 "환각" 찾아보기</div>
+    <div class="card-body">
+      이 질문들을 해봐. AI가 이상한 답을 할 수도 있어!<br><br>
+      <b>"동그란 삼각형이 뭐야?"</b><br>
+      → 이건 세상에 없는 건데, AI가 설명하려고 할 수도 있어!<br><br>
+      <b>"바나나가 파란색인 이유를 알려줘"</b><br>
+      → 바나나는 노란색인데... AI가 뭐라고 할까?
+    </div>
+    <div class="bubble">
+      <div class="bubble-label">💭 이걸 "환각"이라고 불러!</div>
+      <div class="bubble-text">AI는 패턴으로 답을 만들어내기 때문에,<br>말이 안 되는 질문에도 "있는 척" 대답할 수 있어.<br><br>그래서 <b>AI가 자신있게 말해도 항상 직접 확인</b>하는 게 중요해!</div>
     </div>
   </div>
 
@@ -295,7 +335,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
     <div class="checklist" id="check-0">
       <div class="check-item" onclick="toggleCheck(this, 0)">
         <div class="check-box">✓</div>
-        <div class="check-label">Claude에 접속해서 질문 4개를 다 해봤다</div>
+        <div class="check-label">Claude에 접속해서 질문 5개를 다 해봤다</div>
       </div>
       <div class="check-item" onclick="toggleCheck(this, 0)">
         <div class="check-box">✓</div>
@@ -304,6 +344,14 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
       <div class="check-item" onclick="toggleCheck(this, 0)">
         <div class="check-box">✓</div>
         <div class="check-label">AI가 취향이나 감정에는 약하다는 걸 발견했다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 0)">
+        <div class="check-box">✓</div>
+        <div class="check-label">AI가 "환각" — 그럴듯하지만 틀린 답을 할 수 있다는 걸 알았다</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this, 0)">
+        <div class="check-box">✓</div>
+        <div class="check-label">명확하게 질문해야 좋은 답이 나온다는 걸 알았다</div>
       </div>
     </div>
   </div>
@@ -330,6 +378,19 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
     <div class="hero-title">컴퓨터처럼 생각하기</div>
     <div class="hero-sub">알고리즘 = 순서대로 지시하기!</div>
     <div class="hero-time">⏱ 60분</div>
+  </div>
+
+  <!-- 1회차 복습 -->
+  <div class="card purple">
+    <div class="card-label label-purple">🔄 지난 시간 복습</div>
+    <div class="card-title">1회차에서 배운 것, 기억나?</div>
+    <div class="card-body">
+      지난번에 AI에 대해 이런 걸 알게 됐어:<br><br>
+      <b>1.</b> AI는 엄청 많은 글의 <b>패턴을 학습</b>해서 답을 만들어내<br>
+      <b>2.</b> 그래서 가끔 그럴듯하지만 <b>틀린 답</b>도 해 (환각!)<br>
+      <b>3.</b> <b>명확하게</b> 질문할수록 좋은 답이 나와<br>
+      <b>4.</b> AI에게는 <b>취향이 없지만</b>, 통계 데이터는 알려줄 수 있어
+    </div>
   </div>
 
   <!-- 로봇 게임 -->
