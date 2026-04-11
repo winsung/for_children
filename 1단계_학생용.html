@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1단계 — AI와 친해지기 🤖</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
 <style>
@@ -141,6 +141,41 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
 .progress-label { font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:700; }
 .progress-bar { height:8px; background:var(--border); border-radius:99px; overflow:hidden; }
 .progress-fill { height:100%; background:linear-gradient(90deg, var(--purple), var(--purple-l)); border-radius:99px; transition:.4s; }
+
+/* ── PC 반응형 ── */
+@media (min-width: 769px) {
+  .top-bar { padding:0 40px; height:72px; }
+  .top-bar h1 { font-size:24px; }
+  .top-bar .step-info { font-size:14px; padding:6px 16px; }
+
+  .session-tabs { justify-content:center; }
+  .tab { flex:none; min-width:160px; padding:16px 20px; font-size:15px; }
+
+  .page { max-width:900px; padding:36px 40px 100px; }
+
+  .section-hero { padding:36px 32px; border-radius:24px; }
+  .hero-title { font-size:32px; }
+  .hero-sub { font-size:17px; }
+
+  .card { padding:24px; margin-bottom:20px; border-radius:20px; }
+  .card-title { font-size:20px; }
+  .card-body { font-size:16px; }
+
+  .step-circle { width:40px; height:40px; font-size:16px; }
+  .step-title { font-size:17px; }
+  .step-desc { font-size:15px; }
+
+  .check-item { padding:16px 20px; }
+  .check-label { font-size:16px; }
+
+  .bubble { padding:20px 22px; }
+  .bubble-text { font-size:18px; }
+
+  .link-btn { padding:18px 22px; }
+  .link-info .link-title { font-size:18px; }
+
+  .note-area { padding:24px; }
+}
 </style>
 </head>
 <body>

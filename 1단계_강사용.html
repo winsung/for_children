@@ -157,6 +157,52 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
 .q-card { border:1px solid var(--border); border-radius:12px; padding:20px 22px; background:var(--surface2); }
 .q-label { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--text-dim); margin-bottom:8px; }
 .q-text { font-size:19px; font-weight:700; line-height:1.4; color:var(--purple-l); }
+
+/* ── 모바일 반응형 ── */
+@media (max-width: 768px) {
+  html, body { overflow:auto; height:auto; }
+  #deck { width:auto; height:auto; position:static; overflow:visible; }
+  .slide { position:static; opacity:1; pointer-events:all; padding:24px 16px; border-bottom:1px solid var(--border); }
+  .slide.active { opacity:1; }
+
+  /* 표지 */
+  #cover { min-height:auto; padding:40px 16px; background:var(--bg); }
+  #cover .logo { font-size:48px; margin-bottom:16px; }
+  #cover h1 { font-size:28px; }
+  #cover .sub { font-size:16px; margin-bottom:24px; }
+  #cover .meta-row { gap:12px; }
+  #cover .meta-item { padding:8px 14px; font-size:12px; }
+  #cover .meta-item b { font-size:14px; }
+
+  /* 헤더 */
+  .slide-header { flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+  .slide-title { font-size:22px; }
+  .slide-sub { font-size:14px; }
+  .timer-badge { margin-left:0; }
+
+  /* 그리드 → 1열 */
+  .col-2, .col-3, .col-main { grid-template-columns:1fr; gap:16px; }
+  .toc-grid { grid-template-columns:1fr; gap:12px; }
+
+  /* 카드 */
+  .card { padding:16px; }
+
+  /* 텍스트 */
+  .big-text { font-size:18px; }
+  .body-text { font-size:15px; }
+  .em-text { font-size:17px; }
+  .activity-text { font-size:14px; }
+  .code-block { font-size:13px; padding:12px 14px; }
+  .tip-text { font-size:14px; }
+  .q-text { font-size:16px; }
+
+  /* 타임라인 */
+  .timeline-title { font-size:15px; }
+  .timeline-desc { font-size:13px; }
+
+  /* 네비게이션, 키힌트, 타이머 숨김 */
+  #nav, #keyhint, #timer-display, #progress { display:none; }
+}
 </style>
 </head>
 <body>
