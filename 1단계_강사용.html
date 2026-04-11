@@ -42,9 +42,12 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
 .timer-badge { margin-left:auto; font-size:14px; font-weight:700; color:var(--amber); background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); padding:6px 16px; border-radius:99px; }
 
 /* ── 레이아웃 ── */
-.col-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; }
-.col-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; flex:1; }
-.col-main { display:grid; grid-template-columns:2fr 1fr; gap:24px; flex:1; }
+.col-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; min-height:0; }
+.col-2 > * { overflow-y:auto; }
+.col-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; flex:1; min-height:0; }
+.col-3 > * { overflow-y:auto; }
+.col-main { display:grid; grid-template-columns:2fr 1fr; gap:24px; flex:1; min-height:0; }
+.col-main > * { overflow-y:auto; }
 
 /* ── 카드 ── */
 .card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; display:flex; flex-direction:column; gap:14px; }
