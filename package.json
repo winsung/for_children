@@ -1,0 +1,24 @@
+{
+  "name": "for_children",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/winsung/for_children.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/winsung/for_children/issues"
+  },
+  "homepage": "https://github.com/winsung/for_children#readme",
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1단계 4회차 — 엔트리 선행 가이드 (강사용)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafbfc;
+  --paper: #ffffff;
+  --text: #1f2937;
+  --text-muted: #4b5563;
+  --text-dim: #9ca3af;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --purple: #7c3aed;
+  --purple-soft: #f3eeff;
+  --teal: #0d9488;
+  --teal-soft: #e6fffa;
+  --amber: #b45309;
+  --amber-soft: #fef3c7;
+  --coral: #dc2626;
+  --coral-soft: #fee2e2;
+  --blue: #2563eb;
+  --blue-soft: #eff6ff;
+  --green: #16a34a;
+  --green-soft: #ecfdf5;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.7;
+  font-size: 16px;
+  padding-bottom: 80px;
+}
+
+/* 레이아웃 */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+.header {
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+  color: white;
+  padding: 56px 24px 48px;
+  margin-bottom: 32px;
+}
+.header .wrap { color: white; }
+.header h1 { font-size: 36px; font-weight: 900; margin-bottom: 8px; line-height: 1.2; }
+.header .sub { font-size: 17px; opacity: .92; margin-bottom: 18px; }
+.header .meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.header .meta span {
+  background: rgba(255,255,255,.18);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(6px);
+}
+
+/* TOC */
+.toc {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+.toc h2 { font-size: 14px; font-weight: 700; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+.toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 28px; }
+.toc li { counter-increment: toc; padding: 6px 0; break-inside: avoid; }
+.toc li::before { content: counter(toc) ". "; color: var(--purple); font-weight: 700; margin-right: 6px; }
+.toc a { color: var(--text); text-decoration: none; font-size: 15px; }
+.toc a:hover { color: var(--purple); text-decoration: underline; }
+
+/* 섹션 */
+section { margin-bottom: 52px; scroll-margin-top: 24px; }
+section h2 {
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--purple);
+  display: inline-block;
+  color: var(--text);
+}
+section h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 28px;
+  margin-bottom: 12px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+section h3::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: var(--purple);
+  border-radius: 2px;
+}
+section h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+section p { margin-bottom: 12px; }
+section ul, section ol { padding-left: 24px; margin-bottom: 14px; }
+section li { margin-bottom: 6px; }
+
+/* 강조 박스 */
+.box {
+  border-left: 4px solid var(--purple);
+  background: var(--purple-soft);
+  padding: 16px 20px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+}
+.box.amber { border-color: var(--amber); background: var(--amber-soft); }
+.box.coral { border-color: var(--coral); background: var(--coral-soft); }
+.box.teal { border-color: var(--teal); background: var(--teal-soft); }
+.box.blue { border-color: var(--blue); background: var(--blue-soft); }
+.box.green { border-color: var(--green); background: var(--green-soft); }
+.box .label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 6px;
+}
+.box.amber .label { color: var(--amber); }
+.box.coral .label { color: var(--coral); }
+.box.teal .label { color: var(--teal); }
+.box.blue .label { color: var(--blue); }
+.box.green .label { color: var(--green); }
+.box p:last-child { margin-bottom: 0; }
+
+/* 단계 카드 */
+.step {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 18px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.step .step-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border);
+}
+.step .step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.step .step-title { font-size: 18px; font-weight: 700; flex: 1; }
+.step .step-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+/* 코드 블록 */
+.code {
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 12px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+.code .c { color: #94a3b8; } /* comment */
+.code .k { color: #fb923c; } /* keyword (orange) */
+.code .f { color: #c084fc; } /* function (purple) */
+.code .n { color: #38bdf8; } /* number (cyan) */
+.code .s { color: #86efac; } /* string (green) */
+
+/* 인라인 강조 */
+.inline-block {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #0f172a;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+}
+strong { color: var(--text); font-weight: 700; }
+.hot { color: var(--coral); font-weight: 700; }
+
+/* 스크린샷 */
+.shot {
+  margin: 16px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+.shot img { display: block; width: 100%; height: auto; }
+.shot .caption {
+  background: #0f172a;
+  color: #cbd5e1;
+  font-size: 13px;
+  padding: 10px 16px;
+  font-weight: 500;
+}
+.shot .caption b { color: white; }
+
+.shot-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.shot-row .shot { margin: 0; }
+
+/* 표 */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--bg); font-weight: 700; color: var(--text-muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+tr:hover td { background: #fafbfc; }
+td:first-child, th:first-child { font-weight: 600; }
+
+/* 체크리스트 */
+.checklist {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 15px;
+}
+.checklist input[type=checkbox] { margin-top: 4px; transform: scale(1.2); }
+.checklist label:hover { color: var(--purple); }
+
+/* 키캡 */
+kbd {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* 4영역 색상 마커 */
+.area {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.area.a1 { background: #ede9fe; color: #6d28d9; }
+.area.a2 { background: #ccfbf1; color: #0d9488; }
+.area.a3 { background: #fef3c7; color: #b45309; }
+.area.a4 { background: #dbeafe; color: #1d4ed8; }
+
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 60px;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+}
+
+@media print {
+  body { background: white; padding-bottom: 0; }
+  .header { background: #7c3aed !important; -webkit-print-color-adjust: exact; }
+  .toc { break-after: page; }
+  section { break-inside: avoid; }
+  .shot { break-inside: avoid; }
+  .step { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <h1>1단계 4회차 — 엔트리 선행 가이드</h1>
+    <div class="sub">고양이 피하기 게임 · 강사용 (Kay)</div>
+    <div class="meta">
+      <span>📚 1단계 마지막 회차</span>
+      <span>⏱ 수업 90분</span>
+      <span>🎯 선행 60~90분</span>
+      <span>🛠 엔트리 (playentry.org)</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- 목차 -->
+<nav class="toc">
+  <h2>📑 목차</h2>
+  <ol>
+    <li><a href="#chk">선행 체크리스트</a></li>
+    <li><a href="#about">엔트리란?</a></li>
+    <li><a href="#signup">회원가입 + 첫 진입</a></li>
+    <li><a href="#layout">엔트리 화면 구조</a></li>
+    <li><a href="#categories">블록 카테고리 빠른 개요</a></li>
+    <li><a href="#step1">STEP 1 — 오브젝트 준비</a></li>
+    <li><a href="#step2">STEP 2 — 마우스 따라가기</a></li>
+    <li><a href="#step3">STEP 3 — 폭탄 복제 (어려움)</a></li>
+    <li><a href="#step4">STEP 4 — 충돌 감지</a></li>
+    <li><a href="#step5">STEP 5 — 점수 변수 (선택)</a></li>
+    <li><a href="#debug">디버깅 체크리스트</a></li>
+    <li><a href="#ai">AI 도움 흐름</a></li>
+    <li><a href="#timeline">수업 90분 타임라인</a></li>
+    <li><a href="#variants">변형 아이디어</a></li>
+  </ol>
+</nav>
+
+<!-- 0. 체크리스트 -->
+<section id="chk">
+  <h2>0. 선행 체크리스트</h2>
+  <p>수업 전날까지 아래 항목을 채워두면 수업이 매끄럽게 굴러갑니다.</p>
+  <div class="checklist">
+    <label><input type="checkbox"> 엔트리 회원가입 + 로그인</label>
+    <label><input type="checkbox"> 빈 작품 만들어 저장 → 다시 열기 성공</label>
+    <label><input type="checkbox"> 본 가이드를 따라 "고양이 피하기" 한번 완성</label>
+    <label><input type="checkbox"> "왜 이게 안 움직여요?" 질문에 즉답할 수 있을 만큼 디버깅 섹션 숙지</label>
+    <label><input type="checkbox"> (선택) 같은 게임을 처음부터 한 번 더 만들어 손에 익히기</label>
+  </div>
+</section>
+
+<!-- 1. 엔트리란? -->
+<section id="about">
+  <h2>1. 엔트리란?</h2>
+  <ul>
+    <li>한국과학창의재단(KOFAC)에서 만든 무료 블록코딩 교육 플랫폼</li>
+    <li>스크래치(Scratch)와 비슷하지만 <strong>한국어 인터페이스</strong> + 한국 교육과정 친화적</li>
+    <li>웹 기반 — 설치 없이 브라우저에서 바로 사용</li>
+    <li>URL: <strong>https://playentry.org/</strong></li>
+  </ul>
+  <h3>왜 4회차에 엔트리를 쓰는가?</h3>
+  <ul>
+    <li>1~3회차에서 <strong>AI에게 묻기</strong>로 사고력을 키웠다면, 4회차는 <strong>실제 작품을 완성하는 성취 경험</strong></li>
+    <li>2단계 Python 들어가기 전 <strong>조건문/반복문 개념을 시각적으로</strong> 먼저 익힘</li>
+    <li>블록을 직접 끌어다 조립 → "복붙 금지" 원칙과 자연스럽게 맞물림</li>
+  </ul>
+</section>
+
+<!-- 2. 회원가입 + 진입 -->
+<section id="signup">
+  <h2>2. 회원가입 + 첫 진입</h2>
+
+  <div class="shot">
+    <img src="assets/screenshots/01_home.png" alt="playentry.org 홈 페이지">
+    <div class="caption"><b>① 홈 페이지</b> — 우측 상단 "로그인" / 상단 메뉴 "만들기"</div>
+  </div>
+
+  <h3>2.1 회원가입</h3>
+  <ol>
+    <li><a href="https://playentry.org/" target="_blank">https://playentry.org/</a> 접속</li>
+    <li>우측 상단 <strong>"회원가입"</strong> 클릭</li>
+    <li>14세 미만은 보호자 동의 필요 → <strong>수업에서는 Kay 계정으로 로그인한 상태에서 자녀 사용</strong> 권장</li>
+  </ol>
+
+  <div class="box teal">
+    <div class="label">💡 수업 운영 팁</div>
+    <p>자녀 계정을 별도로 만들면 작품이 누적되는 재미가 있음. 다만 4회차는 "처음 체험"이므로 Kay 계정으로 빠르게 진입해도 무방.</p>
+  </div>
+
+  <h3>2.2 작품 만들기 진입</h3>
+  <ol>
+    <li>로그인 후 상단 메뉴 <strong>"만들기"</strong> → <strong>"작품 만들기"</strong> 클릭</li>
+    <li>새 빈 프로젝트가 열림 (기본 오브젝트: 엔트리봇)</li>
+  </ol>
+
+  <div class="box amber">
+    <div class="label">⚠️ 첫 접속 시 주의</div>
+    <p>에디터 첫 진입 시 좌하단에 <strong>"블록 꾸러미..." 튜토리얼 팝업</strong>이 뜸. 팝업 우측 상단 <strong>X 버튼</strong>으로 닫고 시작하면 됨. (아래 스크린샷에서도 보임)</p>
+  </div>
+
+  <div class="shot">
+    <img src="assets/screenshots/02_editor_blank.png" alt="엔트리 에디터 첫 화면">
+    <div class="caption"><b>② 에디터 첫 화면</b> — 좌하단 "블록 꾸러미" 튜토리얼 팝업이 보임. X로 닫기</div>
+  </div>
+</section>
+
+<!-- 3. 화면 구조 -->
+<section id="layout">
+  <h2>3. 엔트리 화면 구조</h2>
+  <p>에디터는 4개 영역으로 나뉩니다.</p>
+
+  <div class="shot">
+    <img src="assets/screenshots/03_editor_areas.png" alt="엔트리 에디터 4개 영역">
+    <div class="caption"><b>③ 에디터 4개 영역</b> — 색깔 박스로 표시 (① 보라 / ② 청록 / ③ 주황 / ④ 파랑)</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th style="width:80px">영역</th><th style="width:170px">이름</th><th>하는 일</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="area a1">①</span></td><td>실행 화면 (장면)</td><td>좌측 상단. ▶ 시작하기 버튼 누르면 여기서 게임이 돌아감</td></tr>
+      <tr><td><span class="area a2">②</span></td><td>오브젝트 목록</td><td>좌측 하단. 캐릭터·배경·장애물 모두 여기에 들어감</td></tr>
+      <tr><td><span class="area a3">③</span></td><td>블록 모음</td><td>중앙. 카테고리(시작/흐름/움직임…) + 그 카테고리의 블록 목록</td></tr>
+      <tr><td><span class="area a4">④</span></td><td>블록 조립소</td><td>우측. ③에서 블록을 <strong>드래그해서 붙이는 코드 영역</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3>핵심 동작 3가지</h3>
+  <ul>
+    <li><strong>블록 조립:</strong> ③에서 ④로 끌면 자석처럼 위아래 붙음</li>
+    <li><strong>블록 분리:</strong> 잡고 빈 곳으로 끌면 떨어짐, 휴지통에 끌면 삭제</li>
+    <li><strong>오브젝트 전환:</strong> ②에서 오브젝트 클릭 → ④의 코드가 그 오브젝트 코드로 바뀜</li>
+  </ul>
+
+  <div class="box coral">
+    <div class="label">⚠️ 가장 흔한 실수 #1</div>
+    <p><strong>다른 오브젝트에 코드 짜기.</strong> 고양이 코드를 짜는 줄 알았는데 폭탄에 붙어있는 경우. 블록 추가 전 항상 ② 좌측 하단에서 <strong>"어떤 오브젝트가 선택돼 있나?"</strong>를 먼저 확인.</p>
+  </div>
+</section>
+
+<!-- 4. 카테고리 -->
+<section id="categories">
+  <h2>4. 블록 카테고리 빠른 개요</h2>
+  <p>4회차 기준으로 자주 쓰는 카테고리는 7개. 외울 필요 없고 <strong>"이 블록이 어디 있더라?"</strong> 막혔을 때만 보면 됨.</p>
+
+  <table>
+    <thead>
+      <tr><th style="width:100px">카테고리</th><th>자주 쓰는 블록 (4회차 기준)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>시작</strong></td><td><span class="inline-block">▶ 시작하기 버튼을 클릭했을 때</span> · <span class="inline-block">복제본이 처음 생성되었을 때</span></td></tr>
+      <tr><td><strong>흐름</strong></td><td><span class="inline-block">계속 반복하기</span> · <span class="inline-block">만일 ~ 라면</span> · <span class="inline-block">~초 기다리기</span> · <span class="inline-block">자신의 복제본 만들기</span> · <span class="inline-block">이 복제본 삭제하기</span> · <span class="inline-block">모든 코드 멈추기</span></td></tr>
+      <tr><td><strong>움직임</strong></td><td><span class="inline-block">x좌표를 ~만큼 바꾸기</span> · <span class="inline-block">y좌표를 ~만큼 바꾸기</span> · <span class="inline-block">~ 위치로 이동하기</span></td></tr>
+      <tr><td><strong>생김새</strong></td><td><span class="inline-block">~ 말하기</span> · <span class="inline-block">모양 보이기/숨기기</span></td></tr>
+      <tr><td><strong>판단</strong></td><td><span class="inline-block">~에 닿았는가?</span> · <span class="inline-block">마우스포인터</span></td></tr>
+      <tr><td><strong>계산</strong></td><td><span class="inline-block">0부터 10 사이의 무작위 수</span></td></tr>
+      <tr><td><strong>자료</strong></td><td>(선택) <span class="inline-block">변수 만들기</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>카테고리 미리보기 (실제 화면)</h3>
+  <div class="shot-row">
+    <div class="shot">
+      <img src="assets/screenshots/cat_시작.png" alt="시작 카테고리 블록">
+      <div class="caption">시작</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_흐름.png" alt="흐름 카테고리 블록">
+      <div class="caption">흐름 (반복/조건/복제)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_움직임.png" alt="움직임 카테고리 블록">
+      <div class="caption">움직임</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_생김새.png" alt="생김새 카테고리 블록">
+      <div class="caption">생김새</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_판단.png" alt="판단 카테고리 블록">
+      <div class="caption">판단 (닿았는가?)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_계산.png" alt="계산 카테고리 블록">
+      <div class="caption">계산 (무작위 수)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_자료.png" alt="자료 카테고리 블록">
+      <div class="caption">자료 (변수)</div>
+    </div>
+  </div>
+  <div class="box">
+    <div class="label">🔍 블록 못 찾을 때</div>
+    <p>엔트리 블록 모음 위쪽 <strong>검색창</strong>에 일부만 입력해도 찾아줌. 예: "닿", "복제", "무작위".</p>
+  </div>
+</section>
+
+<!-- 게임 규칙 -->
+<section id="game-overview">
+  <h2>5. 만들 게임 — 고양이 피하기</h2>
+  <div class="box blue">
+    <div class="label">🎯 게임 규칙 한 줄</div>
+    <p><strong>"고양이를 마우스로 움직여서 위에서 떨어지는 폭탄을 피하는 게임. 닿으면 게임 오버!"</strong></p>
+  </div>
+  <h3>사용할 오브젝트</h3>
+  <ul>
+    <li><strong>고양이</strong> — 플레이어 (마우스 따라다님)</li>
+    <li><strong>폭탄</strong> — 장애물 (위에서 떨어지며 복제됨)</li>
+    <li><strong>배경</strong> — 선택</li>
+  </ul>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1">
+  <h2>STEP 1 — 오브젝트 준비</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">1</div>
+      <div class="step-title">엔트리봇 삭제 + 고양이/폭탄 추가</div>
+      <div class="step-time">⏱ 5분</div>
+    </div>
+
+    <h4>1-1. 기본 엔트리봇 삭제</h4>
+    <p>좌측 하단 ② 오브젝트 목록에서 "엔트리봇" 위에 마우스 올리기 → <strong>X 버튼</strong> 클릭.</p>
+
+    <h4>1-2. 고양이 추가</h4>
+    <ol>
+      <li>오브젝트 목록 위쪽 <strong>"+ 오브젝트 추가하기"</strong> 버튼 클릭</li>
+      <li>카테고리에서 <strong>"동물"</strong> 선택 → <strong>"고양이"</strong> 또는 비슷한 캐릭터 선택</li>
+      <li><strong>"추가하기"</strong> 클릭</li>
+    </ol>
+
+    <div class="shot">
+      <img src="assets/screenshots/04_object_dialog.png" alt="오브젝트 추가하기 다이얼로그">
+      <div class="caption"><b>오브젝트 추가하기 다이얼로그</b> — 좌측 카테고리(엔트리봇/사람/동물…) + 우측 검색창</div>
+    </div>
+
+    <h4>1-3. 폭탄(장애물) 추가</h4>
+    <ol>
+      <li>다시 <strong>"+ 오브젝트 추가하기"</strong> 클릭</li>
+      <li>검색창에 <strong>"폭탄"</strong> 또는 <strong>"운석"</strong> 입력 → 선택 → 추가</li>
+      <li>없으면 <strong>"공", "별"</strong> 등 무엇이든 OK</li>
+    </ol>
+
+    <h4>1-4. (선택) 배경 추가</h4>
+    <p><strong>+ 오브젝트 추가하기</strong> → <strong>"배경"</strong> 탭 → 원하는 배경 선택</p>
+
+    <div class="box green">
+      <div class="label">💾 저장</div>
+      <p>상단 우측 <strong>"저장하기"</strong> 클릭 → 작품 이름 <strong>"고양이 피하기"</strong>. 한번 저장해두면 자동저장도 안전함.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <h2>STEP 2 — 고양이가 마우스를 따라가게</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">2</div>
+      <div class="step-title">마우스 따라가기 (3블록)</div>
+      <div class="step-time">⏱ 10분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>② 오브젝트 목록에서 "고양이" 클릭</strong> (반드시 먼저!)</p>
+
+    <p>블록 모음에서 다음을 우측 코드 영역으로 드래그 — 위에서 아래로 붙이기:</p>
+
+    <div class="code"><span class="c">// 고양이 오브젝트의 코드</span>
+<span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="k">계속 반복하기</span> {
+  <span class="f">마우스포인터</span> 위치로 이동하기
+}</div>
+
+    <div class="box green">
+      <div class="label">✅ 테스트</div>
+      <p>화면 좌측 상단 <strong>▶ 시작하기</strong> 클릭 → 마우스를 실행 화면 위에서 움직이면 고양이가 따라옴.</p>
+    </div>
+
+    <div class="box coral">
+      <div class="label">⚠️ 자주 막히는 곳</div>
+      <p>
+        <strong>"마우스포인터" 블록 안 보임</strong> → 카테고리 <strong>움직임</strong>에서 찾기. <span class="inline-block">x: y: 위치로 이동</span> 블록과 다른 블록.<br>
+        <strong>고양이가 안 움직임</strong> → ② 오브젝트가 "고양이"로 선택돼 있는지 확인.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3">
+  <h2>STEP 3 — 폭탄이 계속 복제되며 위에서 떨어지기 <span class="hot">⚠️ 가장 어려움</span></h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">3</div>
+      <div class="step-title">복제본 + 무작위 위치 + 화면 끝 처리</div>
+      <div class="step-time">⏱ 25분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>② 오브젝트 목록에서 "폭탄" 클릭</strong></p>
+
+    <h4>3-1. 폭탄 본체: 1초마다 자기 자신 복제</h4>
+    <div class="code"><span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="f">x:</span> <span class="n">0</span>  <span class="f">y:</span> <span class="n">200</span>  위치로 이동하기   <span class="c">// 시작 위치를 화면 밖 위로</span>
+<span class="f">모양 숨기기</span>                 <span class="c">// 원본은 안 보이게</span>
+<span class="k">계속 반복하기</span> {
+  <span class="f">자신의 복제본 만들기</span>
+  <span class="n">1</span> 초 기다리기
+}</div>
+
+    <div class="box">
+      <div class="label">💡 포인트</div>
+      <p>원본 폭탄은 화면 밖에서 숨어있고, <strong>복제본만 화면에 떨어진다</strong>. 그래야 깔끔하게 관리됨.</p>
+    </div>
+
+    <h4>3-2. 복제본 동작: 무작위 위치에서 떨어지기</h4>
+    <p>같은 폭탄 오브젝트의 코드 영역에 <strong>새 시작 블록</strong>으로 별도 흐름을 추가:</p>
+    <div class="code"><span class="k">복제본이 처음 생성되었을 때</span>
+<span class="f">모양 보이기</span>
+<span class="f">x:</span> (<span class="n">-200</span> 부터 <span class="n">200</span> 사이의 <span class="f">무작위 수</span>)  <span class="f">y:</span> <span class="n">200</span>  위치로 이동
+<span class="k">계속 반복하기</span> {
+  <span class="f">y좌표를</span> <span class="n">-5</span> 만큼 바꾸기
+  <span class="k">만일</span> ⟨ <span class="f">y좌표</span> &lt; <span class="n">-130</span> ⟩ <span class="k">라면</span> {
+    <span class="f">이 복제본 삭제하기</span>
+  }
+}</div>
+
+    <ul>
+      <li><span class="inline-block">(-200 부터 200 사이의 무작위 수)</span> → <strong>계산</strong> 카테고리</li>
+      <li><span class="inline-block">y좌표 &lt; -130</span> → <strong>판단</strong>의 비교 블록 + <strong>계산</strong>의 <span class="inline-block">y좌표</span> 가져오기 (실행화면 세로 범위는 보통 -135~135)</li>
+      <li><span class="inline-block">이 복제본 삭제하기</span> → <strong>흐름</strong> 카테고리</li>
+    </ul>
+
+    <div class="box green">
+      <div class="label">✅ 체크포인트</div>
+      <p>▶ 시작하기 → 폭탄들이 무작위 위치에서 떨어지고, 바닥에 닿으면 사라짐. 화면이 안 느려짐.</p>
+    </div>
+
+    <div class="box coral">
+      <div class="label">⚠️ 자주 막히는 곳</div>
+      <p>
+        <strong>한 자리에서만 떨어짐</strong> → "무작위 수" 블록을 시작 x에 안 끼움<br>
+        <strong>화면이 점점 느려짐</strong> → "이 복제본 삭제하기" 누락<br>
+        <strong>원본도 같이 떨어짐</strong> → "모양 숨기기" 빠뜨림<br>
+        <strong>아무것도 안 떨어짐</strong> → 두 시작 블록 중 하나가 다른 오브젝트에 붙어있음
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <h2>STEP 4 — 충돌 시 게임 오버</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">4</div>
+      <div class="step-title">조건문 등장 — "만약 폭탄에 닿으면"</div>
+      <div class="step-time">⏱ 15분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>② 오브젝트 목록에서 "고양이" 클릭</strong> (다시 고양이로!)</p>
+
+    <p>STEP 2의 "마우스 따라가기" 코드는 그대로 두고, <strong>새 시작 블록</strong>으로 충돌 감지 흐름을 추가:</p>
+
+    <div class="code"><span class="c">// 고양이의 두 번째 시작 흐름</span>
+<span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="k">계속 반복하기</span> {
+  <span class="k">만일</span> ⟨ <span class="f">폭탄</span>에 <span class="f">닿았는가?</span> ⟩ <span class="k">라면</span> {
+    "<span class="s">게임 오버!</span>" 을(를) 말하기
+    <span class="f">모든 코드 멈추기</span>
+  }
+}</div>
+
+    <div class="box amber">
+      <div class="label">🎯 핵심 트릭</div>
+      <p>"닿았는가?" 블록은 처음에 <strong>"마우스포인터에 닿았는가?"</strong> 로 나옴. <strong>드롭다운을 "폭탄"으로 변경</strong>해야 함.</p>
+    </div>
+
+    <div class="box green">
+      <div class="label">✅ 테스트</div>
+      <p>▶ 시작하기 → 일부러 폭탄에 부딪쳐보기 → "게임 오버!" 말풍선 + 모든 움직임 정지.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5">
+  <h2>STEP 5 — 점수/시간 변수 (선택)</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">5</div>
+      <div class="step-title">버틴 시간 변수 추가</div>
+      <div class="step-time">⏱ 10분 (시간 남으면)</div>
+    </div>
+
+    <h4>5-1. 변수 만들기</h4>
+    <ol>
+      <li><strong>자료</strong> 카테고리 → <strong>변수 만들기</strong> 클릭</li>
+      <li>변수 이름: <strong>"버틴 시간"</strong> → 확인</li>
+    </ol>
+
+    <h4>5-2. 1초마다 +1 (보통 고양이에 붙임)</h4>
+    <div class="code"><span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="f">버틴 시간</span> 을 <span class="n">0</span> (으)로 정하기
+<span class="k">계속 반복하기</span> {
+  <span class="f">버틴 시간</span> 에 <span class="n">1</span> 만큼 더하기
+  <span class="n">1</span> 초 기다리기
+}</div>
+    <p>화면 좌측 상단에 변수 박스가 자동 표시됨.</p>
+  </div>
+</section>
+
+<!-- 디버깅 -->
+<section id="debug">
+  <h2>11. 디버깅 체크리스트</h2>
+  <p>수업 중 자녀가 "안 돼요" 할 때 순서대로 확인:</p>
+  <table>
+    <thead>
+      <tr><th>증상</th><th>확인할 것</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>블록이 우측에 안 붙음</td><td>블록을 살짝 위/아래로 흔들어 자석처럼 붙는 위치까지 끌어가기</td></tr>
+      <tr><td>코드 짰는데 아무 반응 없음</td><td>① ▶ 시작하기 버튼을 눌렀는지 ② <span class="inline-block">▶ 시작하기 버튼을 클릭했을 때</span> 가 맨 위에 있는지</td></tr>
+      <tr><td>캐릭터가 안 움직임</td><td>② 오브젝트 목록에서 <strong>올바른 오브젝트</strong>가 선택돼 있는지</td></tr>
+      <tr><td>폭탄이 한 자리에서만 떨어짐</td><td>"무작위 수" 블록이 시작 x 위치에 끼워졌는지</td></tr>
+      <tr><td>복제본 끝없이 늘어 / 느려짐</td><td>"이 복제본 삭제하기" 누락 — 화면 아래 도달 시 삭제 조건 확인</td></tr>
+      <tr><td>게임이 안 끝남</td><td>"닿았는가?" 블록의 대상이 <strong>폭탄</strong>인지 (드롭다운 잘못)</td></tr>
+      <tr><td>모든 게 두 번씩 일어남</td><td>시작 블록이 두 개 있는데 같은 동작을 함 — 코드 영역 스크롤해서 확인</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- AI 흐름 -->
+<section id="ai">
+  <h2>12. AI 도움 흐름 — 4회차 적용</h2>
+  <p><strong>3단계 도움 규칙</strong>을 그대로 적용:</p>
+  <ol>
+    <li><strong>10분 혼자 생각</strong> — "이 블록이 뭘 해야 할까?"</li>
+    <li><strong>AI에게 힌트만 요청</strong>
+      <ul>
+        <li>좋은 예: <em>"엔트리에서 오브젝트가 마우스를 따라다니게 하려면 어떤 블록을 써야 해? 정답 말고 힌트만."</em></li>
+        <li>나쁜 예: <em>"엔트리 고양이 피하기 게임 코드 알려줘"</em></li>
+      </ul>
+    </li>
+    <li><strong>직접 수정 + 말로 설명</strong> — 완성 후 "이 블록이 뭘 하는 거야?" 물어보기</li>
+  </ol>
+  <div class="box amber">
+    <div class="label">💬 강사 역할</div>
+    <p>자녀가 막혀도 즉답하지 않기. <strong>"어디서 막혔는지 말로 설명해봐"</strong> → <strong>"그럼 어떤 블록이 필요할 것 같아?"</strong> 순서로 유도.</p>
+  </div>
+</section>
+
+<!-- 타임라인 -->
+<section id="timeline">
+  <h2>13. 수업 진행 타임라인 (90분)</h2>
+  <table>
+    <thead>
+      <tr><th style="width:90px">시간</th><th>활동</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0~5분</td><td>도입 — "오늘은 진짜 게임을 만든다"</td><td>엔트리 화면 같이 보기</td></tr>
+      <tr><td>5~15분</td><td>AI에게 아이디어 요청 + 게임 규칙 정하기</td><td>"고양이 피하기" 베이스로 변형 OK (예: 별 받기)</td></tr>
+      <tr><td>15~25분</td><td>STEP 1~2 (오브젝트 준비 + 마우스 따라가기)</td><td>첫 성공 경험 빨리 만들기</td></tr>
+      <tr><td>25~50분</td><td>STEP 3 (폭탄 복제)</td><td>가장 어려운 구간 — 함께 천천히</td></tr>
+      <tr><td>50~65분</td><td>STEP 4 (충돌 감지)</td><td>"닿았는가?" 블록 처음 등장</td></tr>
+      <tr><td>65~75분</td><td>STEP 5 또는 자유 변형</td><td>시간/점수 또는 폭탄 속도 바꾸기</td></tr>
+      <tr><td>75~85분</td><td>발표 — "이 블록이 뭐 하는 거야?"</td><td>핵심 블록 3개 설명</td></tr>
+      <tr><td>85~90분</td><td>노트 정리 + 칭찬</td><td>완성한 것 무조건 칭찬</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 변형 -->
+<section id="variants">
+  <h2>14. 변형 아이디어</h2>
+  <p>자녀가 빨리 끝나거나 더 만들고 싶어할 때:</p>
+  <ul>
+    <li><strong>별 모으기 모드</strong> — 폭탄 대신 별. 닿으면 점수+1 (이 복제본 삭제)</li>
+    <li><strong>속도 점점 빨라지기</strong> — 시간 변수가 늘어날수록 폭탄 떨어지는 간격을 짧게</li>
+    <li><strong>목숨 시스템</strong> — 변수 "목숨" = 3 → 닿으면 -1, 0이 되면 게임 오버</li>
+    <li><strong>여러 종류 장애물</strong> — 폭탄 + 운석 두 종류</li>
+  </ul>
+  <p>이런 변형도 <strong>AI에게 "어떤 블록을 추가해야 할까?"</strong> 로 묻게 유도.</p>
+
+  <h3>참고 링크</h3>
+  <ul>
+    <li>엔트리 공식: <a href="https://playentry.org/" target="_blank">https://playentry.org/</a></li>
+    <li>엔트리 매뉴얼: <a href="https://docs.playentry.org/" target="_blank">https://docs.playentry.org/</a></li>
+    <li>작품 갤러리 (다른 사람 작품): <a href="https://playentry.org/project" target="_blank">https://playentry.org/project</a></li>
+  </ul>
+
+  <div class="box teal" style="margin-top:24px;">
+    <div class="label">🎯 마무리 한마디</div>
+    <p>이 가이드는 Kay님이 <strong>한번 직접 따라 만들어본 후</strong>의 안정감을 위한 것. 손으로 한번 해보면 자녀가 어디서 막힐지 자연스럽게 보입니다.</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  📁 1단계 4회차 · 엔트리 선행 가이드 · for_children 프로젝트<br>
+  스크린샷: Playwright로 playentry.org에서 자동 캡처 (<kbd>scripts/capture-entry.js</kbd>)
+</footer>
+
+</body>
+</html>
