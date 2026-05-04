@@ -604,88 +604,518 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
   </div>
 </div>
 
-<!-- 슬라이드 7: 4회차 -->
+<!-- 슬라이드 7: 4회차 도입 + 90분 타임라인 -->
 <div class="slide">
   <div class="slide-header">
     <span class="session-badge badge-4">4회차</span>
     <div>
-      <div class="slide-title">엔트리로 첫 작품 만들기</div>
+      <div class="slide-title">엔트리로 첫 작품 만들기 — 고양이 피하기 게임</div>
       <div class="slide-sub">블록코딩 · 조건문 · 반복문 · 첫 완성 경험</div>
     </div>
     <span class="timer-badge">⏱ 90분</span>
   </div>
-  <div class="col-3" style="flex:1;">
-    <div class="card accent-blue">
-      <div class="card-title c-blue">🚀 도입 (10분)</div>
-      <div class="body-text">
-        <b>AI에게 아이디어 요청</b><br>(학습형 질문 연습)<br><br>
-        "엔트리로 만들 수 있는<br>간단한 작품 아이디어 5개 알려줘"<br><br>
-        아이가 고른 아이디어로 진행
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 10분</div>
+          <div class="timeline-title">엔트리 첫 만남 + 오늘 만들 것 소개</div>
+          <div class="timeline-desc">엔트리 화면 함께 둘러보기. "오늘은 진짜 게임을 만든다!"</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--purple-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">STEP 1~2 · 15분</div>
+          <div class="timeline-title">오브젝트 준비 + 마우스 따라가기</div>
+          <div class="timeline-desc">고양이/폭탄 추가 → 캐릭터가 마우스 따라 이동 (첫 성공 경험!)</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">STEP 3 · 25분</div>
+          <div class="timeline-title">폭탄 복제 + 위에서 떨어지기 ⚠️</div>
+          <div class="timeline-desc">가장 어려운 구간. 복제본 개념 + 무작위 위치 + 화면 끝 처리</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--coral)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">STEP 4 · 15분</div>
+          <div class="timeline-title">충돌 감지 → 게임 오버</div>
+          <div class="timeline-desc">조건문 등장. "닿았는가?" 블록으로 게임 종료 처리</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">STEP 5 + 변형 · 10분</div>
+          <div class="timeline-title">점수 변수 또는 자유 변형</div>
+          <div class="timeline-desc">시간이 남을 때만. 점수/속도/목숨 등 — AI에게 힌트 요청 연습</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">발표 + 정리 · 15분</div>
+          <div class="timeline-title">"이 블록이 뭐 하는 거야?" → 노트 정리</div>
+          <div class="timeline-desc">핵심 블록 3개를 아이가 직접 말로 설명. 완성한 것 무조건 칭찬!</div>
+        </div>
       </div>
     </div>
-    <div class="card accent-blue">
-      <div class="card-title c-blue">🎮 활동 (60분)</div>
-      <div class="body-text">
-        <b>예시: 고양이 피하기 게임</b><br><br>
-        • 캐릭터가 마우스 따라 이동<br>• 장애물 반복 등장 (반복문)<br>• 닿으면 게임오버 (조건문)<br><br>
-        <span style="color:var(--coral)"><b>⚠️ 막히면 규칙:</b><br>10분 혼자 → AI 힌트 → 직접 수정</span>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-blue">
+        <div class="card-title c-blue">🎯 오늘의 목표</div>
+        <div class="body-text">
+          <b>고양이 피하기 게임</b> 한 작품을 처음부터 끝까지 완성한다.<br><br>
+          • 캐릭터를 마우스로 움직이고<br>
+          • 폭탄이 위에서 계속 떨어지고<br>
+          • 닿으면 게임 오버
+        </div>
       </div>
-    </div>
-    <div class="card accent-blue">
-      <div class="card-title c-blue">🎤 발표 (10분) + 정리 (10분)</div>
-      <div class="body-text">
-        <b>발표 질문:</b><br>
-        "이 블록이 뭘 하는 거야?"<br>핵심 블록 3개 설명하게<br><br>
-        <b>노트 정리:</b><br>
-        "배운 블록 이름과 역할" 2~3개<br><br>
-        <span style="color:var(--green)">🏆 완성한 것 무조건 칭찬!</span>
+      <div class="tip-box">
+        <div class="tip-label">🧠 1~3회차와의 연결</div>
+        <div class="tip-text">지금까지는 <b>AI에게 묻기만</b> 했지만,<br>오늘은 <b>직접 만든다</b>.<br>막혔을 때만 AI에게 <b>"힌트만"</b> 요청 (3단계 도움 규칙)</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 강사 절대 금지</div>
+        <div class="tip-text">AI에게 <b>"엔트리 고양이 피하기 코드 알려줘"</b> 같이 통째 요청하기.<br>막힌 지점만 <b>"어떤 블록을 써야 할까? 정답 말고 힌트만"</b></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 슬라이드 8: 엔트리 핵심 블록 가이드 -->
+<!-- 슬라이드 8: 엔트리 화면 구조 (도입 10분) -->
 <div class="slide">
   <div class="slide-header">
-    <span class="session-badge badge-4">4회차 참고</span>
-    <div class="slide-title">엔트리 핵심 블록 빠른 참고</div>
+    <span class="session-badge badge-4">4회차 · 도입</span>
+    <div>
+      <div class="slide-title">엔트리 화면 구조 한눈에 보기</div>
+      <div class="slide-sub">playentry.org → 만들기 → 작품 만들기</div>
+    </div>
+    <span class="timer-badge">⏱ 10분</span>
   </div>
-  <div class="col-2" style="flex:1;">
+  <div class="col-main" style="flex:1;">
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div class="card">
-        <div class="card-title c-purple">이동 블록</div>
-        <div class="code-block">
-<span class="code-comment">// 마우스 따라다니기</span>
-<span class="code-key">계속 반복하기</span> {
-  <span class="code-fn">마우스 포인터</span> 위치로 이동
-}
+        <div class="card-title c-blue">화면 4개 영역</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-blue">①</div>
+            <div class="activity-text"><b>실행 화면 (장면)</b> — 좌측 상단. ▶ 시작하기 누르면 게임이 여기서 돌아감</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-purple">②</div>
+            <div class="activity-text"><b>오브젝트 목록</b> — 좌측 하단. 캐릭터·배경·장애물 모두 여기에 들어감</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-amber">③</div>
+            <div class="activity-text"><b>블록 모음</b> — 중앙. 시작/흐름/움직임/생김새/판단/계산/자료 카테고리</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">④</div>
+            <div class="activity-text"><b>블록 조립소</b> — 우측. ③에서 블록을 <b>드래그해서 붙이는 코드 영역</b></div>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title c-teal">반복 블록</div>
-        <div class="code-block">
-<span class="code-comment">// 장애물 계속 만들기</span>
-<span class="code-key">계속 반복하기</span> {
-  장애물 <span class="code-fn">복제하기</span>
-  <span class="code-num">1</span>초 기다리기
-}
+      <div class="card accent-blue">
+        <div class="card-title c-blue">기본 동작 3가지</div>
+        <div class="body-text">
+          <b>블록 조립:</b> ③ → ④로 끌면 자석처럼 위아래 붙음<br>
+          <b>블록 분리:</b> 잡고 빈 곳으로 끌면 떨어짐, 휴지통에 끌면 삭제<br>
+          <b>오브젝트 전환:</b> ②에서 오브젝트 클릭 → ④의 코드가 그 오브젝트 코드로 바뀜
         </div>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="card">
-        <div class="card-title c-amber">조건 블록</div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 가장 흔한 실수 #1</div>
+        <div class="tip-text"><b>다른 오브젝트에 코드 짜기</b><br><br>고양이 코드를 짜는 줄 알았는데 폭탄에 붙어있는 경우.<br><br><b>해결:</b> 블록 추가 전 항상 ② 좌측 하단에서 <b>"어떤 오브젝트가 선택돼 있나?"</b> 먼저 확인.</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 도입 멘트 예시</div>
+        <div class="tip-text">"여기 ▶ 누르면 게임 시작이고, 여기 사각형이 게임 화면이야.<br>네가 만들 캐릭터들은 여기 목록에 들어가고,<br>저쪽 블록들을 끌어다 붙이면 캐릭터가 움직여."</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 첫 저장</div>
+        <div class="tip-text">상단 우측 <b>"저장하기"</b> → 작품 이름 <b>"고양이 피하기"</b><br>한번 저장해두면 자동저장도 안전함.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 9: STEP 1~2 — 오브젝트 추가 + 마우스 따라가기 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">STEP 1~2</span>
+    <div>
+      <div class="slide-title">오브젝트 준비 + 캐릭터 마우스 따라가기</div>
+      <div class="slide-sub">첫 성공 경험을 빨리 만든다</div>
+    </div>
+    <span class="timer-badge">⏱ 15분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-purple">
+        <div class="card-title c-purple">STEP 1 — 오브젝트 추가 (5분)</div>
+        <div class="body-text">
+          ① 기본 <b>엔트리봇 삭제</b> (오브젝트 위 X 버튼)<br>
+          ② <b>+ 오브젝트 추가하기</b> → "동물" → <b>고양이</b> 선택 → 추가<br>
+          ③ 다시 <b>+ 오브젝트 추가하기</b> → 검색 <b>"폭탄"</b> 또는 "운석" → 추가<br>
+          ④ (선택) 배경 추가
+        </div>
+      </div>
+      <div class="card accent-purple">
+        <div class="card-title c-purple">STEP 2 — 고양이가 마우스를 따라가게 (10분)</div>
+        <div class="body-text" style="margin-bottom:8px;">
+          <b>② 오브젝트 목록에서 "고양이" 클릭</b> (반드시 먼저!)
+        </div>
         <div class="code-block">
-<span class="code-comment">// 닿으면 게임오버</span>
-<span class="code-key">만약</span> 장애물에 <span class="code-fn">닿았는가?</span> <span class="code-key">라면</span> {
-  "<span class="code-str">게임 오버!</span>" 말하기
-  모든 코드 <span class="code-fn">멈추기</span>
+<span class="code-comment">// 고양이 오브젝트의 코드</span>
+<span class="code-key">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="code-key">계속 반복하기</span> {
+  <span class="code-fn">마우스포인터</span> 위치로 이동하기
 }
         </div>
+        <div class="body-text" style="margin-top:8px;">
+          <b>테스트:</b> ▶ 시작하기 → 마우스 움직이면 고양이가 따라옴 ✅
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box">
+        <div class="tip-label">🎯 이 단계 핵심</div>
+        <div class="tip-text"><b>"내가 짠 코드가 화면에서 움직였다"</b>는 첫 성공 경험.<br>여기서 막히면 진도 못 나감 → 빨리 통과시키기.</div>
       </div>
       <div class="tip-box coral">
         <div class="tip-label coral">⚠️ 자주 막히는 곳</div>
-        <div class="tip-text"><b>복제본이 너무 빨리 생길 때:</b> "기다리기" 블록 추가<br><b>캐릭터가 안 움직일 때:</b> "계속 반복" 확인<br><b>게임이 안 끝날 때:</b> 닿음 감지 조건 확인</div>
+        <div class="tip-text">
+          <b>고양이가 안 움직임</b> → ② 오브젝트가 "고양이"로 선택돼 있는지 확인<br>
+          <b>"마우스포인터" 블록 못 찾음</b> → "움직임" 카테고리에서. <b>"x: y: 위치로"</b> 와 다른 블록!<br>
+          <b>블록이 안 붙음</b> → 자석처럼 붙는 위치까지 살짝 더 끌어가기
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💬 강사 멘트</div>
+        <div class="tip-text">"<b>계속 반복하기</b>는 게임이 끝날 때까지 안에 있는 걸 무한히 한다는 뜻이야.<br>그래서 마우스를 움직일 때마다 따라오는 거지."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 10: STEP 3 — 폭탄 복제 + 떨어지기 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">STEP 3 ⚠️ 가장 어려움</span>
+    <div>
+      <div class="slide-title">폭탄이 계속 복제되며 위에서 떨어지기</div>
+      <div class="slide-sub">복제본 개념 + 무작위 위치 + 화면 끝 처리</div>
+    </div>
+    <span class="timer-badge">⏱ 25분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card accent-amber">
+        <div class="card-title c-amber">3-1. 폭탄 본체 — 1초마다 복제</div>
+        <div class="body-text" style="font-size:14px;">② 오브젝트 목록에서 <b>"폭탄" 클릭</b></div>
+        <div class="code-block" style="font-size:13px;">
+<span class="code-key">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="code-fn">x:</span> <span class="code-num">0</span> <span class="code-fn">y:</span> <span class="code-num">200</span> 위치로 이동
+<span class="code-fn">모양 숨기기</span>      <span class="code-comment">// 원본은 안 보이게</span>
+<span class="code-key">계속 반복하기</span> {
+  <span class="code-fn">자신의 복제본 만들기</span>
+  <span class="code-num">1</span> 초 기다리기
+}
+        </div>
+      </div>
+      <div class="card accent-amber">
+        <div class="card-title c-amber">3-2. 복제본 — 떨어지기</div>
+        <div class="body-text" style="font-size:14px;">같은 폭탄 코드 영역에 <b>새 시작 블록</b>으로 따로 추가</div>
+        <div class="code-block" style="font-size:13px;">
+<span class="code-key">복제본이 처음 생성되었을 때</span>
+<span class="code-fn">모양 보이기</span>
+<span class="code-fn">x:</span> (<span class="code-num">-200</span>~<span class="code-num">200</span> <span class="code-fn">무작위 수</span>) <span class="code-fn">y:</span> <span class="code-num">200</span> 위치로 이동
+<span class="code-key">계속 반복하기</span> {
+  <span class="code-fn">y좌표를</span> <span class="code-num">-5</span> 만큼 바꾸기
+  <span class="code-key">만일</span> ⟨ <span class="code-fn">y좌표</span> &lt; <span class="code-num">-130</span> ⟩ <span class="code-key">라면</span> {
+    <span class="code-fn">이 복제본 삭제하기</span>
+  }
+}
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="tip-box amber">
+        <div class="tip-label amber">🧠 복제본 개념 설명</div>
+        <div class="tip-text">"폭탄 하나만으로 여러 개를 만들려면 어떻게 할까?<br>→ <b>복사본을 계속 만들어내는 거야.</b><br>원본은 화면 밖에 숨어있고, 복사본만 떨어져."</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 자주 막히는 곳</div>
+        <div class="tip-text">
+          <b>한 자리에서만 떨어짐</b> → "무작위 수" 블록을 시작 x에 안 끼움<br>
+          <b>화면이 점점 느려짐</b> → "이 복제본 삭제하기" 누락<br>
+          <b>원본도 같이 떨어짐</b> → "모양 숨기기" 빠뜨림<br>
+          <b>아무것도 안 떨어짐</b> → 두 시작 블록 중 하나가 다른 오브젝트에 붙어있음
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">💡 막히면 AI에게 (힌트만)</div>
+        <div class="tip-text">"엔트리에서 <b>오브젝트가 화면 위에서 무작위 위치로 계속 떨어지게</b> 하려면 어떤 블록을 조합해야 해? 정답 코드 말고 어떤 블록이 필요한지만 알려줘."</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">✅ 체크포인트</div>
+        <div class="tip-text">▶ 시작하기 → 폭탄들이 무작위 위치에서 떨어지고, 바닥에 닿으면 사라짐. 화면이 안 느려짐.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 11: STEP 4 — 충돌 감지 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">STEP 4</span>
+    <div>
+      <div class="slide-title">폭탄에 닿으면 게임 오버</div>
+      <div class="slide-sub">조건문 등장 — "만약 ~라면"</div>
+    </div>
+    <span class="timer-badge">⏱ 15분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-coral">
+        <div class="card-title c-coral">충돌 감지 코드</div>
+        <div class="body-text" style="margin-bottom:8px;">
+          <b>② "고양이" 다시 클릭</b> — STEP 2 코드는 그대로 두고, <b>새 시작 블록</b>으로 추가
+        </div>
+        <div class="code-block">
+<span class="code-comment">// 고양이의 두 번째 시작 흐름</span>
+<span class="code-key">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="code-key">계속 반복하기</span> {
+  <span class="code-key">만일</span> ⟨ <span class="code-fn">폭탄</span>에 <span class="code-fn">닿았는가?</span> ⟩ <span class="code-key">라면</span> {
+    "<span class="code-str">게임 오버!</span>" 을(를) 말하기
+    <span class="code-fn">모든 코드 멈추기</span>
+  }
+}
+        </div>
+        <div class="body-text" style="margin-top:8px;">
+          <b>핵심:</b> "닿았는가?" 블록은 처음에 "마우스포인터에 닿았는가?"로 나옴 → <b>드롭다운을 "폭탄"으로 변경</b>
+        </div>
+      </div>
+      <div class="card accent-coral">
+        <div class="card-title c-coral">테스트</div>
+        <div class="body-text">▶ 시작하기 → 일부러 폭탄에 부딪쳐보기<br>→ "게임 오버!" 말풍선 + 모든 움직임 정지 ✅</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box">
+        <div class="tip-label">🧠 조건문 비유</div>
+        <div class="tip-text">"<b>만약 ~ 라면</b>은 너희가 일상에서 늘 쓰는 말이야.<br>'<b>만약</b> 비가 오면 우산 쓰자.'<br>코드도 똑같아 — 어떤 일이 생기면 다음 동작을 하라는 명령."</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 자주 막히는 곳</div>
+        <div class="tip-text">
+          <b>충돌해도 게임 안 끝남</b> → "닿았는가?" 드롭다운이 "마우스포인터" 그대로<br>
+          <b>"모든 코드 멈추기" 못 찾음</b> → "흐름" 카테고리 맨 아래쪽<br>
+          <b>말풍선 안 뜸</b> → "말하기" 블록의 입력칸이 비어있음
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💬 강사 질문</div>
+        <div class="tip-text">"왜 <b>계속 반복</b> 안에 만약을 넣었을까?"<br>→ "한 번만 검사하면 충돌 시점을 놓치니까!" 끌어내기</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 12: STEP 5 변형 + 자주 막히는 곳 종합 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">STEP 5 · 변형</span>
+    <div>
+      <div class="slide-title">시간이 남으면 — 점수/속도/목숨 변형</div>
+      <div class="slide-sub">AI에게 "힌트만" 요청하는 연습</div>
+    </div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-teal">
+      <div class="card-title c-teal">기본: 버틴 시간 변수</div>
+      <div class="body-text" style="font-size:14px;">자료 카테고리 → <b>변수 만들기</b> → "버틴 시간"</div>
+      <div class="code-block" style="font-size:13px;">
+<span class="code-comment">// 고양이에 추가</span>
+<span class="code-key">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="code-fn">버틴 시간</span>을 <span class="code-num">0</span>으로 정하기
+<span class="code-key">계속 반복하기</span> {
+  <span class="code-fn">버틴 시간</span>에 <span class="code-num">1</span> 만큼 더하기
+  <span class="code-num">1</span> 초 기다리기
+}
+      </div>
+      <div class="body-text" style="font-size:14px;">화면 좌측 상단에 변수 박스 자동 표시 ✅</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title c-teal">변형 아이디어 (아이가 고름)</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-teal">A</div>
+            <div class="activity-text"><b>별 모으기 모드</b> — 폭탄 대신 별, 닿으면 +1점 + 복제본 삭제</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">B</div>
+            <div class="activity-text"><b>속도 점점 빨라지기</b> — 시간 ↑ 일수록 폭탄 떨어지는 간격 ↓</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">C</div>
+            <div class="activity-text"><b>목숨 시스템</b> — 변수 "목숨"=3, 닿으면 -1, 0이 되면 게임 오버</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">D</div>
+            <div class="activity-text"><b>두 종류 장애물</b> — 폭탄 + 운석 두 오브젝트 함께 떨어짐</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">💡 AI에게 묻는 좋은 예</div>
+        <div class="tip-text">"엔트리에서 변수를 만들어서 <b>점점 빨라지게</b> 하려면 어떤 블록이 필요해? 코드 말고 블록 이름만."</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">⏱ 시간 안배</div>
+        <div class="tip-text">변형은 <b>시간이 남을 때만</b>. 기본 게임 완성 못했으면 STEP 5 건너뛰고 발표로.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 13: 엔트리 핵심 블록 빠른 참고 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">4회차 참고</span>
+    <div class="slide-title">엔트리 핵심 블록 빠른 참고</div>
+    <div class="slide-sub" style="margin-left:auto;">수업 중 막혔을 때 펼쳐서 보기</div>
+  </div>
+  <div class="col-3" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title c-purple">시작 · 흐름</div>
+        <div class="code-block" style="font-size:13px;">
+<span class="code-key">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="code-key">복제본이 처음 생성되었을 때</span>
+
+<span class="code-key">계속 반복하기</span> { ... }
+<span class="code-num">1</span> 초 기다리기
+<span class="code-key">만일</span> ⟨ ... ⟩ <span class="code-key">라면</span> { ... }
+
+<span class="code-fn">자신의 복제본 만들기</span>
+<span class="code-fn">이 복제본 삭제하기</span>
+<span class="code-fn">모든 코드 멈추기</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title c-teal">움직임 · 생김새</div>
+        <div class="code-block" style="font-size:13px;">
+<span class="code-fn">마우스포인터</span> 위치로 이동
+<span class="code-fn">x:</span> <span class="code-num">0</span> <span class="code-fn">y:</span> <span class="code-num">0</span> 위치로 이동
+<span class="code-fn">y좌표를</span> <span class="code-num">-5</span> 만큼 바꾸기
+
+<span class="code-fn">모양 보이기</span> / <span class="code-fn">모양 숨기기</span>
+"<span class="code-str">...</span>" 을(를) 말하기
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title c-amber">판단 · 계산 · 자료</div>
+        <div class="code-block" style="font-size:13px;">
+<span class="code-fn">폭탄</span>에 <span class="code-fn">닿았는가?</span>
+<span class="code-fn">y좌표</span>
+⟨ ... <span class="code-key">&lt;</span> ... ⟩
+
+(<span class="code-num">-200</span> ~ <span class="code-num">200</span> <span class="code-fn">무작위 수</span>)
+
+<span class="code-fn">변수</span>를 <span class="code-num">0</span> (으)로 정하기
+<span class="code-fn">변수</span>에 <span class="code-num">1</span> 만큼 더하기
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🔍 블록 못 찾을 때</div>
+        <div class="tip-text">엔트리 블록 모음 위쪽에 <b>검색창</b> 있음.<br>"닿", "복제", "무작위" 등 일부만 입력해도 찾아줌.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 디버깅 체크리스트</div>
+        <div class="tip-text" style="font-size:14px;line-height:1.7;">
+          <b>1. 올바른 오브젝트 선택했나?</b><br>
+          <span style="color:var(--text-dim)">→ 좌측 ② 목록에서 확인</span><br><br>
+          <b>2. 시작 블록 위에 있나?</b><br>
+          <span style="color:var(--text-dim)">→ ▶ 시작하기 블록이 맨 위</span><br><br>
+          <b>3. "계속 반복" 안에 들어있나?</b><br>
+          <span style="color:var(--text-dim)">→ 한 번만 실행되는지 무한 실행되는지</span><br><br>
+          <b>4. 드롭다운 값 맞나?</b><br>
+          <span style="color:var(--text-dim)">→ "닿았는가?" 대상이 폭탄인가</span><br><br>
+          <b>5. 복제본 삭제 조건 있나?</b><br>
+          <span style="color:var(--text-dim)">→ 화면 끝에서 사라지는가</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 14: 발표 + 정리 -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-4">발표 + 정리</span>
+    <div>
+      <div class="slide-title">"이 블록이 뭘 하는 거야?"</div>
+      <div class="slide-sub">아이가 직접 말로 설명 → 노트 정리</div>
+    </div>
+    <span class="timer-badge">⏱ 15분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-blue">
+        <div class="card-title c-blue">🎤 발표 — 핵심 블록 3개 설명</div>
+        <div class="body-text">아이에게 게임을 한번 시연하게 한 후, <b>세 가지 블록을 짚어가며</b> 직접 설명하게 한다:</div>
+        <div class="activity-list" style="margin-top:8px;">
+          <div class="activity-item">
+            <div class="activity-num num-blue">1</div>
+            <div class="activity-text"><b>계속 반복하기</b> — "이게 왜 필요했어?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-blue">2</div>
+            <div class="activity-text"><b>자신의 복제본 만들기</b> — "이거 없으면 어떻게 돼?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-blue">3</div>
+            <div class="activity-text"><b>만일 ~ 라면</b> — "이건 뭘 검사하는 거야?"</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🎯 핵심 기준</div>
+        <div class="tip-text"><b>"왜 이렇게 했는지 설명할 수 있어?"</b><br>YES → 진짜 이해함 / NO → 한 번 더 같이 보기</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-purple">📝 노트 정리 (5분)</div>
+        <div class="body-text">
+          오늘 노트에 다음 두 가지 직접 쓰기:<br><br>
+          <b>1. 오늘 배운 블록 2~3개와 역할</b><br>
+          예: "계속 반복하기 = 끝없이 같은 일 반복"<br><br>
+          <b>2. 가장 어려웠던 부분</b><br>
+          예: "폭탄 복제가 처음엔 헷갈렸다"
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🏆 칭찬 멘트 예시</div>
+        <div class="tip-text">"<b>이거 진짜 너가 만든 게임이야.</b><br>스토어에 있는 게임이랑 똑같이 동작하는 거 봐.<br>1단계 마지막인데, 진짜 잘 마무리했어!"</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 다음 회차로 연결</div>
+        <div class="tip-text">"다음엔 블록 말고 <b>진짜 글자로 코드를 쓰기 시작</b>할 거야 (Python).<br>오늘 배운 '계속 반복', '만약' 같은 개념 그대로 쓰여."</div>
       </div>
     </div>
   </div>
