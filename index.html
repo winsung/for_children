@@ -32,10 +32,10 @@ body {
 .hero {
   background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
   color: white;
-  padding: 72px 24px 80px;
+  padding: 72px 24px 84px;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
 }
 .hero::before {
   content: "🤖";
@@ -76,14 +76,16 @@ body {
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
 
 /* 단계 섹션 */
-.stages { margin-top: -40px; padding-bottom: 64px; }
+.stages { margin-top: -36px; padding-bottom: 64px; position: relative; z-index: 2; }
 .stage {
   background: var(--paper);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 28px 32px;
+  padding: 32px 32px 28px;
   margin-bottom: 24px;
   box-shadow: 0 4px 20px rgba(0,0,0,.04);
+  position: relative;
+  z-index: 2;
 }
 .stage-head {
   display: flex;
@@ -109,14 +111,17 @@ body {
 .stage-2 .stage-num { background: var(--teal); }
 .stage-3 .stage-num { background: var(--amber); }
 .stage-4 .stage-num { background: var(--blue); }
+.stage-info { min-width: 0; flex: 1; }
 .stage-info h2 {
   font-size: 22px;
   font-weight: 800;
   margin-bottom: 4px;
+  line-height: 1.35;
 }
 .stage-info .desc {
   font-size: 14px;
   color: var(--text-muted);
+  line-height: 1.5;
 }
 .stage-status {
   margin-left: auto;
@@ -163,6 +168,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+  line-height: 1.4;
 }
 .material .title::after {
   content: "→";
