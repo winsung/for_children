@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 코딩 홈클래스 · for_children</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafbfc;
+  --paper: #ffffff;
+  --text: #1f2937;
+  --text-muted: #6b7280;
+  --text-dim: #9ca3af;
+  --border: #e5e7eb;
+  --purple: #7c3aed;
+  --purple-l: #a78bfa;
+  --teal: #14b8a6;
+  --amber: #f59e0b;
+  --blue: #2563eb;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* 헤더 */
+.hero {
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+  color: white;
+  padding: 72px 24px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "🤖";
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  font-size: 40px;
+  opacity: .9;
+}
+.hero h1 {
+  font-size: 42px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.hero .sub {
+  font-size: 18px;
+  opacity: .92;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.hero .badges {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.hero .badges span {
+  background: rgba(255,255,255,.18);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.25);
+}
+
+/* 컨테이너 */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+/* 단계 섹션 */
+.stages { margin-top: -40px; padding-bottom: 64px; }
+.stage {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.04);
+}
+.stage-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px dashed var(--border);
+}
+.stage-num {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 20px;
+  color: white;
+  flex-shrink: 0;
+}
+.stage-1 .stage-num { background: var(--purple); }
+.stage-2 .stage-num { background: var(--teal); }
+.stage-3 .stage-num { background: var(--amber); }
+.stage-4 .stage-num { background: var(--blue); }
+.stage-info h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.stage-info .desc {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.stage-status {
+  margin-left: auto;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.status-done { background: #dcfce7; color: #15803d; }
+.status-prep { background: #fef3c7; color: #b45309; }
+.status-todo { background: #f1f5f9; color: #64748b; }
+
+/* 자료 그리드 */
+.materials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+.material {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all .15s ease;
+  background: #fafbfc;
+}
+.material:hover {
+  border-color: var(--purple);
+  background: #f3eeff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(124,58,237,.12);
+}
+.material .icon {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.material .title {
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.material .title::after {
+  content: "→";
+  margin-left: auto;
+  color: var(--text-dim);
+  transition: transform .15s ease;
+}
+.material:hover .title::after {
+  transform: translateX(4px);
+  color: var(--purple);
+}
+.material .desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.material .tag {
+  font-size: 11px;
+  background: white;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  display: inline-block;
+  width: fit-content;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.material.disabled {
+  opacity: .55;
+  pointer-events: none;
+  background: #f9fafb;
+}
+.material.disabled .title::after { content: "준비중"; font-size: 11px; padding: 2px 8px; background: #f1f5f9; border-radius: 999px; }
+
+/* 푸터 */
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  background: white;
+}
+footer a { color: var(--text-muted); text-decoration: none; }
+footer a:hover { color: var(--purple); text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .hero { padding: 52px 20px 60px; }
+  .hero h1 { font-size: 30px; }
+  .hero .sub { font-size: 15px; }
+  .stage { padding: 20px 22px; }
+  .stage-info h2 { font-size: 18px; }
+  .stage-status { font-size: 11px; padding: 4px 10px; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <h1>AI 코딩 홈클래스</h1>
+  <p class="sub">11세 자녀(초5)와 함께하는 AI 친화적 코딩 교육 자료 모음</p>
+  <div class="badges">
+    <span>🏠 홈클래스</span>
+    <span>🤖 AI 학습 파트너</span>
+    <span>📝 직접 타이핑 원칙</span>
+    <span>🎯 4단계 로드맵</span>
+  </div>
+</section>
+
+<div class="wrap stages">
+
+  <!-- 1단계 -->
+  <div class="stage stage-1">
+    <div class="stage-head">
+      <div class="stage-num">1</div>
+      <div class="stage-info">
+        <h2>AI와 친해지기</h2>
+        <div class="desc">1~4회차 · Claude AI · 엔트리 · 이미지 AI</div>
+      </div>
+      <span class="stage-status status-done">자료 완료</span>
+    </div>
+    <div class="materials">
+      <a class="material" href="1단계_강사용.html">
+        <span class="icon">🖥️</span>
+        <span class="title">강사용 슬라이드</span>
+        <span class="desc">PC → TV 화면 공유용. ← → 키로 슬라이드 이동, T키로 타이머. 다크 테마.</span>
+        <span class="tag">슬라이드 17개 · 다크 테마</span>
+      </a>
+      <a class="material" href="1단계_학생용.html">
+        <span class="icon">📱</span>
+        <span class="title">학생용 인터랙티브</span>
+        <span class="desc">iPad Safari용. 회차별 탭 · 체크리스트 · 진행률 표시. 라이트 테마, 터치 친화적.</span>
+        <span class="tag">탭형 · 라이트 테마</span>
+      </a>
+      <a class="material" href="엔트리_선행가이드.html">
+        <span class="icon">🐱</span>
+        <span class="title">엔트리 선행 가이드 (4회차)</span>
+        <span class="desc">강사가 수업 전 직접 따라하며 엔트리 사용법을 익히는 prep 가이드. 고양이 피하기 게임 단계별 제작 + 스크린샷 9장.</span>
+        <span class="tag">선행 60~90분 · 강사 전용</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 2단계 -->
+  <div class="stage stage-2">
+    <div class="stage-head">
+      <div class="stage-num">2</div>
+      <div class="stage-info">
+        <h2>AI와 함께 만들기</h2>
+        <div class="desc">5~12회차 · Python (Replit) · Claude AI</div>
+      </div>
+      <span class="stage-status status-prep">커리큘럼 작성됨</span>
+    </div>
+    <div class="materials">
+      <a class="material disabled">
+        <span class="icon">🖥️</span>
+        <span class="title">강사용 슬라이드</span>
+        <span class="desc">2단계 8회차분 강사용 자료. (HTML 미제작 — 커리큘럼 마크다운만 존재)</span>
+        <span class="tag">미제작</span>
+      </a>
+      <a class="material disabled">
+        <span class="icon">📱</span>
+        <span class="title">학생용 인터랙티브</span>
+        <span class="desc">2단계 8회차분 학생용 자료. (HTML 미제작)</span>
+        <span class="tag">미제작</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 3단계 -->
+  <div class="stage stage-3">
+    <div class="stage-head">
+      <div class="stage-num">3</div>
+      <div class="stage-info">
+        <h2>AI 활용 프로그래머</h2>
+        <div class="desc">13~20회차 · Python · Anthropic API</div>
+      </div>
+      <span class="stage-status status-todo">예정</span>
+    </div>
+  </div>
+
+  <!-- 4단계 -->
+  <div class="stage stage-4">
+    <div class="stage-head">
+      <div class="stage-num">4</div>
+      <div class="stage-info">
+        <h2>자유 프로젝트</h2>
+        <div class="desc">관심사 기반 무제한</div>
+      </div>
+      <span class="stage-status status-todo">예정</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="https://github.com/winsung/for_children" target="_blank">github.com/winsung/for_children</a>
+  &nbsp;·&nbsp;
+  부모(Kay)가 직접 진행하는 홈클래스
+</footer>
+
+</body>
+</html>
