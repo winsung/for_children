@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2단계 강사용 — AI 코딩 홈클래스</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #252836;
+  --border: #2e3347;
+  --purple: #8b5cf6;
+  --purple-l: #a78bfa;
+  --teal: #14b8a6;
+  --teal-l: #5eead4;
+  --amber: #f59e0b;
+  --coral: #f87171;
+  --blue: #60a5fa;
+  --green: #4ade80;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #475569;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:'Noto Sans KR', sans-serif; }
+
+/* ── 슬라이드 컨테이너 ── */
+#deck { width:100vw; height:100vh; position:relative; overflow:hidden; }
+.slide { position:absolute; inset:0; display:flex; flex-direction:column; padding:48px 60px; opacity:0; pointer-events:none; transition:opacity .35s ease; }
+.slide.active { opacity:1; pointer-events:all; }
+
+/* ── 공통 헤더 ── */
+.slide-header { display:flex; align-items:center; gap:16px; margin-bottom:36px; }
+.session-badge { font-size:12px; font-weight:700; letter-spacing:.1em; padding:6px 14px; border-radius:99px; text-transform:uppercase; }
+.badge-1 { background:rgba(139,92,246,.2); color:var(--purple-l); border:1px solid rgba(139,92,246,.4); }
+.badge-2 { background:rgba(20,184,166,.2); color:var(--teal-l); border:1px solid rgba(20,184,166,.4); }
+.badge-3 { background:rgba(245,158,11,.2); color:var(--amber); border:1px solid rgba(245,158,11,.4); }
+.badge-4 { background:rgba(96,165,250,.2); color:var(--blue); border:1px solid rgba(96,165,250,.4); }
+.slide-title { font-size:36px; font-weight:900; line-height:1.1; }
+.slide-sub { font-size:18px; color:var(--text-muted); margin-top:6px; font-weight:400; }
+.timer-badge { margin-left:auto; font-size:14px; font-weight:700; color:var(--amber); background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); padding:6px 16px; border-radius:99px; }
+
+/* ── 레이아웃 ── */
+.col-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; min-height:0; }
+.col-2 > * { overflow-y:auto; }
+.col-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; flex:1; min-height:0; }
+.col-3 > * { overflow-y:auto; }
+.col-main { display:grid; grid-template-columns:2fr 1fr; gap:24px; flex:1; min-height:0; }
+.col-main > * { overflow-y:auto; }
+
+/* ── 카드 ── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; display:flex; flex-direction:column; gap:14px; }
+.card.accent-purple { border-color:rgba(139,92,246,.4); background:rgba(139,92,246,.06); }
+.card.accent-teal { border-color:rgba(20,184,166,.4); background:rgba(20,184,166,.06); }
+.card.accent-amber { border-color:rgba(245,158,11,.4); background:rgba(245,158,11,.06); }
+.card.accent-coral { border-color:rgba(248,113,113,.4); background:rgba(248,113,113,.06); }
+.card.accent-blue { border-color:rgba(96,165,250,.4); background:rgba(96,165,250,.06); }
+.card-title { font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+.card-title.c-purple { color:var(--purple-l); }
+.card-title.c-teal { color:var(--teal-l); }
+.card-title.c-amber { color:var(--amber); }
+.card-title.c-coral { color:var(--coral); }
+.card-title.c-blue { color:var(--blue); }
+
+/* ── 텍스트 ── */
+.big-text { font-size:24px; font-weight:700; line-height:1.4; }
+.body-text { font-size:18px; line-height:1.7; color:var(--text-muted); }
+.body-text b { color:var(--text); }
+.highlight { color:var(--text); font-weight:700; }
+
+/* ── 활동 리스트 ── */
+.activity-list { display:flex; flex-direction:column; gap:12px; }
+.activity-item { display:flex; align-items:flex-start; gap:12px; }
+.activity-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; margin-top:2px; }
+.num-purple { background:rgba(139,92,246,.25); color:var(--purple-l); }
+.num-teal { background:rgba(20,184,166,.25); color:var(--teal-l); }
+.num-amber { background:rgba(245,158,11,.25); color:var(--amber); }
+.num-coral { background:rgba(248,113,113,.25); color:var(--coral); }
+.num-blue { background:rgba(96,165,250,.25); color:var(--blue); }
+.activity-text { font-size:17px; line-height:1.6; color:var(--text-muted); }
+.activity-text b { color:var(--text); }
+
+/* ── 코드 블록 ── */
+.code-block { background:#0d1117; border:1px solid #30363d; border-radius:10px; padding:16px 20px; font-family:'Fira Code', monospace; font-size:15px; line-height:1.8; color:#e6edf3; white-space:pre-wrap; word-break:break-word; }
+.code-comment { color:#8b949e; }
+.code-key { color:#ff7b72; }
+.code-str { color:#a5d6ff; }
+.code-fn { color:#d2a8ff; }
+.code-num { color:#79c0ff; }
+.code-builtin { color:#79c0ff; }
+
+/* ── 팁 박스 ── */
+.tip-box { background:rgba(139,92,246,.08); border-left:4px solid var(--purple); border-radius:0 12px 12px 0; padding:16px 20px; }
+.tip-box.amber { background:rgba(245,158,11,.08); border-color:var(--amber); }
+.tip-box.teal { background:rgba(20,184,166,.08); border-color:var(--teal); }
+.tip-box.coral { background:rgba(248,113,113,.08); border-color:var(--coral); }
+.tip-box.blue { background:rgba(96,165,250,.08); border-color:var(--blue); }
+.tip-label { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--purple-l); margin-bottom:6px; }
+.tip-label.amber { color:var(--amber); }
+.tip-label.teal { color:var(--teal-l); }
+.tip-label.coral { color:var(--coral); }
+.tip-label.blue { color:var(--blue); }
+.tip-text { font-size:16px; line-height:1.6; color:var(--text-muted); }
+.tip-text b { color:var(--text); }
+
+/* ── 강조 텍스트 ── */
+.em-text { font-size:22px; font-weight:700; line-height:1.5; }
+.em-text .accent { color:var(--purple-l); }
+.em-text .accent-t { color:var(--teal-l); }
+.em-text .accent-a { color:var(--amber); }
+.em-text .accent-c { color:var(--coral); }
+
+/* ── 타임라인 ── */
+.timeline { display:flex; flex-direction:column; gap:0; }
+.timeline-row { display:flex; gap:16px; align-items:stretch; }
+.timeline-left { display:flex; flex-direction:column; align-items:center; width:40px; flex-shrink:0; }
+.timeline-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:6px; }
+.timeline-line { width:2px; flex:1; background:var(--border); margin-top:4px; margin-bottom:-2px; }
+.timeline-content { padding-bottom:20px; flex:1; }
+.timeline-time { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
+.timeline-title { font-size:17px; font-weight:700; margin-bottom:4px; }
+.timeline-desc { font-size:15px; color:var(--text-muted); line-height:1.6; }
+
+/* ── 비교표 ── */
+.cmp-table { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); border-radius:12px; overflow:hidden; font-size:15px; }
+.cmp-head { background:var(--surface2); padding:10px 14px; font-weight:700; font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); border-bottom:1px solid var(--border); }
+.cmp-cell { padding:10px 14px; line-height:1.5; color:var(--text-muted); border-top:1px solid var(--border); }
+.cmp-cell.bad { background:rgba(248,113,113,.05); }
+.cmp-cell.good { background:rgba(20,184,166,.05); }
+.cmp-cell b { color:var(--text); }
+
+/* ── 네비게이션 ── */
+#nav { position:fixed; bottom:32px; right:40px; display:flex; align-items:center; gap:12px; z-index:100; }
+.nav-btn { width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:.2s; }
+.nav-btn:hover { background:var(--surface2); border-color:var(--teal); }
+.nav-btn:active { transform:scale(.93); }
+#slide-counter { font-size:13px; color:var(--text-dim); min-width:52px; text-align:center; }
+
+/* ── 진행 바 ── */
+#progress { position:fixed; bottom:0; left:0; width:0%; height:3px; background:var(--teal); transition:width .35s ease; }
+
+/* ── 키 힌트 ── */
+#keyhint { position:fixed; bottom:32px; left:40px; font-size:12px; color:var(--text-dim); }
+#keyhint kbd { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:2px 7px; font-family:'Fira Code',monospace; }
+
+/* ── 타이머 ── */
+#timer-display { position:fixed; top:28px; right:40px; font-family:'Fira Code',monospace; font-size:15px; color:var(--text-dim); display:flex; gap:10px; align-items:center; }
+.timer-btn { font-size:11px; background:var(--surface); border:1px solid var(--border); color:var(--text-muted); border-radius:6px; padding:3px 10px; cursor:pointer; transition:.2s; }
+.timer-btn:hover { border-color:var(--teal); color:var(--teal-l); }
+#timer-time { color:var(--amber); font-weight:700; font-size:17px; min-width:60px; }
+
+/* ── 표지 슬라이드 ── */
+#cover { justify-content:center; align-items:center; text-align:center; background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(20,184,166,.12) 0%, transparent 70%); }
+#cover .logo { font-size:72px; margin-bottom:24px; }
+#cover h1 { font-size:52px; font-weight:900; line-height:1.1; margin-bottom:12px; }
+#cover h1 span { color:var(--teal-l); }
+#cover .sub { font-size:22px; color:var(--text-muted); margin-bottom:40px; }
+#cover .meta-row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
+#cover .meta-item { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 24px; font-size:14px; color:var(--text-muted); }
+#cover .meta-item b { color:var(--text); display:block; font-size:16px; margin-bottom:2px; }
+
+/* ── 목차 ── */
+.toc-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; flex:1; margin-top:8px; overflow-y:auto; align-content:start; }
+.toc-item { border:1px solid var(--border); border-radius:14px; padding:18px 20px; display:flex; gap:14px; align-items:flex-start; cursor:pointer; transition:.2s; }
+.toc-item:hover { border-color:var(--teal); background:rgba(20,184,166,.05); }
+.toc-num { font-size:24px; font-weight:900; line-height:1; }
+.toc-info .toc-title { font-size:16px; font-weight:700; margin-bottom:4px; }
+.toc-info .toc-sub { font-size:13px; color:var(--text-muted); line-height:1.5; }
+.toc-time { margin-left:auto; font-size:12px; color:var(--text-dim); white-space:nowrap; padding-top:4px; }
+
+/* ── 질문 카드 ── */
+.q-card { border:1px solid var(--border); border-radius:12px; padding:20px 22px; background:var(--surface2); }
+.q-label { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--text-dim); margin-bottom:8px; }
+.q-text { font-size:19px; font-weight:700; line-height:1.4; color:var(--teal-l); }
+
+/* ── 모바일 반응형 ── */
+@media (max-width: 768px) {
+  html, body { overflow:auto; height:auto; }
+  #deck { width:auto; height:auto; position:static; overflow:visible; }
+  .slide { position:static; opacity:1; pointer-events:all; padding:24px 16px; border-bottom:1px solid var(--border); }
+  .slide.active { opacity:1; }
+
+  #cover { min-height:auto; padding:40px 16px; background:var(--bg); }
+  #cover .logo { font-size:48px; margin-bottom:16px; }
+  #cover h1 { font-size:28px; }
+  #cover .sub { font-size:16px; margin-bottom:24px; }
+  #cover .meta-row { gap:12px; }
+  #cover .meta-item { padding:8px 14px; font-size:12px; }
+  #cover .meta-item b { font-size:14px; }
+
+  .slide-header { flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+  .slide-title { font-size:22px; }
+  .slide-sub { font-size:14px; }
+  .timer-badge { margin-left:0; }
+
+  .col-2, .col-3, .col-main { grid-template-columns:1fr; gap:16px; }
+  .toc-grid { grid-template-columns:1fr; gap:12px; }
+
+  .card { padding:16px; }
+  .big-text { font-size:18px; }
+  .body-text { font-size:15px; }
+  .em-text { font-size:17px; }
+  .activity-text { font-size:14px; }
+  .code-block { font-size:13px; padding:12px 14px; }
+  .tip-text { font-size:14px; }
+  .q-text { font-size:16px; }
+  .cmp-table { font-size:13px; }
+
+  .timeline-title { font-size:15px; }
+  .timeline-desc { font-size:13px; }
+
+  #nav, #keyhint, #timer-display, #progress { display:none; }
+}
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+<!-- ══════════════════ 슬라이드 0: 표지 ══════════════════ -->
+<div class="slide active" id="cover">
+  <div class="logo">🐍</div>
+  <h1>AI 코딩 홈클래스<br><span>2단계 강사용 자료</span></h1>
+  <p class="sub">AI와 함께 만들기 · Python 8회차 수업 가이드</p>
+  <div class="meta-row">
+    <div class="meta-item"><b>대상</b>11세 · 초등 5학년</div>
+    <div class="meta-item"><b>총 회차</b>5~12회차 (8회)</div>
+    <div class="meta-item"><b>도구</b>Replit · Claude AI</div>
+    <div class="meta-item"><b>기간</b>약 2개월</div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 1: 단계 개요 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">2단계 개요</span>
+    <div>
+      <div class="slide-title">8회차로 만드는 첫 Python 작품</div>
+      <div class="slide-sub">변수 → 입력 → 조건문 → 반복문 → 디버깅 → 함수 → 리스트 → 텍스트 RPG</div>
+    </div>
+  </div>
+  <div class="toc-grid">
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal-l)">5</div>
+      <div class="toc-info">
+        <div class="toc-title">print와 변수</div>
+        <div class="toc-sub">변수 = 상자 비유<br>자기소개 출력 프로그램</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal-l)">6</div>
+      <div class="toc-info">
+        <div class="toc-title">input()</div>
+        <div class="toc-sub">사용자 입력 받기<br>대화형 자기소개</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal-l)">7</div>
+      <div class="toc-info">
+        <div class="toc-title">조건문 if/elif/else</div>
+        <div class="toc-sub">들여쓰기 규칙 중요<br>숫자 맞히기 게임 v1</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal-l)">8</div>
+      <div class="toc-info">
+        <div class="toc-title">반복문 for/while</div>
+        <div class="toc-sub">for vs while 차이<br>숫자 맞히기 게임 v2</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--coral)">9</div>
+      <div class="toc-info">
+        <div class="toc-title">디버깅 전문 수업</div>
+        <div class="toc-sub">오류 4총사 익히기<br>버그 5개 찾기 게임</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal-l)">10</div>
+      <div class="toc-info">
+        <div class="toc-title">함수 def</div>
+        <div class="toc-sub">함수 = 레시피 비유<br>계산기 함수 만들기</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--teal-l)">11</div>
+      <div class="toc-info">
+        <div class="toc-title">리스트</div>
+        <div class="toc-sub">서랍장 비유<br>할 일 목록 프로그램</div>
+      </div>
+      <div class="toc-time">60분</div>
+    </div>
+    <div class="toc-item">
+      <div class="toc-num" style="color:var(--blue)">12</div>
+      <div class="toc-info">
+        <div class="toc-title">미니 프로젝트</div>
+        <div class="toc-sub">텍스트 RPG 종합 실습<br>혼자 완성 + 발표</div>
+      </div>
+      <div class="toc-time">90분</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 2: 강사 원칙 복습 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">강사 원칙</span>
+    <div class="slide-title">2단계 시작 전 다시 새기기</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box coral">
+        <div class="tip-label coral">✋ 절대 금지</div>
+        <div class="tip-text">
+          <b>Claude Code/Cursor/Copilot</b> 등 에이전트 도구 사용<br>
+          코드 전체를 AI에 붙여넣고 "이거 고쳐줘"<br>
+          "퀴즈 게임 만들어줘" 같은 통째 요청<br>
+          <b>복붙(Ctrl+C/V)</b> — 텍스트 코딩 시작이라 가장 위험
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">✅ 반드시 지키기</div>
+        <div class="tip-text">
+          모든 코드는 <b>직접 타이핑</b><br>
+          오류 발생 시 <b>"에러 메시지에 뭐라고 나와?"</b> 먼저 묻기<br>
+          AI에 묻기 전 <b>10분</b> 혼자 고민<br>
+          AI 답을 받아도 <b>말로 다시 설명</b> 못 하면 재도전
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">3단계 도움 규칙 (수업 헌법)</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-teal">1</div>
+            <div class="activity-text"><b>10분 혼자</b> — 에러 메시지 읽기, 코드 처음부터 다시 보기</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-amber">2</div>
+            <div class="activity-text"><b>AI에 힌트만</b> — "답 말고 원인만 알려줘. 코드는 내가 고칠게"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-coral">3</div>
+            <div class="activity-text"><b>직접 수정 + 설명</b> — 말로 설명 못 하면 이해 못 한 것 → 재도전</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🎯 핵심 기준</div>
+        <div class="tip-text"><b>"이 코드가 왜 이렇게 동작하는지 말로 설명할 수 있어?"</b><br>YES → 다음 진행 / NO → 다시 해보기</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 3: 환경 세팅 (Replit) ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">환경 세팅</span>
+    <div>
+      <div class="slide-title">Replit 가입 + 첫 코드 실행</div>
+      <div class="slide-sub">5회차 시작 전 미리 끝내두면 좋음 (10분 내외)</div>
+    </div>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">STEP 1 — Replit 가입 (5분)</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-teal">①</div>
+            <div class="activity-text"><b>replit.com</b> 접속 → 우측 상단 "Sign up"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">②</div>
+            <div class="activity-text"><b>Continue with Google</b> (부모 계정 사용 권장)</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-teal">③</div>
+            <div class="activity-text"><b>+ Create Repl</b> → Language: <b>Python</b> → Title: <b>coding-class</b> → Create</div>
+          </div>
+        </div>
+      </div>
+      <div class="card accent-teal">
+        <div class="card-title c-teal">STEP 2 — 첫 코드 실행 (3분)</div>
+        <div class="code-block">
+<span class="code-fn">print</span>(<span class="code-str">"Hello, 세계!"</span>)</div>
+        <div class="body-text">
+          가운데 ▶ Run 버튼 클릭<br>
+          → 오른쪽 콘솔에 <b>Hello, 세계!</b> 출력되면 성공!<br><br>
+          ⚠️ 일부러 <b>"세계!"</b> 한글이 들어간 코드로 시작 → "한글도 잘 나오네!" 안심 효과
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box blue">
+        <div class="tip-label blue">📱 iPad에서 Replit 사용</div>
+        <div class="tip-text">
+          <b>Safari</b>에서 사용 가능 (앱 불필요)<br>
+          <b>키보드 필수</b> — 소프트키보드로 코딩은 사실상 불가능<br>
+          들여쓰기는 <b>Tab</b> 키 사용<br>
+          실행 단축키: <b>Cmd + Enter</b>
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">⚠️ 자주 막히는 곳</div>
+        <div class="tip-text">
+          <b>Run 눌러도 반응 없음</b> → 좌측 파일이 <code>main.py</code>인지 확인<br>
+          <b>한글 깨짐</b> → 거의 없음. Replit은 UTF-8 기본<br>
+          <b>로그인 안 됨</b> → 광고 차단기 끄고 재시도
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 강사 팁</div>
+        <div class="tip-text">5회차 시작 전 강사가 <b>혼자 한 번</b> 가입+실행을 끝내두면<br>아이가 막혔을 때 즉답 가능. 무조건 권장.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 4: AI 질문 패턴 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">AI 활용</span>
+    <div>
+      <div class="slide-title">AI에게 묻는 법 — 금지 vs 권장</div>
+      <div class="slide-sub">2단계는 텍스트 코딩이라 AI 의존이 가장 위험한 시기</div>
+    </div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-coral">❌ 금지 패턴 (의존형)</div>
+      <div class="cmp-table" style="grid-template-columns:1fr;">
+        <div class="cmp-cell bad">"이 코드 고쳐줘" + 코드 전체 붙여넣기</div>
+        <div class="cmp-cell bad">"for문 예제 코드 짜줘"</div>
+        <div class="cmp-cell bad">"숫자 맞히기 게임 만들어줘"</div>
+        <div class="cmp-cell bad">"이 코드 맞아?"</div>
+        <div class="cmp-cell bad">"어떻게 하는지 모르겠어. 알려줘"</div>
+      </div>
+      <div class="tip-box coral" style="margin-top:8px;">
+        <div class="tip-label coral">왜 위험한가</div>
+        <div class="tip-text">코드를 받으면 <b>아이가 안 짠다</b>. 텍스트 코딩 첫 시기에 이게 굳어지면 이후 모든 단계가 가짜가 됨.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title c-teal">✅ 권장 패턴 (학습형)</div>
+      <div class="cmp-table" style="grid-template-columns:1fr;">
+        <div class="cmp-cell good">"NameError가 왜 나는지 <b>원인만</b> 알려줘"</div>
+        <div class="cmp-cell good">"for문이 while문이랑 어떻게 달라?"</div>
+        <div class="cmp-cell good">"퀴즈 게임에 필요한 <b>기능 목록만</b> 알려줘. 코드는 내가 짤게"</div>
+        <div class="cmp-cell good">"틀렸으면 <b>왜 틀렸는지 이유만</b>, 정답은 말하지 마"</div>
+        <div class="cmp-cell good">"지금 이렇게 생각하고 있는데 <b>방향이 맞아?</b>"</div>
+      </div>
+      <div class="tip-box teal" style="margin-top:8px;">
+        <div class="tip-label teal">강사 멘트</div>
+        <div class="tip-text">"AI한테 <b>'코드는 내가 짤게'</b> 한 줄 꼭 붙여. 그 한 줄이 너랑 학원 다니는 친구 차이를 만들어."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [5회차] 슬라이드 5: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">5회차</span>
+    <div>
+      <div class="slide-title">Python 첫 걸음 — print와 변수</div>
+      <div class="slide-sub">텍스트 코딩의 첫 1시간. 첫인상이 가장 중요하다.</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 5분</div>
+          <div class="timeline-title">"이제 우리가 직접 컴퓨터한테 말 거는 거야"</div>
+          <div class="timeline-desc">1단계에선 AI에게 묻기만 했음. 오늘부터는 직접 코드를 친다.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">환경 세팅 · 10분</div>
+          <div class="timeline-title">Replit 접속 + 첫 코드 실행</div>
+          <div class="timeline-desc">미리 가입 안 된 경우만. 이미 했으면 5분으로 단축.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">개념 설명 · 10분</div>
+          <div class="timeline-title">변수 = 상자 비유</div>
+          <div class="timeline-desc">종이에 상자를 직접 그려서 설명. 이름표 + 내용물.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 · 25분</div>
+          <div class="timeline-title">자기소개 출력 프로그램 (직접 타이핑)</div>
+          <div class="timeline-desc">변수 5개, print 5개. 좋아하는 것을 자기 단어로 채우게.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--coral)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">오류 체험 · 10분</div>
+          <div class="timeline-title">일부러 오류 만들고 메시지 읽기</div>
+          <div class="timeline-desc">NameError, TypeError 두 종류 체험. AI에게 "원인만" 묻기 첫 연습.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 5분</div>
+          <div class="timeline-title">노트 한 줄</div>
+          <div class="timeline-desc">"print()가 하는 일 / 변수란 무엇인가" 두 줄 직접 쓰기.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎯 5회차 목표</div>
+        <div class="body-text">
+          <b>① print() 사용</b><br>
+          <b>② 변수 만들고 꺼내쓰기</b><br>
+          <b>③ 오류를 두려워하지 않기</b>
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 절대 금지</div>
+        <div class="tip-text">아이가 답답해해도 <b>코드 대신 쳐주지 않기</b>. 오타 발견해도 <b>"이 줄에 뭔가 다른 데랑 달라 보여"</b> 정도까지만.</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 강사 멘트</div>
+        <div class="tip-text">"느려도 괜찮아. <b>손으로 친 게 진짜 네 실력</b>이 돼."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 6: print() 핵심 개념 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">5회차 · 개념 1</span>
+    <div class="slide-title">print() — 화면에 출력하기</div>
+    <span class="timer-badge">⏱ 5분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">기본 형태</div>
+        <div class="code-block">
+<span class="code-fn">print</span>(<span class="code-str">"Hello, 세계!"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"안녕하세요"</span>)</div>
+      </div>
+      <div class="card accent-teal">
+        <div class="card-title c-teal">강사 설명 멘트</div>
+        <div class="em-text">"<span class="accent-t">print는 컴퓨터한테<br>'이걸 화면에 보여줘'</span>라고<br>시키는 거야."</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box">
+        <div class="tip-label">🔍 짚어줄 포인트 3가지</div>
+        <div class="tip-text">
+          <b>① 소문자 print</b> — Print는 안 됨 (NameError)<br>
+          <b>② 괄호 ( )</b> — 함수의 표시. 안에 보여줄 내용을 넣음<br>
+          <b>③ 따옴표 " "</b> — 문자열의 표시. 빠지면 SyntaxError
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 직접 해보기 — 5문장</div>
+        <div class="code-block">
+<span class="code-fn">print</span>(<span class="code-str">"내 이름은 ___ 이야"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"___ 학교에 다녀"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"좋아하는 음식은 ___"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"좋아하는 색은 ___"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"오늘 기분은 ___"</span>)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 7: 변수 (상자 비유) ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">5회차 · 개념 2</span>
+    <div class="slide-title">변수 — 이름표 붙은 상자</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">변수 만들기</div>
+        <div class="code-block">
+<span class="code-key">name</span> = <span class="code-str">"철수"</span>       <span class="code-comment"># "name" 상자에 "철수" 담기</span>
+<span class="code-key">age</span> = <span class="code-num">11</span>            <span class="code-comment"># "age" 상자에 11 담기</span>
+
+<span class="code-fn">print</span>(<span class="code-key">name</span>)         <span class="code-comment"># 상자 꺼내서 보여주기</span>
+<span class="code-fn">print</span>(<span class="code-key">age</span>)</div>
+      </div>
+      <div class="card accent-amber">
+        <div class="card-title c-amber">⚠️ 문자열 + 숫자 합치기</div>
+        <div class="code-block">
+<span class="code-key">name</span> = <span class="code-str">"철수"</span>
+<span class="code-key">age</span> = <span class="code-num">11</span>
+
+<span class="code-fn">print</span>(<span class="code-str">"안녕! 나는 "</span> + <span class="code-key">name</span> + <span class="code-str">" 이고 "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span>) + <span class="code-str">"살이야"</span>)</div>
+        <div class="body-text">숫자(<b>age</b>)를 문자열과 합칠 때는 <b>str()</b>로 감싸야 함.<br>안 하면 <b>TypeError</b> 발생 → 일부러 체험하게 하기 좋은 기회.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">상자 비유 — 칠판에 그려주기</div>
+        <div class="code-block" style="font-size:13px;">
+┌─────────┐     ┌─────────┐
+│  name   │     │   age   │
+│ "철수"  │     │   11    │
+└─────────┘     └─────────┘</div>
+        <div class="body-text" style="font-size:14px;">"이름표를 붙이면 나중에 꺼내 쓸 수 있어. 그래서 변(數)수 — 변할 수 있는 숫자."</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 핵심 질문</div>
+        <div class="tip-text">"<b>변수가 없으면 어떻게 될까?</b><br>name을 지우고 print(name) 실행해봐"<br>→ NameError 체험으로 자연스럽게 연결</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 8: 5회차 실습 코드 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">5회차 · 실습</span>
+    <div>
+      <div class="slide-title">자기소개 프로그램 — 직접 타이핑</div>
+      <div class="slide-sub">⚠️ 이 화면을 아이에게 보여주되, 코드는 손으로</div>
+    </div>
+    <span class="timer-badge">⏱ 25분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">기본 코드 (직접 타이핑)</div>
+      <div class="code-block">
+<span class="code-key">name</span> = <span class="code-str">"내이름"</span>
+<span class="code-key">age</span> = <span class="code-num">11</span>
+<span class="code-key">city</span> = <span class="code-str">"서울"</span>
+<span class="code-key">hobby</span> = <span class="code-str">"게임"</span>
+<span class="code-key">food</span> = <span class="code-str">"라면"</span>
+
+<span class="code-fn">print</span>(<span class="code-str">"이름: "</span> + <span class="code-key">name</span>)
+<span class="code-fn">print</span>(<span class="code-str">"나이: "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span>) + <span class="code-str">"살"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"사는 곳: "</span> + <span class="code-key">city</span>)
+<span class="code-fn">print</span>(<span class="code-str">"취미: "</span> + <span class="code-key">hobby</span>)
+<span class="code-fn">print</span>(<span class="code-str">"좋아하는 음식: "</span> + <span class="code-key">food</span>)</div>
+      <div class="body-text">아이가 5개 변수를 모두 자기 것으로 바꾸게 하기. <b>"내이름"</b> 그대로 두면 안 됨.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🚀 스스로 도전</div>
+        <div class="body-text">좋아하는 것 <b>5가지</b>를 변수로 만들고 출력하기.<br>예: favorite_game, favorite_song...</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 가장 흔한 오타</div>
+        <div class="tip-text">
+          <b>= vs ==</b> — 5회차에선 = 만 쓰면 됨<br>
+          <b>대문자 Print</b> → NameError<br>
+          <b>따옴표 누락</b> → SyntaxError<br>
+          <b>한글 변수명</b> → 가능하지만 <b>영어 권장</b> (실무 익히기)
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 부모 팁</div>
+        <div class="tip-text">"느려도 괜찮아. <b>오타 나면 그게 진짜 공부야</b>. 한 번 틀리고 고쳐본 코드는 절대 안 잊어버려."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 9: 5회차 오류 체험 + 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">5회차 · 오류 체험 + 정리</span>
+    <div class="slide-title">일부러 망가뜨리기 + AI에 묻기 첫 연습</div>
+    <span class="timer-badge">⏱ 15분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-coral">
+      <div class="card-title c-coral">일부러 만들 오류 3가지</div>
+      <div class="code-block">
+<span class="code-comment"># 1. 대문자로 써보기 → NameError</span>
+<span class="code-fn">Print</span>(<span class="code-str">"Hello"</span>)
+
+<span class="code-comment"># 2. 따옴표 빼보기 → NameError</span>
+<span class="code-fn">print</span>(Hello)
+
+<span class="code-comment"># 3. str() 없이 합치기 → TypeError</span>
+<span class="code-fn">print</span>(<span class="code-str">"나이: "</span> + <span class="code-key">age</span>)</div>
+      <div class="body-text">하나씩 직접 작성 → 실행 → <b>오류 메시지를 큰 소리로 읽게</b> 하기.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">AI에 처음 묻기 — 모범 답안</div>
+        <div class="q-card">
+          <div class="q-label">❌ 이렇게 묻지 마</div>
+          <div class="q-text" style="color:var(--coral);font-size:16px;">"이 코드 고쳐줘"</div>
+        </div>
+        <div class="q-card" style="margin-top:8px;">
+          <div class="q-label">✅ 이렇게 물어</div>
+          <div class="q-text" style="font-size:16px;">"NameError: name 'Print' is not defined<br>이라고 나오는데 <b>왜 그런 거야?</b><br>코드는 내가 고칠게."</div>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 정리 (5분)</div>
+        <div class="tip-text">노트에 두 줄 직접 쓰기:<br>① <b>print()</b>가 하는 일: ____<br>② <b>변수</b>란: ____</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 핵심 질문 3개</div>
+        <div class="tip-text">
+          "변수가 없으면 어떻게 될까?"<br>
+          "str()을 왜 써야 하는 거야?"<br>
+          "이 코드에 변수가 몇 개야?"
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [6회차] 슬라이드 10: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">6회차</span>
+    <div>
+      <div class="slide-title">input() — 사용자와 대화하기</div>
+      <div class="slide-sub">"내가 만든 프로그램이 사람 말을 듣는다"는 첫 경험</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">복습 · 5분</div>
+          <div class="timeline-title">"변수가 뭐야? print가 뭐야?"</div>
+          <div class="timeline-desc">아이가 <b>말로</b> 설명하게 하기. 못 하면 5회차 코드 같이 다시 보기.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">개념 · 10분</div>
+          <div class="timeline-title">input() 방향 개념 + int() 변환</div>
+          <div class="timeline-desc">print는 컴퓨터→사람, input은 사람→컴퓨터. 화살표로 그려주기.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 1 · 20분</div>
+          <div class="timeline-title">자기소개 프로그램 v2 (대화형)</div>
+          <div class="timeline-desc">5회차 자기소개를 input으로 변환. 변수 3개 + input 2개 + print 5개.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 2 · 20분</div>
+          <div class="timeline-title">나이 계산기 (10년 후, 20년 후)</div>
+          <div class="timeline-desc">int() + 사칙연산 첫 등장. 태어난 해 계산까지.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 5분</div>
+          <div class="timeline-title">노트 한 줄</div>
+          <div class="timeline-desc">"input()이 print()와 다른 점: ____"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎯 6회차 목표</div>
+        <div class="body-text">
+          <b>① input()</b>으로 입력 받기<br>
+          <b>② int()</b>로 문자열 → 숫자 변환<br>
+          <b>③ 사용자에 따라 결과가 바뀌는 첫 경험</b>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🔍 핵심 함정</div>
+        <div class="tip-text"><b>input()의 결과는 항상 문자열</b>이라는 것.<br>이걸 모르면 7회차 if문에서 큰 혼란 발생.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 11: input() 핵심 개념 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">6회차 · 개념</span>
+    <div class="slide-title">input() — 사람 → 컴퓨터 방향</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">기본 형태</div>
+        <div class="code-block">
+<span class="code-key">name</span> = <span class="code-fn">input</span>(<span class="code-str">"이름이 뭐야? "</span>)
+<span class="code-fn">print</span>(<span class="code-str">"반가워, "</span> + <span class="code-key">name</span> + <span class="code-str">"!"</span>)</div>
+        <div class="body-text">실행하면 <b>커서가 깜빡이며 입력을 기다림</b>. 사용자가 타이핑 후 Enter → name에 저장.</div>
+      </div>
+      <div class="card accent-amber">
+        <div class="card-title c-amber">숫자 입력 받기 — int() 변환</div>
+        <div class="code-block">
+<span class="code-key">age</span> = <span class="code-fn">input</span>(<span class="code-str">"나이를 입력해: "</span>)   <span class="code-comment"># 항상 문자열로 받음</span>
+<span class="code-key">age_num</span> = <span class="code-fn">int</span>(<span class="code-key">age</span>)                <span class="code-comment"># 숫자로 변환</span>
+<span class="code-key">future_age</span> = <span class="code-key">age_num</span> + <span class="code-num">10</span>
+<span class="code-fn">print</span>(<span class="code-str">"10년 후엔 "</span> + <span class="code-fn">str</span>(<span class="code-key">future_age</span>) + <span class="code-str">"살이야!"</span>)</div>
+        <div class="body-text">한 줄로 줄이는 패턴도 가르치기:</div>
+        <div class="code-block">
+<span class="code-key">age</span> = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"나이를 입력해: "</span>))</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">방향 비교 표</div>
+        <div class="cmp-table">
+          <div class="cmp-head">함수</div>
+          <div class="cmp-head">방향 / 역할</div>
+          <div class="cmp-cell"><b>print()</b></div>
+          <div class="cmp-cell">컴퓨터 → 사람<br>화면에 보여주기</div>
+          <div class="cmp-cell"><b>input()</b></div>
+          <div class="cmp-cell">사람 → 컴퓨터<br>키보드 입력 받기</div>
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 함정 — input은 항상 문자열</div>
+        <div class="tip-text"><b>"11"</b> + <b>"10"</b> = <b>"1110"</b> (이어붙이기)<br><b>11</b> + <b>10</b> = <b>21</b> (덧셈)<br>→ 그래서 <b>int()</b> 변환이 필요함</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 강사 멘트</div>
+        <div class="tip-text">"input은 컴퓨터가 우리한테 <b>'뭔가 입력해줘'</b>라고 기다리는 거야."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 12: 6회차 실습 1 + 2 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">6회차 · 실습</span>
+    <div class="slide-title">자기소개 v2 + 나이 계산기</div>
+    <span class="timer-badge">⏱ 40분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">실습 1 — 자기소개 v2 (20분)</div>
+      <div class="body-text">조건: print 5+, input 2+, 변수 3+. 코드는 <b>아이가 직접 짜게</b>.</div>
+      <div class="code-block">
+<span class="code-comment"># 강사 참고용 — 아이에게 보여주지 않기</span>
+<span class="code-key">name</span> = <span class="code-fn">input</span>(<span class="code-str">"이름이 뭐야? "</span>)
+<span class="code-key">hobby</span> = <span class="code-fn">input</span>(<span class="code-str">"취미가 뭐야? "</span>)
+<span class="code-key">age</span> = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"나이가 몇 살이야? "</span>))
+
+<span class="code-fn">print</span>(<span class="code-str">"=== 자기소개 ==="</span>)
+<span class="code-fn">print</span>(<span class="code-str">"이름: "</span> + <span class="code-key">name</span>)
+<span class="code-fn">print</span>(<span class="code-str">"취미: "</span> + <span class="code-key">hobby</span>)
+<span class="code-fn">print</span>(<span class="code-str">"나이: "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span>) + <span class="code-str">"살"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"10년 후: "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span> + <span class="code-num">10</span>) + <span class="code-str">"살"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"만나서 반가워, "</span> + <span class="code-key">name</span> + <span class="code-str">"!"</span>)</div>
+    </div>
+    <div class="card accent-amber">
+      <div class="card-title c-amber">실습 2 — 나이 계산기 (20분)</div>
+      <div class="code-block">
+<span class="code-key">age</span> = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"나이를 입력해: "</span>))
+<span class="code-fn">print</span>(<span class="code-str">"10년 후엔 "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span> + <span class="code-num">10</span>) + <span class="code-str">"살"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"20년 후엔 "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span> + <span class="code-num">20</span>) + <span class="code-str">"살"</span>)
+<span class="code-fn">print</span>(<span class="code-str">"태어난 해는 약 "</span> + <span class="code-fn">str</span>(<span class="code-num">2026</span> - <span class="code-key">age</span>) + <span class="code-str">"년"</span>)</div>
+      <div class="tip-box amber" style="margin-top:8px;">
+        <div class="tip-label amber">AI 활용 연습</div>
+        <div class="tip-text">막히면: "<b>input()의 결과를 숫자로 바꾸려면 어떻게 해?</b>"<br>(코드 짜달라 ❌)</div>
+      </div>
+      <div class="tip-box coral" style="margin-top:8px;">
+        <div class="tip-label coral">⚠️ 핵심 질문</div>
+        <div class="tip-text"><b>"int()를 안 쓰면 어떻게 돼? 지워보고 실행해봐"</b><br>→ TypeError 직접 체험하게 하기</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 13: 6회차 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">6회차 · 정리</span>
+    <div class="slide-title">핵심 질문 + 노트</div>
+    <span class="timer-badge">⏱ 5분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">핵심 질문 (말로 답하게)</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"int()를 안 쓰면 어떻게 돼?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"이 프로그램에서 사용자가 직접 입력하는 건 뭐야?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"input의 결과가 왜 항상 문자열인지 설명해봐"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"같은 프로그램을 두 번 실행했을 때 결과가 같았어, 달랐어? 왜?"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 노트</div>
+        <div class="tip-text">"<b>input()이 print()와 다른 점: ____</b>"<br>한 줄로 직접 쓰기.</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 다음 회차로 연결</div>
+        <div class="tip-text">"오늘 만든 자기소개 프로그램, 다음 시간엔 <b>'어른이세요?' 같은 질문에 따라 다르게 반응</b>하게 만들 거야."<br>→ 7회차 if문 자연스러운 동기부여</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🏆 칭찬 멘트</div>
+        <div class="tip-text">"이거 진짜 <b>네가 만든 프로그램</b>이야. 친구한테 보여주고 입력해달라고 해봐!"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [7회차] 슬라이드 14: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">7회차</span>
+    <div>
+      <div class="slide-title">조건문 — if / elif / else</div>
+      <div class="slide-sub">"만약에"라는 일상 언어를 코드로 옮기기</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 10분</div>
+          <div class="timeline-title">일상에서 조건 찾기</div>
+          <div class="timeline-desc">"비 오면? 배고프면? 숙제 다 했으면?" 일상 → 코드 다리 놓기.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">개념 · 10분</div>
+          <div class="timeline-title">if / elif / else + 들여쓰기</div>
+          <div class="timeline-desc">들여쓰기 빼고 실행 → IndentationError 일부러 체험.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 · 30분</div>
+          <div class="timeline-title">숫자 맞히기 게임 v1</div>
+          <div class="timeline-desc">정답 7 고정. == / &lt; / &gt; 로 분기.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--coral)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도전 · 5분</div>
+          <div class="timeline-title">elif로 "거의 다 왔어!" 추가</div>
+          <div class="timeline-desc">abs() 함수 슬쩍 등장. 차이가 1~2면 "거의" / 3 이상이면 "많이".</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 5분</div>
+          <div class="timeline-title">노트 + 핵심 질문</div>
+          <div class="timeline-desc">"if/elif/else 차이" + "들여쓰기를 왜 해야 하는지"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎯 7회차 목표</div>
+        <div class="body-text">
+          <b>① if 구조</b> 이해 + 들여쓰기 규칙<br>
+          <b>② 비교 연산자</b> 6개 사용<br>
+          <b>③ "조건에 따라 다른 결과"</b> 첫 경험
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 가장 큰 함정</div>
+        <div class="tip-text"><b>= 와 == 의 차이</b>.<br>"= 는 담는 거, == 는 비교하는 거" 반복해서 강조.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 15: if/elif/else 개념 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">7회차 · 개념</span>
+    <div class="slide-title">if / elif / else + 들여쓰기 규칙</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">if — "만약에"</div>
+        <div class="body-text">"만약 비가 오면 → 우산. 아니면 → 그냥 나가기"</div>
+        <div class="code-block">
+<span class="code-key">weather</span> = <span class="code-str">"비"</span>
+
+<span class="code-key">if</span> <span class="code-key">weather</span> == <span class="code-str">"비"</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"우산 챙겨!"</span>)
+<span class="code-key">else</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"그냥 나가!"</span>)</div>
+      </div>
+      <div class="card accent-amber">
+        <div class="card-title c-amber">elif — 여러 조건</div>
+        <div class="code-block">
+<span class="code-key">score</span> = <span class="code-num">85</span>
+
+<span class="code-key">if</span> <span class="code-key">score</span> &gt;= <span class="code-num">90</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"A 등급"</span>)
+<span class="code-key">elif</span> <span class="code-key">score</span> &gt;= <span class="code-num">80</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"B 등급"</span>)
+<span class="code-key">elif</span> <span class="code-key">score</span> &gt;= <span class="code-num">70</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"C 등급"</span>)
+<span class="code-key">else</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"더 열심히!"</span>)</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-coral">
+        <div class="card-title c-coral">⚠️ 들여쓰기 규칙</div>
+        <div class="code-block">
+<span class="code-key">if</span> <span class="code-key">score</span> &gt;= <span class="code-num">90</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"A 등급"</span>)   <span class="code-comment"># 스페이스 4칸</span>
+<span class="code-fn">print</span>(<span class="code-str">"끝"</span>)           <span class="code-comment"># 들여쓰기 없음 = if 밖</span></div>
+        <div class="body-text"><b>들여쓰기를 빼면 → IndentationError 발생</b><br>이 오류 보면 먼저 들여쓰기 확인하는 습관!</div>
+      </div>
+      <div class="card">
+        <div class="card-title c-teal">비교 연산자 6총사</div>
+        <div class="cmp-table">
+          <div class="cmp-head">연산자</div>
+          <div class="cmp-head">의미 / 예시</div>
+          <div class="cmp-cell"><b>==</b></div>
+          <div class="cmp-cell">같다 — <code>age == 11</code></div>
+          <div class="cmp-cell"><b>!=</b></div>
+          <div class="cmp-cell">다르다 — <code>age != 10</code></div>
+          <div class="cmp-cell"><b>&gt;</b></div>
+          <div class="cmp-cell">크다 — <code>score &gt; 90</code></div>
+          <div class="cmp-cell"><b>&lt;</b></div>
+          <div class="cmp-cell">작다 — <code>score &lt; 60</code></div>
+          <div class="cmp-cell"><b>&gt;=</b></div>
+          <div class="cmp-cell">크거나 같다</div>
+          <div class="cmp-cell"><b>&lt;=</b></div>
+          <div class="cmp-cell">작거나 같다</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 16: 7회차 실습 — 숫자 맞히기 v1 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">7회차 · 실습</span>
+    <div class="slide-title">숫자 맞히기 게임 v1</div>
+    <span class="timer-badge">⏱ 30분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">기본 코드 — 정답 7 고정</div>
+      <div class="code-block">
+<span class="code-key">secret</span> = <span class="code-num">7</span>
+<span class="code-key">guess</span> = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"1~10 사이 숫자를 맞혀봐: "</span>))
+
+<span class="code-key">if</span> <span class="code-key">guess</span> == <span class="code-key">secret</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"정답!"</span>)
+<span class="code-key">elif</span> <span class="code-key">guess</span> &lt; <span class="code-key">secret</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"더 크게!"</span>)
+<span class="code-key">else</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"더 작게!"</span>)
+
+<span class="code-fn">print</span>(<span class="code-str">"정답은 "</span> + <span class="code-fn">str</span>(<span class="code-key">secret</span>) + <span class="code-str">" 이었어!"</span>)</div>
+      <div class="body-text">실행 후 여러 번 다른 숫자로 시도하게 하기. <b>"왜 항상 다른 메시지가 나올까?"</b></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🚀 도전 — elif 추가</div>
+        <div class="body-text">"많이 틀렸어" / "거의 다 왔어" 구분. 차이가 3 이상이면 "많이", 1~2면 "거의".</div>
+        <div class="code-block">
+<span class="code-key">diff</span> = <span class="code-fn">abs</span>(<span class="code-key">guess</span> - <span class="code-key">secret</span>)  <span class="code-comment"># 절댓값</span>
+
+<span class="code-key">if</span> <span class="code-key">guess</span> == <span class="code-key">secret</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"정답!"</span>)
+<span class="code-key">elif</span> <span class="code-key">diff</span> &lt;= <span class="code-num">2</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"거의 다 왔어!"</span>)
+<span class="code-key">else</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"많이 틀렸어!"</span>)</div>
+        <div class="body-text" style="font-size:14px;">⚠️ <b>힌트만 주기</b> — abs() 한 줄만 알려주고 나머지는 직접 짜게.</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">자주 막히는 곳</div>
+        <div class="tip-text">
+          <b>== 대신 = 사용</b> → SyntaxError<br>
+          <b>들여쓰기 누락</b> → IndentationError<br>
+          <b>elif 위치</b> — if와 else 사이에만
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 17: 7회차 핵심 질문 + 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">7회차 · 정리</span>
+    <div class="slide-title">핵심 질문 + 노트</div>
+    <span class="timer-badge">⏱ 5분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">핵심 질문 (말로 답하게)</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"elif가 없으면 어떻게 돼? 한번 지워보고 실행해봐"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"== 와 = 의 차이가 뭐야?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"들여쓰기를 Tab으로 하는 것과 스페이스로 하는 것, 섞으면 어떻게 될까?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"if만 있고 else 없어도 되나? 왜?"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 노트 (직접 작성)</div>
+        <div class="tip-text">
+          ① "<b>if, elif, else의 차이</b>: ____"<br>
+          ② "<b>들여쓰기를 왜 해야 하는지</b>: ____"
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 부모 팁</div>
+        <div class="tip-text"><b>= (대입)</b>과 <b>== (비교)</b>는 가장 헷갈리는 부분.<br>"= 는 담는 거, == 는 비교하는 거" 반복.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🔗 다음 회차 연결</div>
+        <div class="tip-text">"오늘 정답이 7로 고정이었지? 다음엔 <b>매번 다른 정답</b>이 되게 만들 거야."<br>→ random + while 반복 동기부여</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [8회차] 슬라이드 18: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">8회차</span>
+    <div>
+      <div class="slide-title">반복문 — for / while</div>
+      <div class="slide-sub">"같은 일을 여러 번"을 한 줄로</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 10분</div>
+          <div class="timeline-title">"같은 print 10번 직접 쳐봐"</div>
+          <div class="timeline-desc">불편함을 느끼게 한 후 → for문으로 바꿔주기. "이래서 반복문!"</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">개념 · 10분</div>
+          <div class="timeline-title">for vs while + break/continue</div>
+          <div class="timeline-desc">for = 횟수 정해짐 / while = 조건 만족할 때까지. 비유: 숙제 5문제 vs 배부를 때까지.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 · 30분</div>
+          <div class="timeline-title">숫자 맞히기 게임 v2</div>
+          <div class="timeline-desc">random.randint + while True + break. 7회차 게임에 무한 반복 추가.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--coral)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도전 · 5분</div>
+          <div class="timeline-title">3번 안에 못 맞히면 게임 오버</div>
+          <div class="timeline-desc">시도 횟수 카운트 + break 두 곳.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 5분</div>
+          <div class="timeline-title">노트 한 줄 + 무한루프 체험</div>
+          <div class="timeline-desc">break 빼고 실행 → Ctrl+C 강제 종료 알려주기.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎯 8회차 목표</div>
+        <div class="body-text">
+          <b>① for/while 차이</b> 설명 가능<br>
+          <b>② break/continue</b> 사용<br>
+          <b>③ random</b> 모듈 첫 사용
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 무한루프 대비</div>
+        <div class="tip-text">사전에 알려주기:<br><b>"콘솔이 멈추면 Ctrl+C로 멈출 수 있어"</b><br>(iPad는 Stop 버튼)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 19: for vs while ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">8회차 · 개념 1</span>
+    <div class="slide-title">for vs while — 언제 무엇을 쓰나</div>
+    <span class="timer-badge">⏱ 7분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">for문 — 정해진 횟수 반복</div>
+        <div class="code-block">
+<span class="code-key">for</span> i <span class="code-key">in</span> <span class="code-fn">range</span>(<span class="code-num">5</span>):        <span class="code-comment"># 0,1,2,3,4 (5번)</span>
+    <span class="code-fn">print</span>(i)
+
+<span class="code-key">for</span> i <span class="code-key">in</span> <span class="code-fn">range</span>(<span class="code-num">1</span>, <span class="code-num">6</span>):     <span class="code-comment"># 1,2,3,4,5</span>
+    <span class="code-fn">print</span>(i)
+
+<span class="code-key">for</span> i <span class="code-key">in</span> <span class="code-fn">range</span>(<span class="code-num">0</span>, <span class="code-num">10</span>, <span class="code-num">2</span>): <span class="code-comment"># 0,2,4,6,8 (2씩)</span>
+    <span class="code-fn">print</span>(i)</div>
+      </div>
+      <div class="card accent-amber">
+        <div class="card-title c-amber">while문 — 조건이 참인 동안</div>
+        <div class="code-block">
+<span class="code-key">count</span> = <span class="code-num">0</span>
+<span class="code-key">while</span> <span class="code-key">count</span> &lt; <span class="code-num">5</span>:
+    <span class="code-fn">print</span>(<span class="code-key">count</span>)
+    <span class="code-key">count</span> = <span class="code-key">count</span> + <span class="code-num">1</span>   <span class="code-comment"># 또는 count += 1</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">언제 어떤 걸?</div>
+        <div class="cmp-table">
+          <div class="cmp-head">상황</div>
+          <div class="cmp-head">선택 / 이유</div>
+          <div class="cmp-cell">몇 번 반복할지 알 때</div>
+          <div class="cmp-cell"><b>for</b><br>range(n)으로 횟수 지정</div>
+          <div class="cmp-cell">조건이 만족될 때까지</div>
+          <div class="cmp-cell"><b>while</b><br>언제 끝날지 모를 때</div>
+          <div class="cmp-cell">무한 반복 + 탈출</div>
+          <div class="cmp-cell"><b>while True + break</b><br>게임 루프</div>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 강사 비유</div>
+        <div class="tip-text">
+          <b>for</b> = "숙제 <b>5문제</b> 풀 때까지" (횟수 고정)<br>
+          <b>while</b> = "<b>배부를 때까지</b> 밥 먹기" (조건 따라)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 20: break/continue ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">8회차 · 개념 2</span>
+    <div class="slide-title">break / continue — 반복문 제어</div>
+    <span class="timer-badge">⏱ 3분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-coral">
+      <div class="card-title c-coral">break — 즉시 탈출</div>
+      <div class="code-block">
+<span class="code-key">for</span> i <span class="code-key">in</span> <span class="code-fn">range</span>(<span class="code-num">10</span>):
+    <span class="code-key">if</span> i == <span class="code-num">5</span>:
+        <span class="code-key">break</span>          <span class="code-comment"># 5에서 멈춤</span>
+    <span class="code-fn">print</span>(i)           <span class="code-comment"># 0,1,2,3,4 출력</span></div>
+      <div class="body-text">"이 반복 자체를 <b>지금 즉시 끝</b>!"</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title c-teal">continue — 한 번만 건너뛰기</div>
+      <div class="code-block">
+<span class="code-key">for</span> i <span class="code-key">in</span> <span class="code-fn">range</span>(<span class="code-num">5</span>):
+    <span class="code-key">if</span> i == <span class="code-num">2</span>:
+        <span class="code-key">continue</span>       <span class="code-comment"># 2 건너뜀</span>
+    <span class="code-fn">print</span>(i)           <span class="code-comment"># 0,1,3,4 출력</span></div>
+      <div class="body-text">"이번 한 번만 <b>건너뛰고 다음으로</b>!"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 21: 8회차 실습 — 숫자 맞히기 v2 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">8회차 · 실습</span>
+    <div>
+      <div class="slide-title">숫자 맞히기 게임 v2 — 매번 다른 정답</div>
+      <div class="slide-sub">random + while True + break 종합</div>
+    </div>
+    <span class="timer-badge">⏱ 30분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">완성 코드 (직접 타이핑)</div>
+      <div class="code-block">
+<span class="code-key">import</span> random
+
+<span class="code-key">secret</span> = random.<span class="code-fn">randint</span>(<span class="code-num">1</span>, <span class="code-num">10</span>)   <span class="code-comment"># 1~10 사이 랜덤</span>
+<span class="code-key">count</span> = <span class="code-num">0</span>                          <span class="code-comment"># 시도 횟수</span>
+
+<span class="code-key">while</span> <span class="code-key">True</span>:
+    <span class="code-key">guess</span> = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"숫자를 맞혀봐 (1~10): "</span>))
+    <span class="code-key">count</span> += <span class="code-num">1</span>
+
+    <span class="code-key">if</span> <span class="code-key">guess</span> == <span class="code-key">secret</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"정답! "</span> + <span class="code-fn">str</span>(<span class="code-key">count</span>) + <span class="code-str">"번 만에 맞혔어!"</span>)
+        <span class="code-key">break</span>
+    <span class="code-key">elif</span> <span class="code-key">guess</span> &lt; <span class="code-key">secret</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"더 크게!"</span>)
+    <span class="code-key">else</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"더 작게!"</span>)</div>
+      <div class="body-text">실행 → 매번 다른 정답이 나오는 것 확인. <b>"진짜 게임 같아!"</b> 반응 끌어내기.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-amber">
+        <div class="card-title c-amber">🚀 도전 — 시도 3번 제한</div>
+        <div class="code-block">
+<span class="code-key">while</span> <span class="code-key">count</span> &lt; <span class="code-num">3</span>:
+    ...
+    <span class="code-key">if</span> <span class="code-key">guess</span> == <span class="code-key">secret</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"정답!"</span>)
+        <span class="code-key">break</span>
+    ...
+<span class="code-key">else</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"게임 오버!"</span>)</div>
+        <div class="body-text" style="font-size:13px;">while-else 구조: 정상 종료(break 안 탔을 때)에만 else 실행. 어려우면 그냥 if로도 OK.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">AI 활용 연습</div>
+        <div class="tip-text">"<b>random.randint가 뭐야? 어떻게 쓰는 거야?</b>"<br>(import random 한 줄까지만 힌트)</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ break 빠뜨리면</div>
+        <div class="tip-text">정답 맞혀도 계속 물어봄 → <b>무한루프</b><br>Ctrl+C로 종료 후 break 추가.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 22: 8회차 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">8회차 · 정리</span>
+    <div class="slide-title">핵심 질문 + 노트</div>
+    <span class="timer-badge">⏱ 5분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">핵심 질문</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"break가 없으면 어떻게 될까?" → 직접 지우고 실행 (무한루프 체험)</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"count += 1 이 뭐야? count = count + 1 이랑 같아?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"random.randint(1, 10)에서 10은 포함돼, 안 돼?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"for랑 while을 안 쓰고 똑같은 게임을 만들 수 있을까?"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 노트 — 3줄</div>
+        <div class="tip-text">
+          ① "for를 쓸 때: ____"<br>
+          ② "while을 쓸 때: ____"<br>
+          ③ "break가 하는 일: ____"
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ Ctrl+C 알리기</div>
+        <div class="tip-text">"콘솔이 멈춰서 답답할 땐 <b>Ctrl+C</b> 눌러. 강제 종료야."<br>(iPad: Stop 버튼)</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 다음 회차 연결</div>
+        <div class="tip-text">"여태 오류가 좀 났지? 다음 시간엔 <b>오류만 전문으로 다루는 수업</b>이야. 오류는 친구 만들기!"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [9회차] 슬라이드 23: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">9회차</span>
+    <div>
+      <div class="slide-title">디버깅 전문 수업 — 오류는 친구다</div>
+      <div class="slide-sub">3단계 도움 규칙을 실전 적용하는 회차</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 5분</div>
+          <div class="timeline-title">"오류는 컴퓨터의 알림이야"</div>
+          <div class="timeline-desc">"이게 이상해" 알려주는 메시지 — 무서워할 필요 없다.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--coral)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">오류 카탈로그 · 15분</div>
+          <div class="timeline-title">오류 4총사 직접 만들고 메시지 읽기</div>
+          <div class="timeline-desc">SyntaxError / NameError / IndentationError / TypeError</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">버그 찾기 · 30분</div>
+          <div class="timeline-title">의도적 버그 5개 코드</div>
+          <div class="timeline-desc">아이가 직접 찾고 고치기. 3단계 규칙 적용 — 10분 혼자 → AI 힌트 → 직접 수정.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 10분</div>
+          <div class="timeline-title">"오류 발생 시 확인 순서" 노트</div>
+          <div class="timeline-desc">자기만의 디버깅 체크리스트 만들기.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-coral">
+        <div class="card-title c-coral">🎯 9회차 성공 기준</div>
+        <div class="body-text">아이가 오류를 보고 <b>당황하지 않고</b> 메시지를 차분히 읽는 모습.<br>그 자체가 성공.</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 강사 멘트</div>
+        <div class="tip-text">"<b>오류 메시지를 읽는 게 실력</b>이야.<br>개발자도 오류는 매일 만나. 다른 점은 메시지를 끝까지 읽냐 안 읽냐야."</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">3단계 규칙 강력 적용</div>
+        <div class="tip-text">버그 발견 시 <b>바로 알려주지 않기</b>. <b>"에러에 뭐라고 나와?"</b>를 반복.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 24: 오류 4총사 (1, 2) ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">9회차 · 개념 1</span>
+    <div class="slide-title">오류 4총사 (1) — Syntax / Name</div>
+    <span class="timer-badge">⏱ 7분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-coral">
+      <div class="card-title c-coral">① SyntaxError — 문법</div>
+      <div class="code-block">
+<span class="code-comment"># 따옴표 빠짐</span>
+<span class="code-fn">print</span>(<span class="code-str">"Hello)</span>       <span class="code-comment"># SyntaxError</span>
+
+<span class="code-comment"># 콜론 빠짐</span>
+<span class="code-key">if</span> <span class="code-key">age</span> &gt; <span class="code-num">10</span>         <span class="code-comment"># : 가 없음</span>
+    <span class="code-fn">print</span>(<span class="code-str">"ok"</span>)</div>
+      <div class="body-text"><b>해결:</b> 빨간 줄 위치부터 확인. 오타·따옴표·괄호·콜론 순으로 체크.</div>
+    </div>
+    <div class="card accent-amber">
+      <div class="card-title c-amber">② NameError — 이름</div>
+      <div class="code-block">
+<span class="code-comment"># 변수 이름 오타</span>
+<span class="code-key">nane</span> = <span class="code-str">"철수"</span>       <span class="code-comment"># nane으로 만들었는데</span>
+<span class="code-fn">print</span>(<span class="code-key">name</span>)         <span class="code-comment"># name으로 부름</span>
+
+<span class="code-comment"># 정의 전 사용</span>
+<span class="code-fn">print</span>(<span class="code-key">x</span>)            <span class="code-comment"># x를 아직 안 만듦</span>
+<span class="code-key">x</span> = <span class="code-num">10</span></div>
+      <div class="body-text"><b>해결:</b> 변수 이름 스펠링 확인. 정의 위치도 확인.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 25: 오류 4총사 (3, 4) ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">9회차 · 개념 2</span>
+    <div class="slide-title">오류 4총사 (2) — Indentation / Type</div>
+    <span class="timer-badge">⏱ 7분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-coral">
+      <div class="card-title c-coral">③ IndentationError — 들여쓰기</div>
+      <div class="code-block">
+<span class="code-key">if</span> <span class="code-key">age</span> &gt; <span class="code-num">10</span>:
+<span class="code-fn">print</span>(<span class="code-str">"ok"</span>)         <span class="code-comment"># 들여쓰기 없음</span>
+
+<span class="code-key">if</span> <span class="code-key">age</span> &gt; <span class="code-num">10</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"ok"</span>)     <span class="code-comment"># Tab+Space 혼용</span></div>
+      <div class="body-text"><b>해결:</b> 들여쓰기 칸 수가 일정한지 확인. Tab과 Space 절대 혼용 금지.</div>
+    </div>
+    <div class="card accent-amber">
+      <div class="card-title c-amber">④ TypeError — 타입</div>
+      <div class="code-block">
+<span class="code-key">age</span> = <span class="code-num">11</span>
+<span class="code-fn">print</span>(<span class="code-str">"나이: "</span> + <span class="code-key">age</span>)       <span class="code-comment"># TypeError</span>
+
+<span class="code-comment"># 해결</span>
+<span class="code-fn">print</span>(<span class="code-str">"나이: "</span> + <span class="code-fn">str</span>(<span class="code-key">age</span>))  <span class="code-comment"># OK</span></div>
+      <div class="body-text"><b>해결:</b> 다른 타입 연산 시 str() 또는 int() 변환.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 26: 버그 찾기 게임 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">9회차 · 실습</span>
+    <div>
+      <div class="slide-title">버그 찾기 게임 — 5개 숨어있다!</div>
+      <div class="slide-sub">아이에게 이 코드를 그대로 타이핑하게 한 후 실행</div>
+    </div>
+    <span class="timer-badge">⏱ 30분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="card accent-coral">
+      <div class="card-title c-coral">버그가 5개 숨어있는 코드</div>
+      <div class="code-block">
+<span class="code-key">nane</span> = <span class="code-str">"철수"</span>
+<span class="code-key">age</span> = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"나이: "</span>))
+
+<span class="code-key">if</span> <span class="code-key">age</span> &gt; <span class="code-num">10</span>
+    <span class="code-fn">print</span>(<span class="code-str">"10살 초과입니다"</span>)
+
+<span class="code-fn">print</span>(<span class="code-str">"이름: "</span> + <span class="code-key">nane</span> + <span class="code-str">", 나이: "</span> + <span class="code-key">age</span>)
+
+<span class="code-key">for</span> i <span class="code-key">in</span> <span class="code-fn">range</span>(<span class="code-num">5</span>)
+<span class="code-fn">print</span>(i)</div>
+      <div class="body-text"><b>3단계 규칙 적용:</b> 한 번에 하나씩 발견·수정·재실행. 한 줄 고치고 실행 → 새 오류 → 다시 분석.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">정답 (강사용 — 아이가 포기할 때만)</div>
+        <div class="cmp-table" style="grid-template-columns:30px 1fr;">
+          <div class="cmp-cell">①</div>
+          <div class="cmp-cell"><b>nane → name</b><br>(NameError) 두 곳 모두 고침</div>
+          <div class="cmp-cell">②</div>
+          <div class="cmp-cell"><b>if age &gt; 10:</b><br>콜론 빠짐 (SyntaxError)</div>
+          <div class="cmp-cell">③</div>
+          <div class="cmp-cell"><b>print 줄의 nane → name</b><br>(NameError, ①과 동시 해결 가능)</div>
+          <div class="cmp-cell">④</div>
+          <div class="cmp-cell"><b>"나이: " + str(age)</b><br>(TypeError)</div>
+          <div class="cmp-cell">⑤</div>
+          <div class="cmp-cell"><b>for i in range(5):</b><br>콜론 빠짐 (SyntaxError) + print 들여쓰기</div>
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 강사 절대 금지</div>
+        <div class="tip-text"><b>"여기 nane이 잘못됐어"</b> 같이 콕 집어주기.<br>대신: <b>"에러 첫 줄에 어떤 단어가 보여? 그 단어가 코드에 있어?"</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 27: 9회차 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">9회차 · 정리</span>
+    <div class="slide-title">나만의 디버깅 체크리스트 만들기</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">노트에 직접 쓰기 — 오류 발생 시 확인 순서</div>
+      <div class="code-block">
+1. ____________________
+2. ____________________
+3. ____________________</div>
+      <div class="body-text">예시 답안 (정답은 없음):<br><b>① 에러 메시지의 종류 확인 (Syntax/Name/Indent/Type)<br>② 에러가 난 줄 번호 확인<br>③ 그 줄과 위 1~2줄 다시 보기</b></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-coral">
+        <div class="card-title c-coral">핵심 질문</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-num num-coral">Q</div>
+            <div class="activity-text">"SyntaxError랑 NameError의 차이가 뭐야?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-coral">Q</div>
+            <div class="activity-text">"이 오류 메시지에서 몇 번째 줄이 문제라고 나와?"</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-num num-coral">Q</div>
+            <div class="activity-text">"오류를 고치기 전에 왜 그런 오류가 났는지 설명해봐"</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🏆 칭찬 멘트</div>
+        <div class="tip-text">"<b>오류를 친구로 만든 거야.</b><br>너는 이제 오류 봐도 안 무서워하는 사람이야."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [10회차] 슬라이드 28: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">10회차</span>
+    <div>
+      <div class="slide-title">함수 — 반복을 없애는 마법</div>
+      <div class="slide-sub">"같은 코드 3번 이상 → 함수로!"</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 10분</div>
+          <div class="timeline-title">같은 print 3번 직접 짜보기</div>
+          <div class="timeline-desc">"이걸 짧게 만들어봐" 도전 → 함수의 필요성 자연스럽게 느끼기.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">개념 · 10분</div>
+          <div class="timeline-title">def · 매개변수 · return</div>
+          <div class="timeline-desc">레시피 비유. "라면 끓이기 = 함수 이름. 면·물 = 매개변수. 완성된 라면 = return"</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 1 · 20분</div>
+          <div class="timeline-title">계산기 함수 4개</div>
+          <div class="timeline-desc">add, subtract, multiply, divide. divide는 0 나누기 방어.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 2 · 10분</div>
+          <div class="timeline-title">사용자 입력으로 계산기 사용</div>
+          <div class="timeline-desc">input + 위 함수 4개. 한 번 입력에 4가지 결과.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 10분</div>
+          <div class="timeline-title">"3번 이상이면 함수로" 원칙</div>
+          <div class="timeline-desc">실무 원칙 자연스럽게 전달. 노트에 "함수가 필요한 때"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎯 10회차 목표</div>
+        <div class="body-text">
+          <b>① def</b>로 함수 만들기<br>
+          <b>② 매개변수</b> 받기<br>
+          <b>③ return</b>으로 값 돌려주기
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">💡 강사 컨텍스트</div>
+        <div class="tip-text">Kay 님이 실무 개발자라는 점 활용:<br>"<b>실제 회사에서도 같은 코드 3번 쓰면 함수로 만드는 게 원칙</b>이야"<br>→ 동기부여 강력</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 29: 함수 def 개념 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">10회차 · 개념</span>
+    <div class="slide-title">def · 매개변수 · return</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">함수의 구조</div>
+        <div class="code-block">
+<span class="code-key">def</span> <span class="code-fn">함수이름</span>(매개변수1, 매개변수2):
+    <span class="code-comment"># 함수 내용 (들여쓰기 필수)</span>
+    <span class="code-key">return</span> 결과값
+
+<span class="code-comment"># 호출</span>
+결과 = <span class="code-fn">함수이름</span>(값1, 값2)</div>
+      </div>
+      <div class="card accent-teal">
+        <div class="card-title c-teal">예시 — 인사 함수</div>
+        <div class="code-block">
+<span class="code-key">def</span> <span class="code-fn">introduce</span>(name, age):
+    <span class="code-fn">print</span>(<span class="code-str">"=== "</span> + name + <span class="code-str">" ==="</span>)
+    <span class="code-fn">print</span>(<span class="code-str">"나이: "</span> + <span class="code-fn">str</span>(age))
+    <span class="code-fn">print</span>()
+
+<span class="code-fn">introduce</span>(<span class="code-str">"철수"</span>, <span class="code-num">11</span>)
+<span class="code-fn">introduce</span>(<span class="code-str">"영희"</span>, <span class="code-num">12</span>)</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-amber">
+        <div class="card-title c-amber">return 있는 vs 없는 함수</div>
+        <div class="code-block">
+<span class="code-comment"># return 없음 — 출력만</span>
+<span class="code-key">def</span> <span class="code-fn">greet</span>(name):
+    <span class="code-fn">print</span>(<span class="code-str">"안녕, "</span> + name)
+
+<span class="code-fn">greet</span>(<span class="code-str">"철수"</span>)        <span class="code-comment"># 화면에 출력</span>
+result = <span class="code-fn">greet</span>(<span class="code-str">"철수"</span>) <span class="code-comment"># result는 None</span>
+
+<span class="code-comment"># return 있음 — 값을 돌려줌</span>
+<span class="code-key">def</span> <span class="code-fn">add</span>(a, b):
+    <span class="code-key">return</span> a + b
+
+result = <span class="code-fn">add</span>(<span class="code-num">3</span>, <span class="code-num">5</span>)   <span class="code-comment"># result = 8</span>
+<span class="code-fn">print</span>(result)</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 레시피 비유</div>
+        <div class="tip-text">
+          <b>def</b> = "라면 끓이기 레시피 정의"<br>
+          <b>매개변수</b> = "면 한 봉지, 물 550ml"<br>
+          <b>return</b> = "완성된 라면 한 그릇"
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 30: 10회차 실습 — 계산기 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">10회차 · 실습</span>
+    <div class="slide-title">계산기 함수 4개 만들기</div>
+    <span class="timer-badge">⏱ 30분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">실습 1 — 함수 정의 + 테스트 (20분)</div>
+      <div class="code-block">
+<span class="code-key">def</span> <span class="code-fn">add</span>(a, b):
+    <span class="code-key">return</span> a + b
+
+<span class="code-key">def</span> <span class="code-fn">subtract</span>(a, b):
+    <span class="code-key">return</span> a - b
+
+<span class="code-key">def</span> <span class="code-fn">multiply</span>(a, b):
+    <span class="code-key">return</span> a * b
+
+<span class="code-key">def</span> <span class="code-fn">divide</span>(a, b):
+    <span class="code-key">if</span> b == <span class="code-num">0</span>:
+        <span class="code-key">return</span> <span class="code-str">"0으로 나눌 수 없어!"</span>
+    <span class="code-key">return</span> a / b
+
+<span class="code-comment"># 테스트</span>
+<span class="code-fn">print</span>(<span class="code-fn">add</span>(<span class="code-num">10</span>, <span class="code-num">5</span>))       <span class="code-comment"># 15</span>
+<span class="code-fn">print</span>(<span class="code-fn">subtract</span>(<span class="code-num">10</span>, <span class="code-num">5</span>))  <span class="code-comment"># 5</span>
+<span class="code-fn">print</span>(<span class="code-fn">multiply</span>(<span class="code-num">3</span>, <span class="code-num">4</span>))   <span class="code-comment"># 12</span>
+<span class="code-fn">print</span>(<span class="code-fn">divide</span>(<span class="code-num">10</span>, <span class="code-num">2</span>))    <span class="code-comment"># 5.0</span>
+<span class="code-fn">print</span>(<span class="code-fn">divide</span>(<span class="code-num">10</span>, <span class="code-num">0</span>))    <span class="code-comment"># 0으로 나눌 수 없어!</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-amber">
+        <div class="card-title c-amber">실습 2 — 사용자 입력 (10분)</div>
+        <div class="code-block">
+num1 = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"첫 번째 숫자: "</span>))
+num2 = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"두 번째 숫자: "</span>))
+
+<span class="code-fn">print</span>(<span class="code-str">"더하기: "</span> + <span class="code-fn">str</span>(<span class="code-fn">add</span>(num1, num2)))
+<span class="code-fn">print</span>(<span class="code-str">"빼기: "</span> + <span class="code-fn">str</span>(<span class="code-fn">subtract</span>(num1, num2)))
+<span class="code-fn">print</span>(<span class="code-str">"곱하기: "</span> + <span class="code-fn">str</span>(<span class="code-fn">multiply</span>(num1, num2)))
+<span class="code-fn">print</span>(<span class="code-str">"나누기: "</span> + <span class="code-fn">str</span>(<span class="code-fn">divide</span>(num1, num2)))</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🚀 도전</div>
+        <div class="tip-text"><b>power(a, b)</b> 함수 추가하기 (a의 b제곱)<br>힌트만: "a를 b번 곱하기"</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">자주 막히는 곳</div>
+        <div class="tip-text">
+          <b>def 콜론 빠짐</b> → SyntaxError<br>
+          <b>return 빠짐</b> → 결과가 None<br>
+          <b>매개변수 순서 헷갈림</b> → divide(2, 10) ≠ divide(10, 2)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 31: 10회차 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">10회차 · 정리</span>
+    <div class="slide-title">"3번 이상이면 함수로" 원칙</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">핵심 질문</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"return이 없으면 어떻게 돼? 지워보고 실행해봐"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"매개변수가 뭐야? 레시피에 비유하면?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"같은 코드를 몇 번 쓰면 함수로 만들어야 할까?" (정답: 3번 이상)</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"add(3, 5) 와 add(5, 3) 의 결과는 같아? 그럼 subtract는?"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 노트</div>
+        <div class="tip-text">"<b>함수를 만들어야 할 때는 ____ 일 때다</b>"<br>한 줄로 자기 단어로 작성.</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 실무 멘트</div>
+        <div class="tip-text">"아빠/엄마가 회사에서 코드 짤 때도 똑같아.<br><b>같은 코드 3번 이상 쓰고 있으면 함수로 만들 때</b>야."</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🔗 다음 회차</div>
+        <div class="tip-text">"오늘은 숫자 두 개를 다뤘지? 다음엔 <b>친구 이름 100명을 한 번에</b> 다루는 법을 배울 거야." → 리스트 동기부여</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [11회차] 슬라이드 32: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">11회차</span>
+    <div>
+      <div class="slide-title">리스트 — 데이터를 모아서 다루기</div>
+      <div class="slide-sub">변수 100개 만드는 대신 리스트 1개</div>
+    </div>
+    <span class="timer-badge">⏱ 60분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal-l)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">도입 · 10분</div>
+          <div class="timeline-title">"친구 이름 10명을 변수로 만들어봐"</div>
+          <div class="timeline-desc">10개 만들고 불편함 느끼게 → 리스트 소개. "이걸 한 줄로!"</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">개념 · 10분</div>
+          <div class="timeline-title">서랍장 비유 + 인덱스 0부터</div>
+          <div class="timeline-desc">[ ] · 인덱스 · len · append · remove · in · for문 결합</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--amber)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">실습 · 30분</div>
+          <div class="timeline-title">할 일 목록 프로그램</div>
+          <div class="timeline-desc">while True + 추가/삭제/종료 메뉴 + enumerate. 실용 앱 첫 경험.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">정리 · 10분</div>
+          <div class="timeline-title">노트 — 자주 쓴 함수 3개</div>
+          <div class="timeline-desc">"인덱스가 0부터 시작하는 이유"도 자기 생각으로</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🎯 11회차 목표</div>
+        <div class="body-text">
+          <b>① 리스트</b>의 [ ] 표기와 인덱스<br>
+          <b>② append/remove/len/in</b><br>
+          <b>③ for문 + 리스트</b> 결합 패턴
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">💡 동기부여</div>
+        <div class="tip-text">"<b>네가 매일 쓰는 앱은 다 리스트로 만들어져 있어.</b><br>유튜브 영상 목록도 인스타 피드도."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 33: 리스트 개념 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">11회차 · 개념</span>
+    <div class="slide-title">리스트 = 순서 있는 상자 모음</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title c-teal">변수 vs 리스트</div>
+        <div class="code-block">
+<span class="code-comment"># 변수 3개는 불편</span>
+<span class="code-key">name1</span> = <span class="code-str">"철수"</span>
+<span class="code-key">name2</span> = <span class="code-str">"영희"</span>
+<span class="code-key">name3</span> = <span class="code-str">"민수"</span>
+
+<span class="code-comment"># 리스트로 묶기</span>
+<span class="code-key">friends</span> = [<span class="code-str">"철수"</span>, <span class="code-str">"영희"</span>, <span class="code-str">"민수"</span>]</div>
+      </div>
+      <div class="card accent-teal">
+        <div class="card-title c-teal">기본 조작</div>
+        <div class="code-block">
+<span class="code-key">fruits</span> = [<span class="code-str">"사과"</span>, <span class="code-str">"바나나"</span>, <span class="code-str">"딸기"</span>]
+
+<span class="code-comment"># 인덱스 (0부터!)</span>
+<span class="code-fn">print</span>(<span class="code-key">fruits</span>[<span class="code-num">0</span>])      <span class="code-comment"># 사과</span>
+<span class="code-fn">print</span>(<span class="code-key">fruits</span>[<span class="code-num">1</span>])      <span class="code-comment"># 바나나</span>
+<span class="code-fn">print</span>(<span class="code-key">fruits</span>[-<span class="code-num">1</span>])     <span class="code-comment"># 딸기 (마지막)</span>
+
+<span class="code-fn">print</span>(<span class="code-fn">len</span>(<span class="code-key">fruits</span>))    <span class="code-comment"># 3</span>
+
+<span class="code-key">fruits</span>.<span class="code-fn">append</span>(<span class="code-str">"포도"</span>)
+<span class="code-key">fruits</span>.<span class="code-fn">remove</span>(<span class="code-str">"바나나"</span>)
+
+<span class="code-fn">print</span>(<span class="code-str">"사과"</span> <span class="code-key">in</span> <span class="code-key">fruits</span>)  <span class="code-comment"># True</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-amber">
+        <div class="card-title c-amber">리스트 + for문</div>
+        <div class="code-block">
+<span class="code-key">friends</span> = [<span class="code-str">"철수"</span>, <span class="code-str">"영희"</span>, <span class="code-str">"민수"</span>]
+
+<span class="code-comment"># 모든 친구에게 인사</span>
+<span class="code-key">for</span> friend <span class="code-key">in</span> <span class="code-key">friends</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"안녕, "</span> + friend)
+
+<span class="code-comment"># 번호 + 이름</span>
+<span class="code-key">for</span> i, friend <span class="code-key">in</span> <span class="code-fn">enumerate</span>(<span class="code-key">friends</span>):
+    <span class="code-fn">print</span>(<span class="code-fn">str</span>(i+<span class="code-num">1</span>) + <span class="code-str">". "</span> + friend)</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 서랍장 비유</div>
+        <div class="tip-text">"<b>서랍장이야. 서랍이 여러 개 있고, 각 서랍에 번호가 붙어있어.</b><br>0번 서랍, 1번 서랍, 2번 서랍 ..."<br><br>"⚠️ <b>0부터 시작</b> — 컴퓨터는 0번부터 셈"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 34: 11회차 실습 — 할 일 목록 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">11회차 · 실습</span>
+    <div class="slide-title">할 일 목록 프로그램 — 진짜 앱처럼</div>
+    <span class="timer-badge">⏱ 30분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">완성 코드 (직접 타이핑)</div>
+      <div class="code-block">
+<span class="code-key">todos</span> = []   <span class="code-comment"># 빈 리스트로 시작</span>
+
+<span class="code-key">while</span> <span class="code-key">True</span>:
+    <span class="code-fn">print</span>(<span class="code-str">"\n=== 할 일 목록 ==="</span>)
+    <span class="code-key">if</span> <span class="code-fn">len</span>(<span class="code-key">todos</span>) == <span class="code-num">0</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"할 일이 없어!"</span>)
+    <span class="code-key">else</span>:
+        <span class="code-key">for</span> i, todo <span class="code-key">in</span> <span class="code-fn">enumerate</span>(<span class="code-key">todos</span>):
+            <span class="code-fn">print</span>(<span class="code-fn">str</span>(i+<span class="code-num">1</span>) + <span class="code-str">". "</span> + todo)
+
+    <span class="code-fn">print</span>(<span class="code-str">"\n1. 추가  2. 삭제  3. 종료"</span>)
+    <span class="code-key">choice</span> = <span class="code-fn">input</span>(<span class="code-str">"선택: "</span>)
+
+    <span class="code-key">if</span> <span class="code-key">choice</span> == <span class="code-str">"1"</span>:
+        new_todo = <span class="code-fn">input</span>(<span class="code-str">"추가할 할 일: "</span>)
+        <span class="code-key">todos</span>.<span class="code-fn">append</span>(new_todo)
+        <span class="code-fn">print</span>(<span class="code-str">"추가됐어!"</span>)
+    <span class="code-key">elif</span> <span class="code-key">choice</span> == <span class="code-str">"2"</span>:
+        <span class="code-key">if</span> <span class="code-fn">len</span>(<span class="code-key">todos</span>) == <span class="code-num">0</span>:
+            <span class="code-fn">print</span>(<span class="code-str">"삭제할 게 없어!"</span>)
+        <span class="code-key">else</span>:
+            num = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span class="code-str">"몇 번째 항목 삭제? "</span>)) - <span class="code-num">1</span>
+            removed = <span class="code-key">todos</span>.<span class="code-fn">pop</span>(num)
+            <span class="code-fn">print</span>(removed + <span class="code-str">" 삭제됐어!"</span>)
+    <span class="code-key">elif</span> <span class="code-key">choice</span> == <span class="code-str">"3"</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"프로그램 종료!"</span>)
+        <span class="code-key">break</span>
+    <span class="code-key">else</span>:
+        <span class="code-fn">print</span>(<span class="code-str">"1, 2, 3 중에 선택해줘!"</span>)</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">🚀 도전</div>
+        <div class="body-text">"완료된 항목 표시" 기능 추가.<br>힌트만: "리스트를 두 개로 나눠보면 어때?"<br>(todos / done)</div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">자주 막히는 곳</div>
+        <div class="tip-text">
+          <b>1번 항목 = todos[0]</b> → -1 빠뜨림<br>
+          <b>append vs pop</b> 헷갈림<br>
+          <b>while True에서 break</b> 빠짐 → 무한루프
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 강사 멘트</div>
+        <div class="tip-text">"<b>이건 진짜 앱이야.</b><br>휴대폰 메모 앱이랑 똑같이 동작하잖아.<br>네가 만든 거야."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 35: 11회차 정리 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">11회차 · 정리</span>
+    <div class="slide-title">핵심 질문 + 노트</div>
+    <span class="timer-badge">⏱ 10분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">핵심 질문</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"리스트 말고 그냥 변수 3개 쓰면 안 돼? 그럼 친구가 100명이면?"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"friends[0]이 뭐야? friends[100]은? (없으면 어떻게 돼?)"</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">Q</div>
+          <div class="activity-text">"append와 remove의 차이가 뭐야? pop과 remove는?"</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="tip-box teal">
+        <div class="tip-label teal">📝 노트</div>
+        <div class="tip-text">
+          ① "리스트에서 가장 자주 쓴 함수 3개: ____"<br>
+          ② "인덱스가 0부터 시작하는 이유 (내 생각): ____"
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 다음 회차 예고</div>
+        <div class="tip-text">"여태 배운 거 다 써서 <b>네 게임을 처음부터 끝까지</b> 만들 거야.<br>이름은 <b>텍스트 RPG</b>!"</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🏆 칭찬</div>
+        <div class="tip-text">"여기까지 왔으면 진짜 <b>프로그래머의 7가지 기본기</b>를 다 한 거야."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ [12회차] 슬라이드 36: 도입 + 타임라인 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">12회차</span>
+    <div>
+      <div class="slide-title">미니 프로젝트 — 텍스트 RPG 완성</div>
+      <div class="slide-sub">5~11회차 모든 개념 종합 + 발표</div>
+    </div>
+    <span class="timer-badge">⏱ 90분</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">기획 · 15분</div>
+          <div class="timeline-title">기획서 종이에 쓰기</div>
+          <div class="timeline-desc">제목·주인공·선택지·결말·필요 기능. <b>코딩 전</b>에 종이로!</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--teal)"></div><div class="timeline-line"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">제작 · 60분</div>
+          <div class="timeline-title">텍스트 RPG 코딩</div>
+          <div class="timeline-desc">변수·input·if·while·함수·리스트 모두 사용. 막히면 3단계 규칙.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-left"><div class="timeline-dot" style="background:var(--green)"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">발표 · 15분</div>
+          <div class="timeline-title">"왜 이렇게 만들었는지" 설명</div>
+          <div class="timeline-desc">조건문·리스트가 어디 있는지 직접 가리키며 설명.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-blue">
+        <div class="card-title c-blue">🎯 12회차 성공 기준</div>
+        <div class="body-text">
+          코드 완성도 ❌<br>
+          <b>"왜 이렇게 만들었는지 말로 설명할 수 있는가"</b> ✅<br><br>
+          미완성이어도 <b>설명 잘하면 성공</b>.
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 강사 절대 금지</div>
+        <div class="tip-text">"내가 도와줄까?"라며 <b>코드 같이 짜기</b>.<br>아이의 작품을 망친다. 막혀도 3단계 규칙으로!</div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">💡 부모 평가 비율</div>
+        <div class="tip-text">
+          코드 완성도: <b>20%</b><br>
+          설명 능력: <b>50%</b><br>
+          스스로 고친 것들: <b>30%</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 37: 기획서 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">12회차 · 기획</span>
+    <div class="slide-title">기획서 종이에 쓰기 (코딩 전!)</div>
+    <span class="timer-badge">⏱ 15분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">먼저 AI에게 아이디어만 (기획 단계 OK)</div>
+      <div class="q-card">
+        <div class="q-label">아이가 Claude에게 직접 입력</div>
+        <div class="q-text" style="font-size:16px;">"파이썬으로 만들 수 있는 <b>텍스트 RPG 아이디어</b>를 알려줘.<br>변수·조건문·반복문·함수·리스트를 다 써야 해.<br>11살이 만들 수 있는 수준으로."</div>
+      </div>
+      <div class="tip-box coral" style="margin-top:8px;">
+        <div class="tip-label coral">⚠️ 여기까지만</div>
+        <div class="tip-text"><b>"코드 짜줘"는 절대 금지.</b><br>아이디어 + 기능 목록만 받아오기.</div>
+      </div>
+    </div>
+    <div class="card accent-blue">
+      <div class="card-title c-blue">기획서 — 종이에 손으로</div>
+      <div class="code-block" style="font-family:'Noto Sans KR', sans-serif;">
+제목: ___________________
+
+주인공: _________________
+
+어떤 선택지가 있나?
+  □ ___________________
+  □ ___________________
+
+어떻게 끝나나?
+  □ ___________________
+  □ ___________________
+
+어떤 기능이 필요한가?
+  □ ___________________
+  □ ___________________
+  □ ___________________</div>
+      <div class="body-text" style="font-size:14px;">손으로 쓰는 게 핵심. 키보드로 치면 너무 쉽게 바꿔서 깊이 안 생각함.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 38: 텍스트 RPG 예시 구조 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">12회차 · 참고</span>
+    <div>
+      <div class="slide-title">예시 구조 (강사 참고용)</div>
+      <div class="slide-sub">⚠️ 아이에게 보여주지 않기 — 아이는 자기 기획서로 만든다</div>
+    </div>
+    <span class="timer-badge">⏱ 60분 진행</span>
+  </div>
+  <div class="col-main" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">텍스트 RPG 예시</div>
+      <div class="code-block">
+<span class="code-key">import</span> random
+
+<span class="code-key">def</span> <span class="code-fn">show_status</span>(hp, items):
+    <span class="code-fn">print</span>(<span class="code-str">"\n=== 현재 상태 ==="</span>)
+    <span class="code-fn">print</span>(<span class="code-str">"HP: "</span> + <span class="code-fn">str</span>(hp))
+    <span class="code-fn">print</span>(<span class="code-str">"아이템: "</span> + <span class="code-fn">str</span>(items))
+
+<span class="code-key">def</span> <span class="code-fn">battle</span>(enemy_name):
+    enemy_hp = random.<span class="code-fn">randint</span>(<span class="code-num">10</span>, <span class="code-num">30</span>)
+    <span class="code-fn">print</span>(enemy_name + <span class="code-str">" 등장! (HP: "</span> + <span class="code-fn">str</span>(enemy_hp) + <span class="code-str">")"</span>)
+    <span class="code-key">return</span> enemy_hp
+
+<span class="code-comment"># 게임 시작</span>
+player_name = <span class="code-fn">input</span>(<span class="code-str">"영웅의 이름을 입력해: "</span>)
+player_hp = <span class="code-num">100</span>
+inventory = []
+rooms = [<span class="code-str">"숲"</span>, <span class="code-str">"동굴"</span>, <span class="code-str">"마을"</span>]
+
+<span class="code-fn">print</span>(<span class="code-str">"\n"</span> + player_name + <span class="code-str">" 의 모험이 시작됐어!"</span>)
+
+<span class="code-key">for</span> room <span class="code-key">in</span> rooms:
+    <span class="code-fn">print</span>(<span class="code-str">"\n=== "</span> + room + <span class="code-str">" 도착! ==="</span>)
+    <span class="code-fn">show_status</span>(player_hp, inventory)
+    choice = <span class="code-fn">input</span>(<span class="code-str">"1. 탐험  2. 쉬기: "</span>)
+
+    <span class="code-key">if</span> choice == <span class="code-str">"1"</span>:
+        enemy_hp = <span class="code-fn">battle</span>(<span class="code-str">"고블린"</span>)
+        damage = random.<span class="code-fn">randint</span>(<span class="code-num">5</span>, <span class="code-num">20</span>)
+        player_hp -= damage
+        <span class="code-fn">print</span>(<span class="code-fn">str</span>(damage) + <span class="code-str">" 데미지!"</span>)
+        <span class="code-key">if</span> player_hp &lt;= <span class="code-num">0</span>:
+            <span class="code-fn">print</span>(<span class="code-str">"게임 오버!"</span>)
+            <span class="code-key">break</span>
+        inventory.<span class="code-fn">append</span>(<span class="code-str">"포션"</span>)
+    <span class="code-key">elif</span> choice == <span class="code-str">"2"</span>:
+        player_hp += <span class="code-num">20</span>
+        <span class="code-fn">print</span>(<span class="code-str">"20 HP 회복!"</span>)
+
+<span class="code-fn">print</span>(<span class="code-str">"\n모험 끝! 최종 HP: "</span> + <span class="code-fn">str</span>(player_hp))</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-teal">
+        <div class="card-title c-teal">사용된 5~11회차 개념</div>
+        <div class="cmp-table" style="grid-template-columns:60px 1fr;">
+          <div class="cmp-cell">변수</div>
+          <div class="cmp-cell">player_hp, player_name, inventory</div>
+          <div class="cmp-cell">input</div>
+          <div class="cmp-cell">이름·선택 입력</div>
+          <div class="cmp-cell">if/elif</div>
+          <div class="cmp-cell">choice 분기, hp ≤ 0</div>
+          <div class="cmp-cell">for/while</div>
+          <div class="cmp-cell">rooms 순회 + break</div>
+          <div class="cmp-cell">함수</div>
+          <div class="cmp-cell">show_status, battle</div>
+          <div class="cmp-cell">리스트</div>
+          <div class="cmp-cell">inventory.append, rooms 순회</div>
+        </div>
+      </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 강사 절대 금지</div>
+        <div class="tip-text">이 코드 그대로 보여주거나 따라치게 하기.<br><b>아이는 자기 기획서로</b> 만든다.<br>이건 <b>"이 정도 분량이 가능하다"</b> 가늠용일 뿐.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 39: 발표 + 평가 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">12회차 · 발표</span>
+    <div class="slide-title">"왜 이렇게 만들었는지" 설명 5질문</div>
+    <span class="timer-badge">⏱ 15분</span>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card">
+      <div class="card-title c-teal">아이가 직접 답할 5질문</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">①</div>
+          <div class="activity-text"><b>"이 프로그램은 어떤 거야?"</b> (1~2문장)</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">②</div>
+          <div class="activity-text"><b>"가장 어려웠던 부분은? 어떻게 해결했어?"</b></div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">③</div>
+          <div class="activity-text"><b>"이 코드에서 조건문은 어디에 있어?"</b> → 화면에서 직접 가리키기</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">④</div>
+          <div class="activity-text"><b>"리스트를 어디에 썼어? 왜 리스트를 썼어?"</b></div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">⑤</div>
+          <div class="activity-text"><b>"다음에 추가하고 싶은 기능은?"</b></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-blue">
+        <div class="card-title c-blue">부모 평가 기준</div>
+        <div class="cmp-table">
+          <div class="cmp-head">항목</div>
+          <div class="cmp-head">비중</div>
+          <div class="cmp-cell">코드 완성도</div>
+          <div class="cmp-cell"><b>20%</b></div>
+          <div class="cmp-cell">설명 능력</div>
+          <div class="cmp-cell"><b>50%</b></div>
+          <div class="cmp-cell">스스로 고친 것</div>
+          <div class="cmp-cell"><b>30%</b></div>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🏆 칭찬 멘트</div>
+        <div class="tip-text">"<b>이거 진짜 너가 처음부터 끝까지 만든 게임이야.</b><br>2단계 끝났어. 이제 진짜 <b>프로그래머</b>야."</div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">💡 다음 단계 연결</div>
+        <div class="tip-text">"3단계엔 <b>네 코드가 AI를 부르는 법</b>을 배울 거야. 너만의 챗봇!"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 40: 2단계 완료 체크리스트 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">2단계 완료</span>
+    <div class="slide-title">2단계 완료 체크리스트</div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card" style="gap:14px;">
+      <div class="card-title c-teal">아이가 할 수 있어야 할 것</div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text"><b>print(), input(), 변수</b>를 직접 타이핑해서 사용할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text"><b>if / elif / else</b>를 이해하고 사용할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text"><b>for, while</b> 반복문의 차이를 설명할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text"><b>함수(def)</b>를 만들고 호출할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-teal">✓</div>
+          <div class="activity-text"><b>리스트</b>에 데이터를 추가·삭제할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-coral">✓</div>
+          <div class="activity-text">오류 메시지를 보고 <b>4총사 종류</b>를 구분할 수 있다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-blue">✓</div>
+          <div class="activity-text">텍스트 게임을 <b>처음부터 끝까지 혼자</b> 만들었다</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-num num-blue">✓</div>
+          <div class="activity-text">만든 것을 <b>부모에게 설명</b>할 수 있다</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card accent-amber">
+        <div class="card-title c-amber">3단계 예고</div>
+        <div class="body-text">
+          <b>AI 활용 프로그래머</b><br><br>
+          • 딕셔너리 (성적 관리)<br>
+          • 파일 입출력 (일기 앱)<br>
+          • <b>Anthropic API</b> — 내 코드가 AI를 호출!<br>
+          • 나만의 챗봇 기획·개발·발표<br><br>
+          <span style="color:var(--amber)">"내 코드가 진짜 AI를 쓴다"는 첫 경험</span>
+        </div>
+      </div>
+      <div class="tip-box teal">
+        <div class="tip-label teal">🏆 부모님께</div>
+        <div class="tip-text">2단계의 핵심은 <b>"두려움 없애기"</b>입니다.<br>아이가 오류를 만나도 도망가지 않고<br>"왜 그렇지?" 묻기 시작하면 — 성공입니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">🎉 수고하셨어요!</div>
+        <div class="tip-text">8회 60~90분 × 8주 — 짧지 않은 여정이었습니다.<br>아이가 <b>"다음 거 뭐 만들어?"</b>라고 묻는다면 2단계는 완벽한 성공입니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- 네비게이션 -->
+<div id="nav">
+  <button class="nav-btn" onclick="prevSlide()" title="이전 (←)">&#8592;</button>
+  <span id="slide-counter">1 / 41</span>
+  <button class="nav-btn" onclick="nextSlide()" title="다음 (→)">&#8594;</button>
+</div>
+<div id="progress"></div>
+<div id="keyhint"><kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동 &nbsp;|&nbsp; <kbd>T</kbd> 타이머</div>
+
+<!-- 타이머 -->
+<div id="timer-display">
+  <span id="timer-time">00:00</span>
+  <button class="timer-btn" onclick="startTimer()">시작</button>
+  <button class="timer-btn" onclick="resetTimer()">리셋</button>
+</div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let timerInterval = null, timerSec = 0, timerRunning = false;
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(n, total-1));
+  slides[current].classList.add('active');
+  document.getElementById('slide-counter').textContent = `${current+1} / ${total}`;
+  document.getElementById('progress').style.width = `${((current+1)/total)*100}%`;
+}
+function nextSlide() { goTo(current+1); }
+function prevSlide() { goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); nextSlide(); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if(e.key==='t'||e.key==='T') { timerRunning ? pauseTimer() : startTimer(); }
+});
+
+function startTimer() {
+  if(timerRunning) return;
+  timerRunning = true;
+  timerInterval = setInterval(() => {
+    timerSec++;
+    const m = String(Math.floor(timerSec/60)).padStart(2,'0');
+    const s = String(timerSec%60).padStart(2,'0');
+    document.getElementById('timer-time').textContent = `${m}:${s}`;
+  }, 1000);
+}
+function pauseTimer() { timerRunning = false; clearInterval(timerInterval); }
+function resetTimer() { pauseTimer(); timerSec=0; document.getElementById('timer-time').textContent='00:00'; }
+
+goTo(0);
+</script>
+</body>
+</html>
