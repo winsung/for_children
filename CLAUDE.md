@@ -20,7 +20,7 @@
 | 단계 | 주제 | 회차 | 도구 | 상태 |
 |------|------|------|------|------|
 | 1단계 | AI와 친해지기 | 1~4회차 | Claude AI, 엔트리, 이미지AI | ✅ HTML 완료 |
-| 2단계 | AI와 함께 만들기 | 5~12회차 | Python (Pickcode), Claude AI | ✅ HTML 완료 |
+| 2단계 | AI와 함께 만들기 | 5~12회차 | Python (Pickcode), OpenClaw (집 안 Gemma) | ✅ HTML 완료 |
 | 3단계 | AI 활용 프로그래머 | 13~20회차 | Python, Anthropic API | ❌ HTML 미제작 |
 | 4단계 | 자유 프로젝트 | 무제한 | 관심사 기반 선택 | — |
 

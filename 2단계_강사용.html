@@ -227,7 +227,7 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
   <div class="meta-row">
     <div class="meta-item"><b>대상</b>11세 · 초등 5학년</div>
     <div class="meta-item"><b>총 회차</b>5~12회차 (8회)</div>
-    <div class="meta-item"><b>도구</b>Pickcode · Claude AI</div>
+    <div class="meta-item"><b>도구</b>Pickcode · OpenClaw (Gemma)</div>
     <div class="meta-item"><b>기간</b>약 2개월</div>
   </div>
 </div>
@@ -532,6 +532,53 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
       <div class="tip-box teal" style="margin-top:8px;">
         <div class="tip-label teal">강사 멘트</div>
         <div class="tip-text">"AI한테 <b>'코드는 내가 짤게'</b> 한 줄 꼭 붙여. 그 한 줄이 너랑 학원 다니는 친구 차이를 만들어."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 4-1: AI 도구 분리 — 아이용 vs 강사용 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">AI 도구 안내</span>
+    <div>
+      <div class="slide-title">아이는 OpenClaw · 강사는 Claude</div>
+      <div class="slide-sub">연령 정책상 아이가 Claude를 직접 쓸 수 없어 도구를 분리</div>
+    </div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-purple">
+      <div class="card-title c-purple">🧒 아이용 — OpenClaw (집 안 AI)</div>
+      <div class="body-text">
+        <b>주소:</b> <code>http://192.168.55.18:8080</code><br>
+        <b>모델:</b> Gemma 4 E4B (Q8) — 로컬 GPU 추론<br>
+        <b>위치:</b> 집 안 PC (Kay 데스크탑) — 같은 와이파이에서만 접속<br>
+        <b>관리:</b> Kay 본인 (<code>D:\workspace\openclaw</code>)
+      </div>
+      <div class="tip-box" style="margin-top:8px;">
+        <div class="tip-label">왜 이걸 쓰는가</div>
+        <div class="tip-text">
+          • Claude/ChatGPT 등 상용 AI는 <b>만 13세 미만 단독 사용 제한</b><br>
+          • 부모 관할에서 안전하게 운영 가능<br>
+          • 외부 전송 없음 — 프라이버시 안심<br>
+          • 비용 0 (전기 빼고)
+        </div>
+      </div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title c-teal">👨‍🏫 강사용 — Claude (또는 다른 상용)</div>
+      <div class="body-text">
+        <b>주소:</b> <code>https://claude.ai</code><br>
+        <b>용도:</b> 수업 준비, 보충 자료 검토, 아이가 막혔을 때 검증<br>
+        <b>주의:</b> 아이에게 강사 화면을 보여줄 때 — 코드 통째 답은 가리기
+      </div>
+      <div class="tip-box teal" style="margin-top:8px;">
+        <div class="tip-label teal">3단계 도움 규칙 적용</div>
+        <div class="tip-text">아이가 OpenClaw에게 묻는 패턴(원인만 / 방향만 / 코드는 내가)이<br>강사가 Claude에게 묻는 방식과 <b>똑같이</b> 적용된다고 강사도 시연.</div>
+      </div>
+      <div class="tip-box amber" style="margin-top:8px;">
+        <div class="tip-label amber">⚠️ Gemma 4 성능 한계</div>
+        <div class="tip-text">로컬 4B 모델은 Claude만큼 똑똑하지 않음. <b>"왜 NameError?"</b> 같은 단순 질문은 OK, 복잡한 디자인 토론은 어색할 수 있음. 그게 오히려 <b>"AI에게 의존하지 말고 스스로 생각"</b>으로 자연스럽게 유도.</div>
       </div>
     </div>
   </div>
@@ -2273,7 +2320,7 @@ num2 = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span
     <div class="card">
       <div class="card-title c-teal">먼저 AI에게 아이디어만 (기획 단계 OK)</div>
       <div class="q-card">
-        <div class="q-label">아이가 Claude에게 직접 입력</div>
+        <div class="q-label">아이가 OpenClaw에 직접 입력</div>
         <div class="q-text" style="font-size:16px;">"파이썬으로 만들 수 있는 <b>텍스트 RPG 아이디어</b>를 알려줘.<br>변수·조건문·반복문·함수·리스트를 다 써야 해.<br>11살이 만들 수 있는 수준으로."</div>
       </div>
       <div class="tip-box coral" style="margin-top:8px;">
@@ -2517,7 +2564,7 @@ rooms = [<span class="code-str">"숲"</span>, <span class="code-str">"동굴"</s
 <!-- 네비게이션 -->
 <div id="nav">
   <button class="nav-btn" onclick="prevSlide()" title="이전 (←)">&#8592;</button>
-  <span id="slide-counter">1 / 43</span>
+  <span id="slide-counter">1 / 44</span>
   <button class="nav-btn" onclick="nextSlide()" title="다음 (→)">&#8594;</button>
 </div>
 <div id="progress"></div>

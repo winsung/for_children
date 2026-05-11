@@ -264,17 +264,21 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
     </a>
   </div>
 
-  <!-- Claude 링크 -->
+  <!-- OpenClaw (집 안 AI) 링크 -->
   <div class="card">
-    <div class="card-label label-purple">🤖 막혔을 때 물어볼 곳</div>
-    <a class="link-btn purple" href="https://claude.ai" target="_blank">
+    <div class="card-label label-purple">🤖 막혔을 때 물어볼 곳 — 집 안 AI</div>
+    <a class="link-btn purple" href="http://192.168.55.18:8080" target="_blank">
       <span class="link-icon">🤖</span>
       <div class="link-info">
-        <div class="link-title purple">Claude (오류 원인 물어볼 때)</div>
-        <div class="link-url">claude.ai</div>
+        <div class="link-title purple">OpenClaw (Gemma 4)</div>
+        <div class="link-url">192.168.55.18:8080</div>
       </div>
       <span class="link-arrow" style="color:#c4b5fd;">↗</span>
     </a>
+    <div class="card-body" style="font-size:13px; margin-top:8px;">
+      <b>🏠 집 안에서만 써질 거야</b> — 같은 와이파이일 때.<br>
+      아빠가 만든 AI라 안심하고 물어봐도 돼.
+    </div>
   </div>
 
   <!-- 학습 목표 -->
@@ -352,7 +356,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
 
   <!-- AI에 묻기 -->
   <div class="card purple">
-    <div class="card-label label-purple">🤖 Claude에 처음 묻기 — 모범 답안</div>
+    <div class="card-label label-purple">🤖 OpenClaw에 처음 묻기 — 모범 답안</div>
     <div class="bubble coral" style="margin-bottom:8px;">
       <div class="bubble-label coral">❌ 이렇게 묻지 마</div>
       <div class="bubble-text" style="color:#7f1d1d;">"이 코드 고쳐줘" + 코드 전체 붙여넣기</div>
@@ -368,7 +372,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
     <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
     <div class="help-text">
       <b>① 10분 혼자</b> → 에러 메시지 큰 소리로 읽기, 코드 처음부터 다시 보기<br>
-      <b>② Claude에 힌트만</b> → "원인만, 답은 말하지 마"<br>
+      <b>② OpenClaw에 힌트만</b> → "원인만, 답은 말하지 마"<br>
       <b>③ 직접 수정 + 설명</b> → 말로 설명 못 하면 다시!
     </div>
   </div>
@@ -473,7 +477,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
   </div>
 
   <div class="help-box">
-    <div class="help-label">🆘 막혔을 때 — Claude에 이렇게</div>
+    <div class="help-label">🆘 막혔을 때 — OpenClaw에 이렇게</div>
     <div class="help-text"><b>"input()의 결과를 숫자로 바꾸려면 어떻게 해?"</b><br>(코드 짜달라 ❌, 원리만 ✅)</div>
   </div>
 
@@ -605,7 +609,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
   </div>
 
   <div class="help-box">
-    <div class="help-label">🆘 막혔을 때 — Claude에 이렇게</div>
+    <div class="help-label">🆘 막혔을 때 — OpenClaw에 이렇게</div>
     <div class="help-text"><b>"== 와 = 의 차이가 뭐야?"</b><br><b>"IndentationError가 왜 나는지 원인만 알려줘"</b></div>
   </div>
 
@@ -819,7 +823,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
 <span class="code-fn">print</span>(i)</div>
     <div class="bubble">
       <div class="bubble-label">🆘 막혔을 때</div>
-      <div class="bubble-text">10분 혼자 → Claude에게 <b>"이 오류가 왜 나는지 원인만 알려줘"</b><br>코드는 절대 받지 마!</div>
+      <div class="bubble-text">10분 혼자 → OpenClaw에 <b>"이 오류가 왜 나는지 원인만 알려줘"</b><br>코드는 절대 받지 마!</div>
     </div>
   </div>
 
@@ -838,7 +842,7 @@ body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-
       <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">오류 4총사를 모두 만들어보고 메시지를 읽었다</div></div>
       <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">버그 5개를 직접 찾았다 (또는 4개 이상)</div></div>
       <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">오류 종류 4가지를 말로 설명할 수 있다</div></div>
-      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">Claude에게 "원인만" 묻는 연습을 했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">OpenClaw에 "원인만" 묻는 연습을 했다</div></div>
     </div>
   </div>
 
@@ -1117,7 +1121,7 @@ num2 = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span
     <div class="card-label label-teal">📝 STEP 1 — 기획서 (15분)</div>
     <div class="card-title">먼저 종이에 손으로 써!</div>
     <div class="bubble">
-      <div class="bubble-label">🤖 Claude에게 아이디어만 받기</div>
+      <div class="bubble-label">🤖 OpenClaw에 아이디어만 받기</div>
       <div class="bubble-text">"파이썬으로 만들 수 있는 <b>텍스트 RPG 아이디어</b>를 알려줘.<br>변수·조건문·반복문·함수·리스트를 다 써야 해.<br>11살이 만들 수 있는 수준으로."</div>
     </div>
     <div class="bubble coral">
@@ -1178,7 +1182,7 @@ num2 = <span class="code-fn">int</span>(<span class="code-fn">input</span>(<span
   <div class="help-box">
     <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
     <div class="help-text">
-      ① 10분 혼자 → ② Claude에 "원인만/방향만" → ③ 직접 수정<br>
+      ① 10분 혼자 → ② OpenClaw에 "원인만/방향만" → ③ 직접 수정<br>
       <b>오늘은 절대 "코드 짜줘" 금지!</b>
     </div>
   </div>

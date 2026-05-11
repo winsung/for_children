@@ -61,7 +61,7 @@ Step 3 (필수)    → 직접 수정 + 말로 설명
 | 단계 | 주제 | 회차 | 기간 | 도구 |
 |------|------|------|------|------|
 | 1단계 | AI와 친해지기 | 1~4회차 | 약 1개월 | Claude AI, 엔트리, 이미지AI |
-| 2단계 | AI와 함께 만들기 | 5~12회차 | 약 2개월 | Python (Pickcode), Claude AI |
+| 2단계 | AI와 함께 만들기 | 5~12회차 | 약 2개월 | Python (Pickcode), OpenClaw (집 안 Gemma 4) |
 | 3단계 | AI 활용 프로그래머 | 13~20회차 | 약 2개월 | Python, Anthropic API |
 | 4단계 | 자유 프로젝트 | 무제한 | 오픈엔드 | 관심사 기반 선택 |
 
@@ -70,7 +70,11 @@ Step 3 (필수)    → 직접 수정 + 말로 설명
 ```
 Pickcode (pickcode.io)     - 브라우저 기반 Python 실행. 가입 무료. 교육용 IDE 표방.
                             ※ Replit은 2026년 AI Agent로 피벗하며 클래식 Repl 경로 제거됨
-Claude (claude.ai)         - 개념 설명·힌트 요청·아이디어 탐색
+OpenClaw (홈 네트워크)      - 학생용 AI 도우미. Gemma 4 E4B 로컬 모델
+                            http://192.168.55.18:8080 (집 안 와이파이에서만)
+                            Kay 데스크탑에서 운영 (D:\workspace\openclaw)
+                            ※ Claude/ChatGPT는 만 13세 미만 단독 사용 제한이라 학생에겐 사용 불가
+Claude (claude.ai)         - 강사용 AI 도우미 (자료 준비·검증)
 엔트리 (playentry.org)    - 1단계 블록코딩. 한국어 지원
 Microsoft Designer         - 3회차 이미지 생성 AI
 종이 노트 (필수)           - 매 수업 "오늘 배운 것 한 줄" 기록
