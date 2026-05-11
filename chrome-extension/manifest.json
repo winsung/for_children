@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Cookie Exporter (for_children)",
+  "version": "1.1.0",
+  "description": "Export replit.com / pickcode.io cookies as JSON for Playwright session reuse.",
+  "permissions": ["cookies"],
+  "host_permissions": [
+    "https://replit.com/",
+    "https://*.replit.com/",
+    "https://pickcode.io/",
+    "https://*.pickcode.io/"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Export site cookies"
+  }
+}

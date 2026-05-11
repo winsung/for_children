@@ -227,7 +227,7 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
   <div class="meta-row">
     <div class="meta-item"><b>대상</b>11세 · 초등 5학년</div>
     <div class="meta-item"><b>총 회차</b>5~12회차 (8회)</div>
-    <div class="meta-item"><b>도구</b>Replit · Claude AI</div>
+    <div class="meta-item"><b>도구</b>Pickcode · Claude AI</div>
     <div class="meta-item"><b>기간</b>약 2개월</div>
   </div>
 </div>
@@ -362,31 +362,72 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
   </div>
 </div>
 
-<!-- ══════════════════ 슬라이드 3: 환경 세팅 (Replit) ══════════════════ -->
+<!-- ══════════════════ 슬라이드 3: 환경 세팅 (Pickcode) — 도구 선택 배경 ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">환경 세팅 · 배경</span>
+    <div>
+      <div class="slide-title">왜 Pickcode인가 — Replit 대신</div>
+      <div class="slide-sub">2026년 5월 기준 — 도구 환경이 크게 바뀐 상태</div>
+    </div>
+  </div>
+  <div class="col-2" style="flex:1;">
+    <div class="card accent-coral">
+      <div class="card-title c-coral">❌ Replit — 더 이상 부적합</div>
+      <div class="body-text">
+        2025~2026년 동안 Replit이 <b>AI Agent 앱 빌더</b>로 완전히 피벗.<br><br>
+        • 클래식 Repl 생성 버튼 <b>제거</b><br>
+        • Python 템플릿 클릭해도 <b>"Make a boilerplate Python app"</b> Agent 프롬프트로 보냄<br>
+        • 직접 타이핑 학습용으로는 친화도 낮음<br>
+        • Agent credit 소진 리스크
+      </div>
+      <div class="tip-box coral" style="margin-top:8px;">
+        <div class="tip-label coral">증거</div>
+        <div class="tip-text"><code>+ Create something new</code> 버튼이 모두 Agent 프롬프트로 라우팅됨 (직접 확인)</div>
+      </div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title c-teal">✅ Pickcode — 교육용 IDE</div>
+      <div class="body-text">
+        <b>"The online IDE for your classroom"</b><br><br>
+        • 클래식 Python 에디터 — main.py + Run 버튼 + 출력창<br>
+        • <b>AI 기능 없음</b> → 아이 직접 타이핑에 최적<br>
+        • <b>Trinket의 공식 후계자</b> (Trinket은 2026년 8월 종료 예정)<br>
+        • iPad Safari 동작 OK · 한글 OK
+      </div>
+      <div class="tip-box teal" style="margin-top:8px;">
+        <div class="tip-label teal">선택 기준</div>
+        <div class="tip-text">"AI 안 거치고 print/input/for부터 직접 타이핑할 수 있는가" — Pickcode YES, Replit NO</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 3-1: Pickcode 가입 + 첫 코드 ══════════════════ -->
 <div class="slide">
   <div class="slide-header">
     <span class="session-badge badge-2">환경 세팅</span>
     <div>
-      <div class="slide-title">Replit 가입 + 첫 코드 실행</div>
+      <div class="slide-title">Pickcode 가입 + 첫 코드 실행</div>
       <div class="slide-sub">5회차 시작 전 미리 끝내두면 좋음 (10분 내외)</div>
     </div>
   </div>
   <div class="col-main" style="flex:1;">
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div class="card accent-teal">
-        <div class="card-title c-teal">STEP 1 — Replit 가입 (5분)</div>
+        <div class="card-title c-teal">STEP 1 — Pickcode 가입 (5분)</div>
         <div class="activity-list">
           <div class="activity-item">
             <div class="activity-num num-teal">①</div>
-            <div class="activity-text"><b>replit.com</b> 접속 → 우측 상단 "Sign up"</div>
+            <div class="activity-text"><b>pickcode.io</b> 접속 → 중앙 <b>"Get started now"</b> (또는 우상단 "Sign in") 클릭</div>
           </div>
           <div class="activity-item">
             <div class="activity-num num-teal">②</div>
-            <div class="activity-text"><b>Continue with Google</b> (부모 계정 사용 권장)</div>
+            <div class="activity-text"><b>Google 계정으로 가입</b> (부모 계정 권장. 11세는 단독 가입 제한 가능)</div>
           </div>
           <div class="activity-item">
             <div class="activity-num num-teal">③</div>
-            <div class="activity-text"><b>+ Create Repl</b> → Language: <b>Python</b> → Title: <b>coding-class</b> → Create</div>
+            <div class="activity-text">가입 후 <b>app.pickcode.io</b> 대시보드로 자동 이동. 새 프로젝트(Python) 생성</div>
           </div>
         </div>
       </div>
@@ -395,33 +436,61 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
         <div class="code-block">
 <span class="code-fn">print</span>(<span class="code-str">"Hello, 세계!"</span>)</div>
         <div class="body-text">
-          가운데 ▶ Run 버튼 클릭<br>
-          → 오른쪽 콘솔에 <b>Hello, 세계!</b> 출력되면 성공!<br><br>
-          ⚠️ 일부러 <b>"세계!"</b> 한글이 들어간 코드로 시작 → "한글도 잘 나오네!" 안심 효과
+          에디터 영역에 직접 타이핑 → 우측의 <b>▶ (초록 Run)</b> 버튼 클릭<br>
+          → 우측 출력 패널에 <b>Hello, 세계!</b> 표시되면 성공!<br><br>
+          ⚠️ <b>"세계!"</b> 한글이 들어간 코드로 시작 → "한글도 잘 나오네!" 안심 효과
         </div>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div class="tip-box blue">
-        <div class="tip-label blue">📱 iPad에서 Replit 사용</div>
+        <div class="tip-label blue">📱 iPad에서 Pickcode 사용</div>
         <div class="tip-text">
           <b>Safari</b>에서 사용 가능 (앱 불필요)<br>
-          <b>키보드 필수</b> — 소프트키보드로 코딩은 사실상 불가능<br>
+          <b>키보드 필수</b> — 소프트키보드로 코딩 불가<br>
           들여쓰기는 <b>Tab</b> 키 사용<br>
-          실행 단축키: <b>Cmd + Enter</b>
+          저장은 자동 (변경 시 우상단 상태 표시)
         </div>
       </div>
       <div class="tip-box amber">
-        <div class="tip-label amber">⚠️ 자주 막히는 곳</div>
+        <div class="tip-label amber">⚠️ 강사 사전 체크 (필수)</div>
         <div class="tip-text">
-          <b>Run 눌러도 반응 없음</b> → 좌측 파일이 <code>main.py</code>인지 확인<br>
-          <b>한글 깨짐</b> → 거의 없음. Replit은 UTF-8 기본<br>
-          <b>로그인 안 됨</b> → 광고 차단기 끄고 재시도
+          5회차 시작 전 <b>강사가 혼자 한 번 가입+코드 실행</b>까지 끝내두기.<br>
+          이유: ① UI가 바뀔 수 있어 실제 화면 확인 필요 ② 아이 막힐 때 즉답 가능
         </div>
       </div>
+      <div class="tip-box coral">
+        <div class="tip-label coral">⚠️ 비용 안내</div>
+        <div class="tip-text">Pickcode는 교육용 IDE라 <b>개인 학습은 무료 플랜으로 충분</b>. 유료(Plans) 페이지가 있지만 수업 자료 작업에는 필요 없음.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 슬라이드 3-2: Pickcode 화면 (실제 스크린샷) ══════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="session-badge badge-2">환경 세팅 · 화면 미리보기</span>
+    <div>
+      <div class="slide-title">Pickcode 화면 — IDE 데모</div>
+      <div class="slide-sub">pickcode.io 메인 페이지에 노출된 실제 에디터 데모</div>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:16px;overflow-y:auto;">
+    <img src="assets/screenshots/pickcode/01_home.png" alt="Pickcode 홈 페이지" style="max-width:80%;height:auto;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.3);">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:80%;">
       <div class="tip-box teal">
-        <div class="tip-label teal">💡 강사 팁</div>
-        <div class="tip-text">5회차 시작 전 강사가 <b>혼자 한 번</b> 가입+실행을 끝내두면<br>아이가 막혔을 때 즉답 가능. 무조건 권장.</div>
+        <div class="tip-label teal">화면 구성 (강사가 짚어줄 것)</div>
+        <div class="tip-text">
+          좌측: <b>코드 에디터</b> (main.py)<br>
+          우측: <b>출력 패널</b> (Run 결과)<br>
+          우하단: <b>초록 ▶ 버튼</b> = Run<br>
+          좌하단: <b>Saved</b> 표시 (자동 저장)
+        </div>
+      </div>
+      <div class="tip-box amber">
+        <div class="tip-label amber">아이에게 멘트</div>
+        <div class="tip-text">"왼쪽에 코드를 쓰고, 초록 버튼 누르면 오른쪽에 결과가 나와. 진짜 개발자가 쓰는 거랑 똑같은 모양이야."</div>
       </div>
     </div>
   </div>
@@ -492,7 +561,7 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); col
         <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue)"></div><div class="timeline-line"></div></div>
         <div class="timeline-content">
           <div class="timeline-time">환경 세팅 · 10분</div>
-          <div class="timeline-title">Replit 접속 + 첫 코드 실행</div>
+          <div class="timeline-title">Pickcode 접속 + 첫 코드 실행</div>
           <div class="timeline-desc">미리 가입 안 된 경우만. 이미 했으면 5분으로 단축.</div>
         </div>
       </div>
@@ -2448,7 +2517,7 @@ rooms = [<span class="code-str">"숲"</span>, <span class="code-str">"동굴"</s
 <!-- 네비게이션 -->
 <div id="nav">
   <button class="nav-btn" onclick="prevSlide()" title="이전 (←)">&#8592;</button>
-  <span id="slide-counter">1 / 41</span>
+  <span id="slide-counter">1 / 43</span>
   <button class="nav-btn" onclick="nextSlide()" title="다음 (→)">&#8594;</button>
 </div>
 <div id="progress"></div>

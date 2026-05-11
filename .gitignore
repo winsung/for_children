@@ -3,3 +3,6 @@ package-lock.json
 files.zip
 .DS_Store
 Thumbs.db
+.playwright-replit-profile/
+replit-cookies.json
+pickcode-cookies.json

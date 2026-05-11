@@ -61,14 +61,15 @@ Step 3 (필수)    → 직접 수정 + 말로 설명
 | 단계 | 주제 | 회차 | 기간 | 도구 |
 |------|------|------|------|------|
 | 1단계 | AI와 친해지기 | 1~4회차 | 약 1개월 | Claude AI, 엔트리, 이미지AI |
-| 2단계 | AI와 함께 만들기 | 5~12회차 | 약 2개월 | Python (Replit), Claude AI |
+| 2단계 | AI와 함께 만들기 | 5~12회차 | 약 2개월 | Python (Pickcode), Claude AI |
 | 3단계 | AI 활용 프로그래머 | 13~20회차 | 약 2개월 | Python, Anthropic API |
 | 4단계 | 자유 프로젝트 | 무제한 | 오픈엔드 | 관심사 기반 선택 |
 
 ### 주요 도구
 
 ```
-Replit (replit.com)       - 브라우저 기반 Python 실행. 설치 불필요. 무료
+Pickcode (pickcode.io)     - 브라우저 기반 Python 실행. 가입 무료. 교육용 IDE 표방.
+                            ※ Replit은 2026년 AI Agent로 피벗하며 클래식 Repl 경로 제거됨
 Claude (claude.ai)         - 개념 설명·힌트 요청·아이디어 탐색
 엔트리 (playentry.org)    - 1단계 블록코딩. 한국어 지원
 Microsoft Designer         - 3회차 이미지 생성 AI
@@ -219,7 +220,7 @@ Python 코드를 배우기 전에, "코딩 = 컴퓨터에게 정확한 순서로
 | 12회차 | 미니 프로젝트 | 종합 실습 | 텍스트 RPG 게임 완성 |
 
 ### 환경 세팅 (5회차 시작 전 필수)
-- Replit (replit.com) 계정 생성
+- Pickcode (pickcode.io) 계정 생성
 - Python 새 프로젝트 생성
 - 첫 코드: `print("Hello, 세계!")`
 
@@ -366,7 +367,7 @@ Claude Code가 이어서 진행할 작업 목록 (우선순위 순):
 
 2. **2단계 학생용 HTML 제작**
    - iPad 터치 최적화
-   - Replit 링크 포함
+   - Pickcode 링크 포함
    - 코드 입력 연습 안내 (복붙 금지 문구)
    - 참고: 이 문서 섹션 5
 
