@@ -595,11 +595,14 @@ footer {
     </p>
     <p>엔트리에서 만든 함수가 파이썬에서는 이렇게 생깁니다 (3단계 미리보기):</p>
     <div class="code"><span class="c"># 엔트리: "공격하기" 함수 만들기  →  파이썬: def 로 묶기</span>
-<span class="k">def</span> <span class="f">공격하기</span>():
-    적HP <span class="k">=</span> 적HP <span class="k">-</span> <span class="n">10</span>     <span class="c"># 적HP 에 -10 만큼 더하기</span>
-    <span class="f">print</span>(<span class="s">"공격!"</span>)
+적HP <span class="k">=</span> <span class="n">50</span>
 
-<span class="f">공격하기</span>()                <span class="c"># 이름을 부르면(호출) 묶음이 실행됨</span></div>
+<span class="k">def</span> <span class="f">공격하기</span>(적HP):       <span class="c"># 엔트리의 '공격하기' 함수와 똑같아!</span>
+    적HP <span class="k">=</span> 적HP <span class="k">-</span> <span class="n">10</span>      <span class="c"># 적HP 에 -10 만큼 더하기</span>
+    <span class="f">print</span>(<span class="s">"공격!"</span>, 적HP)
+    <span class="k">return</span> 적HP
+
+적HP <span class="k">=</span> <span class="f">공격하기</span>(적HP)      <span class="c"># 이름을 부르면(호출) 묶음이 실행됨</span></div>
     <p><strong>오늘 "정의하고 → 이름으로 부른다"를 손으로 경험한 것</strong>이, 3단계 파이썬 <span class="inline-block">def</span> 를 자연스럽게 받아들이게 하는 다리입니다. 자녀에게 <strong>"이 '공격하기'가 나중에 파이썬에서 똑같이 나온다"</strong>고 꼭 짚어 주세요.</p>
   </div>
 </section>
