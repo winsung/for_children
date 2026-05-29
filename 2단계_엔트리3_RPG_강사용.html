@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2단계 엔트리 ③ — 간단 RPG (강사용)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --paper: #161a22;
+  --text: #e5e9f0;
+  --text-muted: #b6bfce;
+  --text-dim: #7c8493;
+  --border: #262c38;
+  --border-strong: #38414f;
+  --teal: #14b8a6;
+  --teal-soft: #0c2c2a;
+  --amber: #f59e0b;
+  --amber-soft: #2e2410;
+  --coral: #f87171;
+  --coral-soft: #2e1517;
+  --blue: #60a5fa;
+  --blue-soft: #11203a;
+  --green: #34d399;
+  --green-soft: #0d2a22;
+  --code-bg: #0a0d14;
+  --code-text: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.7;
+  font-size: 16px;
+  padding-bottom: 80px;
+}
+
+/* 레이아웃 */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+.header {
+  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 60%, #2dd4bf 100%);
+  color: white;
+  padding: 56px 24px 48px;
+  margin-bottom: 32px;
+}
+.header .wrap { color: white; }
+.header h1 { font-size: 36px; font-weight: 900; margin-bottom: 8px; line-height: 1.2; }
+.header .sub { font-size: 17px; opacity: .95; margin-bottom: 18px; }
+.header .meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.header .meta span {
+  background: rgba(255,255,255,.18);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.3);
+  backdrop-filter: blur(6px);
+}
+
+/* TOC */
+.toc {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+.toc h2 { font-size: 14px; font-weight: 700; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+.toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 28px; }
+.toc li { counter-increment: toc; padding: 6px 0; break-inside: avoid; }
+.toc li::before { content: counter(toc) ". "; color: var(--teal); font-weight: 700; margin-right: 6px; }
+.toc a { color: var(--text); text-decoration: none; font-size: 15px; }
+.toc a:hover { color: var(--teal); text-decoration: underline; }
+
+/* 섹션 */
+section { margin-bottom: 52px; scroll-margin-top: 24px; }
+section h2 {
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--teal);
+  display: inline-block;
+  color: var(--text);
+}
+section h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 28px;
+  margin-bottom: 12px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+section h3::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: var(--teal);
+  border-radius: 2px;
+}
+section h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+section p { margin-bottom: 12px; }
+section ul, section ol { padding-left: 24px; margin-bottom: 14px; }
+section li { margin-bottom: 6px; }
+
+/* 강조 박스 */
+.box {
+  border-left: 4px solid var(--teal);
+  background: var(--teal-soft);
+  padding: 16px 20px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+}
+.box.amber { border-color: var(--amber); background: var(--amber-soft); }
+.box.coral { border-color: var(--coral); background: var(--coral-soft); }
+.box.teal { border-color: var(--teal); background: var(--teal-soft); }
+.box.blue { border-color: var(--blue); background: var(--blue-soft); }
+.box.green { border-color: var(--green); background: var(--green-soft); }
+.box .label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.box.amber .label { color: var(--amber); }
+.box.coral .label { color: var(--coral); }
+.box.teal .label { color: var(--teal); }
+.box.blue .label { color: var(--blue); }
+.box.green .label { color: var(--green); }
+.box p:last-child { margin-bottom: 0; }
+
+/* 단계 카드 */
+.step {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 18px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+.step .step-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-strong);
+}
+.step .step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #06231f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.step .step-title { font-size: 18px; font-weight: 700; flex: 1; }
+.step .step-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+}
+
+/* 코드 블록 */
+.code {
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 12px 0;
+  overflow-x: auto;
+  white-space: pre;
+  border: 1px solid var(--border);
+}
+.code .c { color: #94a3b8; } /* comment */
+.code .k { color: #fb923c; } /* keyword (orange) */
+.code .f { color: #c084fc; } /* function (purple) */
+.code .n { color: #38bdf8; } /* number (cyan) */
+.code .s { color: #86efac; } /* string (green) */
+.code .cat { color: #2dd4bf; font-weight: 600; } /* [카테고리] 라벨 */
+
+/* 인라인 강조 */
+.inline-block {
+  display: inline-block;
+  background: #1e2632;
+  color: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  border: 1px solid #38414f;
+}
+strong { color: var(--text); font-weight: 700; }
+.hot { color: var(--coral); font-weight: 700; }
+
+/* 스크린샷 */
+.shot {
+  margin: 16px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+.shot img { display: block; width: 100%; height: auto; }
+.shot .caption {
+  background: #060810;
+  color: #cbd5e1;
+  font-size: 13px;
+  padding: 10px 16px;
+  font-weight: 500;
+}
+.shot .caption b { color: white; }
+
+.shot-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.shot-row .shot { margin: 0; }
+
+/* 표 */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--paper); font-weight: 700; color: var(--text-muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+tr:hover td { background: #12161e; }
+td:first-child, th:first-child { font-weight: 600; }
+
+/* 키캡 */
+kbd {
+  background: #1e2632;
+  border: 1px solid #38414f;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 60px;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+}
+
+@media print {
+  body { background: white; color: #1f2937; padding-bottom: 0; }
+  .header { background: #14b8a6 !important; -webkit-print-color-adjust: exact; }
+  .toc { break-after: page; }
+  section { break-inside: avoid; }
+  .shot { break-inside: avoid; }
+  .step { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <h1>2단계 엔트리 ③ — 간단 RPG</h1>
+    <div class="sub">장면 전환 + 함수로 만드는 첫 RPG · 강사용 (Kay)</div>
+    <div class="meta">
+      <span>🔨 2단계 엔트리 게임 ③</span>
+      <span>🎯 선행 50~70분</span>
+      <span>🆕 장면 전환 · 함수 만들기</span>
+      <span>🌉 파이썬 def 로 가는 다리</span>
+      <span>🛠 엔트리 (playentry.org)</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- 목차 -->
+<nav class="toc">
+  <h2>📑 목차</h2>
+  <ol>
+    <li><a href="#about">게임 소개 + 한 줄 규칙</a></li>
+    <li><a href="#step1">STEP 1 — 장면·오브젝트 준비</a></li>
+    <li><a href="#step2">STEP 2 — 마을: 이동 + 적 만나면 전투로</a></li>
+    <li><a href="#step3">STEP 3 — 적HP 변수 + 전투 시작</a></li>
+    <li><a href="#step4">STEP 4 — "공격하기" 함수 만들기</a></li>
+    <li><a href="#step5">STEP 5 — 공격 버튼으로 함수 호출</a></li>
+    <li><a href="#step6">STEP 6 — 승리 판정</a></li>
+    <li><a href="#concept">신개념 포인트</a></li>
+    <li><a href="#bridge">🌉 파이썬으로 가는 다리</a></li>
+    <li><a href="#stuck">자주 막히는 곳</a></li>
+    <li><a href="#ai">AI 도움 규칙</a></li>
+    <li><a href="#variants">변형 아이디어</a></li>
+  </ol>
+</nav>
+
+<!-- 1. 게임 소개 -->
+<section id="about">
+  <h2>1. 게임 소개 — 간단 RPG</h2>
+  <div class="box blue">
+    <div class="label">🎯 게임 규칙 한 줄</div>
+    <p><strong>"마을에서 출발해 적을 만나면 전투 장면으로! 공격 버튼으로 적을 물리치자."</strong></p>
+  </div>
+
+  <h3>사용할 오브젝트 · 장면</h3>
+  <ul>
+    <li><strong>주인공</strong> — 마우스(또는 키)로 움직이는 우리 캐릭터</li>
+    <li><strong>적</strong> — 마을에서 만나면 전투가 시작되는 상대. 전투에서 <strong>적HP</strong>를 깎아 물리침</li>
+    <li><strong>장면 2개</strong> — <strong>마을</strong>(탐험) → <strong>전투</strong>(싸움). 장면을 바꿔 화면이 통째로 전환됩니다.</li>
+  </ul>
+
+  <div class="box teal">
+    <div class="label">🧱 무엇을 쌓아 올리나</div>
+    <p>게임 ①②에서 다룬 <strong>반복 · 조건 · 충돌 · 변수 · 신호</strong> 위에, 이번에는 <strong>장면 전환</strong>(화면을 통째로 바꾸기)과 <strong>함수 만들기</strong>(반복 동작에 이름 붙이기) 두 가지 새 개념을 얹습니다. 특히 <strong>함수</strong>는 3단계 파이썬의 <span class="inline-block">def</span> 로 곧장 이어지는 핵심 다리입니다.</p>
+  </div>
+
+  <div class="box amber">
+    <div class="label">⚠️ 선행 안내 (Kay)</div>
+    <p>이 문서는 <strong>강사용</strong>입니다. 아래 블록 배열은 <strong>정답</strong>입니다 — 수업 전 한번 직접 만들어 보세요. 단, 수업 중에는 자녀에게 정답 블록을 보여주지 말고 <strong>AI 도움 규칙</strong>(아래)으로 유도하세요.</p>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1">
+  <h2>STEP 1 — 장면·오브젝트 준비</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">1</div>
+      <div class="step-title">장면 2개(마을/전투) 만들고 오브젝트 배치 + 저장</div>
+      <div class="step-time">⏱ 10분</div>
+    </div>
+
+    <h4>1-1. 장면 2개 만들기 <span class="hot">★ 이번 회차 새 작업</span></h4>
+    <ol>
+      <li>실행 화면 <strong>위쪽 "장면" 탭</strong>에서 <strong>"+"</strong> 버튼을 눌러 장면을 하나 더 추가합니다.</li>
+      <li>장면 이름을 각각 <strong>"마을"</strong>, <strong>"전투"</strong>로 바꿉니다. (탭 이름을 더블클릭하면 수정)</li>
+    </ol>
+
+    <h4>1-2. 오브젝트 배치</h4>
+    <ol>
+      <li><strong>마을</strong> 장면에 <strong>주인공</strong>·<strong>적</strong>을 추가해 배치합니다.</li>
+      <li><strong>전투</strong> 장면에도 <strong>주인공</strong>·<strong>적</strong>을 추가해 배치합니다. (장면마다 따로 추가!)</li>
+    </ol>
+
+    <h4>1-3. 저장</h4>
+    <p>상단 우측 <strong>"저장하기"</strong> → 작품 이름 <strong>"간단 RPG"</strong>.</p>
+
+    <div class="shot">
+      <img src="assets/screenshots/entry/rpg/01_scene_add.png" alt="오브젝트 추가하기 화면 예시">
+      <div class="caption"><b>오브젝트 추가 화면(예시)</b> — 이 이미지는 <b>+ 오브젝트 추가하기</b> 화면입니다. <b>장면 추가</b>는 여기가 아니라 <b>실행 화면 위쪽의 "장면" 탭</b>에 있는 <b>"+" 버튼</b>으로 합니다. 장면을 먼저 2개(마을/전투) 만든 뒤, 각 장면에서 이 화면으로 주인공·적을 추가하세요.</div>
+    </div>
+
+    <div class="box amber">
+      <div class="label">⚠️ 가장 중요한 주의</div>
+      <p><strong>장면마다 같은 오브젝트도 코드를 따로 짜야 합니다.</strong> 마을의 주인공과 전투의 주인공은 <strong>이름은 같아도 코드가 완전히 별개</strong>입니다. "마을에서 짠 코드가 전투에서도 동작하겠지?"는 틀립니다 — 각 장면에서 다시 짜야 합니다.</p>
+    </div>
+  </div>
+
+  <h3>블록 카테고리는 어디에? (참고)</h3>
+  <p>아래 STEP에서 쓰는 카테고리 위치입니다. 막혔을 때만 참고하세요. <strong>함수</strong> 카테고리는 블록 모음 목록 아래쪽에 따로 있습니다.</p>
+  <div class="shot">
+    <img src="assets/screenshots/03_editor_areas.png" alt="엔트리 편집기 화면 영역 안내">
+    <div class="caption">엔트리 편집기 영역 — 왼쪽 카테고리/블록, 가운데 코드 영역, 위쪽 실행 화면·장면 탭·오브젝트 목록</div>
+  </div>
+  <div class="shot-row">
+    <div class="shot">
+      <img src="assets/screenshots/cat_시작.png" alt="시작 카테고리 블록">
+      <div class="caption">시작 (시작하기 / 장면이 시작되었을 때 / 장면 시작하기 / 키를 눌렀을 때)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_생김새.png" alt="생김새 카테고리 블록">
+      <div class="caption">생김새 (모양 바꾸기 / 말하기)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_자료.png" alt="자료 카테고리 블록">
+      <div class="caption">자료 (변수 만들기 / 정하기·더하기)</div>
+    </div>
+  </div>
+  <div class="box">
+    <div class="label">🔍 블록 못 찾을 때</div>
+    <p>블록 모음 위쪽 <strong>검색창</strong>에 일부만 입력해도 찾아줍니다. 예: "장면", "함수", "이동", "닿", "모양", "기다".</p>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <h2>STEP 2 — 마을: 주인공 이동 + 적 만나면 전투로</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">2</div>
+      <div class="step-title">주인공이 마우스를 따라 움직이고, 적에 닿으면 전투 장면 시작</div>
+      <div class="step-time">⏱ 12분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>"마을" 장면 → "주인공" 오브젝트 선택</strong> (반드시 먼저!)</p>
+
+    <h4>2-1. 주인공 이동</h4>
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="cat">[흐름]</span>   <span class="k">계속 반복하기</span>
+<span class="cat">[움직임]</span>   ┗ <span class="f">마우스포인터 위치로 이동하기</span></div>
+
+    <h4>2-2. 적에 닿으면 전투 장면으로 <span class="hot">★ 장면 전환</span></h4>
+    <p>같은 "주인공" 오브젝트에 <strong>새 시작 블록</strong>으로 별도 흐름을 추가합니다.</p>
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="cat">[흐름]</span>   <span class="k">계속 반복하기</span>
+<span class="cat">[흐름]</span>     ┗ <span class="k">만일</span> ⟨ <span class="f">적</span> 에 <span class="f">닿았는가?</span> ⟩ <span class="k">라면</span>
+<span class="cat">[시작]</span>          ┗ <span class="f">전투 장면 시작하기</span></div>
+
+    <ul>
+      <li><span class="inline-block">적 에 닿았는가?</span> → <strong>판단</strong> 카테고리 (드롭다운을 <strong>"적"</strong>으로 변경)</li>
+      <li><span class="inline-block">전투 장면 시작하기</span> → <strong>시작</strong> 카테고리, 드롭다운에서 <strong>"전투"</strong> 선택. 이 블록이 실행되면 화면이 <strong>전투 장면으로 통째로 바뀝니다.</strong></li>
+    </ul>
+
+    <div class="box green">
+      <div class="label">✅ 테스트</div>
+      <p>▶ 시작하기 → 주인공이 마우스를 따라옵니다. 적에게 데려가 닿으면 화면이 전투 장면으로 전환됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3">
+  <h2>STEP 3 — 적HP 변수 + 전투 시작</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">3</div>
+      <div class="step-title">전투 장면이 시작되면 적HP를 50으로 초기화</div>
+      <div class="step-time">⏱ 8분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>"전투" 장면 → "적" 오브젝트 선택</strong></p>
+
+    <div class="box">
+      <div class="label">🔢 먼저: 적HP 변수 만들기</div>
+      <p><strong>자료 → 변수 만들기</strong>로 <strong>"적HP"</strong> 변수를 만듭니다. (모든 오브젝트가 함께 쓰는 변수)</p>
+    </div>
+
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">전투 장면이 시작되었을 때</span>
+<span class="cat">[자료]</span>   <span class="f">적HP</span> 를 <span class="n">50</span> (으)로 정하기</div>
+
+    <ul>
+      <li><span class="inline-block">전투 장면이 시작되었을 때</span> → <strong>시작</strong> 카테고리. STEP 2의 <span class="inline-block">전투 장면 시작하기</span>가 실행되는 순간 이 블록이 동작합니다.</li>
+      <li><span class="inline-block">적HP 를 50 (으)로 정하기</span> → <strong>자료</strong> 카테고리.</li>
+    </ul>
+
+    <div class="box amber">
+      <div class="label">🎯 왜 여기서 초기화?</div>
+      <p>적HP를 <strong>전투 장면이 시작될 때마다</strong> 50으로 되돌려야, 적을 물리치고 다시 와도 처음부터 싸울 수 있습니다. 시작 버튼 한 번만 초기화하면 두 번째 전투가 망가집니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <h2>STEP 4 — "공격하기" 함수 만들기</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">4</div>
+      <div class="step-title">반복되는 공격 동작을 "공격하기" 함수로 묶기</div>
+      <div class="step-time">⏱ 12분</div>
+    </div>
+
+    <h4>4-1. 함수 만들기 <span class="hot">★ 이번 회차 핵심 새 개념</span></h4>
+    <ol>
+      <li>블록 모음 왼쪽 목록 아래쪽 <strong>"함수"</strong> 카테고리로 이동</li>
+      <li><strong>"함수 만들기"</strong> 클릭 → 함수 정의 화면이 열립니다.</li>
+      <li>함수 이름을 <strong>"공격하기"</strong>로 정합니다. (블록 이름 칸에 입력)</li>
+      <li>정의 영역에 아래 동작 블록들을 끼운 뒤 <strong>"확인/저장"</strong>.</li>
+    </ol>
+
+    <div class="box">
+      <div class="label">📍 함수 만들기 위치</div>
+      <p>함수 만들기 버튼은 <strong>블록 꾸러미(블록 모음)의 "함수" 카테고리 → "함수 만들기"</strong>에 있습니다. 함수를 먼저 정의해야, 다른 곳에서 부를 수 있는 <span class="inline-block">공격하기</span> 호출 블록이 생깁니다.</p>
+    </div>
+
+    <h4>4-2. "공격하기" 함수 정의 내용</h4>
+    <div class="code"><span class="c">함수 정의: [공격하기]</span>
+<span class="cat">[생김새]</span>   <span class="f">모양을 (공격 모양) 으로 바꾸기</span>
+<span class="cat">[자료]</span>   <span class="f">적HP</span> 에 <span class="n">-10</span> 만큼 더하기
+<span class="cat">[흐름]</span>   <span class="n">0.3</span> 초 기다리기
+<span class="cat">[생김새]</span>   <span class="f">모양을 (기본 모양) 으로 바꾸기</span></div>
+
+    <div class="box teal">
+      <div class="label">🆕 함수란?</div>
+      <p>"공격할 때 할 일"(모양 바꾸기 → 적HP -10 → 잠깐 → 모양 되돌리기)을 <strong>하나로 묶어 "공격하기"라는 이름을 붙인 것</strong>이 함수입니다. 이제 <strong>"공격하기"라고 부르기만 하면</strong> 이 묶음이 통째로 실행됩니다. 같은 동작을 매번 다시 짤 필요가 없습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5">
+  <h2>STEP 5 — 공격 버튼으로 함수 호출</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">5</div>
+      <div class="step-title">스페이스 키를 누르면 "공격하기" 함수를 부름</div>
+      <div class="step-time">⏱ 6분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>"전투" 장면 → "주인공"(또는 "적") 오브젝트 선택</strong> — STEP 4에서 함수를 정의한 오브젝트에 붙입니다.</p>
+
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">스페이스 키를 눌렀을 때</span>
+<span class="cat">[함수]</span>   <span class="f">공격하기</span></div>
+
+    <ul>
+      <li><span class="inline-block">스페이스 키를 눌렀을 때</span> → <strong>시작</strong> 카테고리 (드롭다운에서 "스페이스" 선택)</li>
+      <li><span class="inline-block">공격하기</span> → <strong>함수</strong> 카테고리. STEP 4에서 함수를 만들었어야 이 호출 블록이 보입니다!</li>
+    </ul>
+
+    <div class="box teal">
+      <div class="label">📞 정의 vs 호출</div>
+      <p>STEP 4는 함수를 <strong>"정의"</strong>(만들기)한 것이고, STEP 5는 함수를 <strong>"호출"</strong>(부르기)하는 것입니다. <strong>정의만 하고 부르지 않으면 아무 일도 안 일어납니다.</strong> 스페이스를 누를 때마다 <span class="inline-block">공격하기</span> 묶음이 실행되어 적HP가 10씩 깎입니다.</p>
+    </div>
+
+    <div class="box green">
+      <div class="label">✅ 테스트</div>
+      <p>전투 장면에서 스페이스를 누르면 주인공 모양이 잠깐 바뀌고 적HP가 50 → 40 → 30 … 줄어듭니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section id="step6">
+  <h2>STEP 6 — 승리 판정</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">6</div>
+      <div class="step-title">적HP가 0 이하가 되면 "승리!" + 멈추기</div>
+      <div class="step-time">⏱ 8분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>"전투" 장면 → "적" 오브젝트</strong>에 <strong>새 시작 블록</strong>으로 추가합니다.</p>
+
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">전투 장면이 시작되었을 때</span>
+<span class="cat">[흐름]</span>   <span class="k">계속 반복하기</span>
+<span class="cat">[흐름]</span>     ┗ <span class="k">만일</span> ⟨ <span class="f">적HP</span> ≤ <span class="n">0</span> ⟩ <span class="k">라면</span>
+<span class="cat">[생김새]</span>          ┣ <span class="f">"승리!"</span> 을(를) 말하기
+<span class="cat">[흐름]</span>          ┗ <span class="f">모든 코드 멈추기</span></div>
+
+    <ul>
+      <li><span class="inline-block">적HP ≤ 0</span> → <strong>판단</strong>의 비교 블록(작거나 같다) + <strong>자료</strong>의 <span class="inline-block">적HP</span> 변수</li>
+      <li><span class="inline-block">"승리!" 을(를) 말하기</span> → <strong>생김새</strong> 카테고리</li>
+      <li><span class="inline-block">모든 코드 멈추기</span> → <strong>흐름</strong> 카테고리</li>
+    </ul>
+
+    <div class="box green">
+      <div class="label">✅ 완성 테스트</div>
+      <p>▶ 시작하기 → 마을에서 적에 닿으면 전투로 전환 → 스페이스로 공격해 적HP를 0으로 → "승리!"와 함께 멈춥니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 신개념 -->
+<section id="concept">
+  <h2>2. 신개념 포인트</h2>
+  <div class="box teal">
+    <div class="label">🆕 이번에 새로 배우는 것</div>
+    <p>
+      <strong>① 장면 전환 (장면 시작하기)</strong> — <span class="inline-block">전투 장면 시작하기</span>로 화면을 <strong>통째로 다른 장면</strong>으로 바꿉니다. 마을과 전투는 서로 다른 무대(장면)이고, 각 장면은 <span class="inline-block">~ 장면이 시작되었을 때</span>로 자기 코드를 시작합니다.<br>
+      <strong>② 함수 만들기 (반복 동작에 이름 붙이기)</strong> — 자주 쓰는 동작 묶음에 <strong>"공격하기"</strong>라는 이름을 붙여두면, 그 이름을 <strong>부르기만(호출)</strong> 하면 묶음이 통째로 실행됩니다. <strong>함수 = 코드 묶음에 이름 붙이기.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- 파이썬 다리 -->
+<section id="bridge">
+  <h2>3. 🌉 파이썬으로 가는 다리</h2>
+  <div class="box teal">
+    <div class="label">🌉 함수 = 파이썬 def 와 똑같은 개념</div>
+    <p>
+      <strong>함수 = 코드 묶음에 이름 붙이기.</strong> 오늘 만든 <strong>"공격하기"</strong> 함수는 3단계에서 배울 <strong>파이썬의 <span class="inline-block">def</span> 와 똑같은 개념</strong>입니다 — 이름을 부르면(호출하면) 그 묶음이 실행됩니다.
+    </p>
+    <p>엔트리에서 만든 함수가 파이썬에서는 이렇게 생깁니다 (3단계 미리보기):</p>
+    <div class="code"><span class="c"># 엔트리: "공격하기" 함수 만들기  →  파이썬: def 로 묶기</span>
+<span class="k">def</span> <span class="f">공격하기</span>():
+    적HP <span class="k">=</span> 적HP <span class="k">-</span> <span class="n">10</span>     <span class="c"># 적HP 에 -10 만큼 더하기</span>
+    <span class="f">print</span>(<span class="s">"공격!"</span>)
+
+<span class="f">공격하기</span>()                <span class="c"># 이름을 부르면(호출) 묶음이 실행됨</span></div>
+    <p><strong>오늘 "정의하고 → 이름으로 부른다"를 손으로 경험한 것</strong>이, 3단계 파이썬 <span class="inline-block">def</span> 를 자연스럽게 받아들이게 하는 다리입니다. 자녀에게 <strong>"이 '공격하기'가 나중에 파이썬에서 똑같이 나온다"</strong>고 꼭 짚어 주세요.</p>
+  </div>
+</section>
+
+<!-- 자주 막히는 곳 -->
+<section id="stuck">
+  <h2>4. 자주 막히는 곳</h2>
+  <div class="box coral">
+    <div class="label">⚠️ 디버깅 체크리스트</div>
+    <p>
+      <strong>전투 장면에서 주인공/적이 안 움직이거나 아무 코드도 안 함</strong> → <strong>장면별로 코드가 별개</strong>임을 잊은 것. 마을에서 짠 코드는 전투 장면 오브젝트에는 없습니다. <strong>전투 장면에서 다시</strong> 코드를 붙여야 합니다.<br>
+      <strong>스페이스를 눌러도 적HP가 안 줄어듦</strong> → 함수를 <strong>정의만 하고 호출을 안 한 것</strong>. STEP 5의 <span class="inline-block">공격하기</span> 호출 블록을 빠뜨렸는지 확인. (정의 ≠ 호출)<br>
+      <strong>두 번째 전투부터 적이 바로 죽거나 안 죽음</strong> → <strong>적HP가 전투 장면 시작마다 50으로 초기화되지 않음</strong>. STEP 3의 <span class="inline-block">전투 장면이 시작되었을 때 → 적HP 를 50 으로 정하기</span>가 있는지 확인.<br>
+      <strong>"공격하기" 호출 블록이 함수 카테고리에 안 보임</strong> → 함수를 <strong>먼저 만들지 않았거나</strong>, 함수를 만든 오브젝트와 다른 오브젝트를 보고 있기 때문.
+    </p>
+  </div>
+</section>
+
+<!-- AI 도움 규칙 -->
+<section id="ai">
+  <h2>5. AI 도움 규칙 (3단계)</h2>
+  <div class="box amber">
+    <div class="label">💬 이 프로젝트의 핵심 원칙</div>
+    <p>
+      <strong>(1) 10분 혼자 생각</strong> → <strong>(2) AI에게 힌트만 요청</strong> → <strong>(3) 직접 수정 + 말로 설명</strong>
+    </p>
+  </div>
+  <p>자녀가 막혀도 즉답하지 않기. <strong>"어디서 막혔는지 말로 설명해봐"</strong> → <strong>"그럼 어떤 블록이 필요할 것 같아?"</strong> 순서로 유도하세요.</p>
+  <ul>
+    <li><strong>좋은 질문 예:</strong> <em>"엔트리에서 반복되는 동작을 하나로 묶어 이름을 붙이려면 어떤 기능을 써야 해? 정답 말고 힌트만."</em></li>
+    <li><strong>나쁜 질문 예:</strong> <em>"RPG 게임 코드 알려줘."</em></li>
+  </ul>
+  <div class="box teal">
+    <div class="label">🎯 핵심 기준</div>
+    <p>완성 후 <strong>"이 블록이 왜 이렇게 동작하는지 말로 설명할 수 있는가?"</strong>를 꼭 확인하세요. 특히 <strong>"'공격하기' 함수를 왜 만들었고, 정의와 호출이 어떻게 다른지"</strong>, 그리고 <strong>"장면을 왜 두 개로 나눴는지"</strong>를 설명하게 해보세요.</p>
+  </div>
+</section>
+
+<!-- 변형 -->
+<section id="variants">
+  <h2>6. 변형 아이디어</h2>
+  <p>자녀가 빨리 끝나거나 더 만들고 싶어할 때:</p>
+  <ul>
+    <li><strong>회복 아이템</strong> — 주인공HP 변수를 추가하고, 아이템에 닿으면 <span class="inline-block">주인공HP 에 +20 만큼 더하기</span>. 회복도 <strong>"회복하기" 함수</strong>로 묶어보기.</li>
+    <li><strong>적 여러 종류</strong> — 약한 적/강한 적을 만들고 적마다 적HP 시작값을 다르게(30 / 80).</li>
+    <li><strong>승리·패배 장면 분기</strong> — "승리 장면"과 "패배 장면"을 따로 만들어, 적HP가 0이면 승리 장면, 주인공HP가 0이면 패배 장면으로 <span class="inline-block">장면 시작하기</span>.</li>
+  </ul>
+  <p>이런 변형도 <strong>AI에게 "어떤 블록(또는 함수)을 추가해야 할까?"</strong>로 묻게 유도하세요.</p>
+
+  <h3>참고 링크</h3>
+  <ul>
+    <li>엔트리 공식: <a href="https://playentry.org/" target="_blank">https://playentry.org/</a></li>
+    <li>엔트리 매뉴얼: <a href="https://docs.playentry.org/" target="_blank">https://docs.playentry.org/</a></li>
+  </ul>
+
+  <div class="box teal" style="margin-top:24px;">
+    <div class="label">🎯 마무리 한마디</div>
+    <p>이 게임은 <strong>파이썬으로 가는 다리</strong>입니다. 장면 전환으로 "프로그램이 단계로 나뉜다"를, 함수로 "코드 묶음에 이름 붙이기 = <span class="inline-block">def</span>"를 손으로 경험합니다. Kay님이 한번 직접 만들어보면 자녀가 정의/호출에서 어디서 헷갈릴지 자연스럽게 보입니다.</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  📁 2단계 엔트리 게임 ③ · 간단 RPG · 강사용 · for_children 프로젝트<br>
+  장면 전환과 함수(= 파이썬 def 의 다리)를 손으로 익히는, 2단계의 마지막 엔트리 게임
+</footer>
+
+</body>
+</html>
