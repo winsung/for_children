@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>엔트리 ② — 두더지 잡기 🔨</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --white: #ffffff;
+  --teal: #0d9488;
+  --teal-d: #0f766e;
+  --teal-l: #5eead4;
+  --teal-bg: #ccfbf1;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --amber: #d97706;
+  --amber-l: #fbbf24;
+  --amber-bg: #fef3c7;
+  --blue: #1d4ed8;
+  --blue-l: #60a5fa;
+  --blue-bg: #dbeafe;
+  --coral: #dc2626;
+  --coral-bg: #fee2e2;
+  --green: #15803d;
+  --green-bg: #dcfce7;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { font-size:16px; }
+body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; min-height:100vh; }
+
+/* ── 상단 헤더 ── */
+.top-bar { background:var(--white); border-bottom:2px solid var(--border); padding:0 20px; position:sticky; top:0; z-index:100; display:flex; align-items:center; height:64px; gap:12px; }
+.top-bar .logo { font-size:28px; }
+.top-bar h1 { font-size:20px; font-weight:900; color:var(--teal); }
+.top-bar .step-info { margin-left:auto; font-size:13px; background:var(--teal-bg); padding:4px 12px; border-radius:99px; font-weight:700; color:var(--teal-d); }
+
+/* ── 진행 탭 (스크롤) ── */
+.session-tabs { display:flex; gap:0; background:var(--white); border-bottom:2px solid var(--border); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.session-tabs::-webkit-scrollbar { display:none; }
+.tab { flex:0 0 auto; min-width:100px; padding:14px 14px; text-align:center; font-size:13px; font-weight:700; color:var(--text-muted); cursor:pointer; border-bottom:3px solid transparent; transition:.2s; white-space:nowrap; }
+.tab.active { color:var(--teal); border-bottom-color:var(--teal); }
+.tab .tab-num { font-size:18px; display:block; margin-bottom:2px; }
+
+/* ── 페이지 ── */
+.page { display:none; padding:24px 20px 100px; max-width:800px; margin:0 auto; }
+.page.active { display:block; }
+
+/* ── 섹션 헤더 ── */
+.section-hero { background:linear-gradient(135deg, var(--teal) 0%, var(--teal-d) 100%); color:white; border-radius:20px; padding:28px 24px; margin-bottom:24px; position:relative; overflow:hidden; }
+.section-hero.blue { background:linear-gradient(135deg, var(--blue) 0%, #1e40af 100%); }
+.section-hero.amber { background:linear-gradient(135deg, var(--amber) 0%, #b45309 100%); }
+.section-hero.purple { background:linear-gradient(135deg, var(--purple) 0%, #5b21b6 100%); }
+.hero-emoji { font-size:48px; margin-bottom:12px; display:block; }
+.hero-session { font-size:12px; font-weight:700; letter-spacing:.1em; opacity:.85; margin-bottom:6px; }
+.hero-title { font-size:26px; font-weight:900; margin-bottom:6px; line-height:1.2; }
+.hero-sub { font-size:15px; opacity:.85; }
+.hero-time { position:absolute; top:20px; right:20px; background:rgba(255,255,255,.2); padding:6px 14px; border-radius:99px; font-size:13px; font-weight:700; }
+
+/* ── 카드 ── */
+.card { background:var(--white); border:2px solid var(--border); border-radius:16px; padding:20px; margin-bottom:16px; }
+.card.teal { border-color:var(--teal-l); background:var(--teal-bg); }
+.card.amber { border-color:var(--amber-l); background:var(--amber-bg); }
+.card.blue { border-color:var(--blue-l); background:var(--blue-bg); }
+.card.coral { border-color:#fca5a5; background:var(--coral-bg); }
+.card.green { border-color:#86efac; background:var(--green-bg); }
+.card.purple { border-color:#c4b5fd; background:var(--purple-bg); }
+.card-label { font-size:11px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.label-teal { color:var(--teal-d); }
+.label-amber { color:var(--amber); }
+.label-blue { color:var(--blue); }
+.label-coral { color:var(--coral); }
+.label-green { color:var(--green); }
+.label-purple { color:var(--purple); }
+.card-title { font-size:18px; font-weight:900; margin-bottom:8px; color:var(--text); }
+.card-body { font-size:15px; line-height:1.8; color:var(--text-muted); }
+.card-body b { color:var(--text); }
+.card-body .em { color:var(--teal-d); font-weight:700; }
+
+/* ── 미션 배너 ── */
+.mission { background:linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border:2px solid var(--amber-l); border-radius:16px; padding:18px 20px; margin-bottom:16px; }
+.mission .m-label { font-size:11px; font-weight:900; color:var(--amber); letter-spacing:.08em; margin-bottom:6px; }
+.mission .m-text { font-size:18px; font-weight:900; color:#7c2d12; line-height:1.4; }
+
+/* ── 과제 스텝 ── */
+.step-list { display:flex; flex-direction:column; gap:12px; margin-top:4px; }
+.step-item { display:flex; gap:14px; align-items:flex-start; }
+.step-circle { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:900; flex-shrink:0; color:white; }
+.sc-teal { background:var(--teal); }
+.sc-amber { background:var(--amber); }
+.sc-blue { background:var(--blue); }
+.sc-purple { background:var(--purple); }
+.step-content { flex:1; }
+.step-title { font-size:16px; font-weight:700; margin-bottom:3px; }
+.step-desc { font-size:14px; color:var(--text-muted); line-height:1.6; }
+
+/* ── 체크리스트 ── */
+.checklist { display:flex; flex-direction:column; gap:10px; }
+.check-item { display:flex; align-items:center; gap:14px; background:var(--white); border:2px solid var(--border); border-radius:12px; padding:14px 16px; cursor:pointer; transition:.2s; -webkit-tap-highlight-color:transparent; }
+.check-item.done { background:var(--green-bg); border-color:#86efac; }
+.check-box { width:28px; height:28px; border:2px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; transition:.2s; color:transparent; }
+.check-item.done .check-box { background:var(--green); border-color:var(--green); color:white; }
+.check-label { font-size:15px; font-weight:700; flex:1; }
+.check-item.done .check-label { color:var(--green); text-decoration:line-through; text-decoration-color:rgba(21,128,61,.3); }
+
+/* ── 힌트 말풍선 ── */
+.bubble { background:var(--teal-bg); border:2px solid var(--teal-l); border-radius:16px 16px 16px 4px; padding:16px 18px; margin-bottom:12px; }
+.bubble.amber { background:var(--amber-bg); border-color:var(--amber-l); }
+.bubble.coral { background:var(--coral-bg); border-color:#fca5a5; }
+.bubble.purple { background:var(--purple-bg); border-color:#c4b5fd; }
+.bubble-label { font-size:11px; font-weight:900; letter-spacing:.08em; color:var(--teal-d); margin-bottom:6px; }
+.bubble-label.amber { color:var(--amber); }
+.bubble-label.coral { color:var(--coral); }
+.bubble-label.purple { color:var(--purple); }
+.bubble-text { font-size:16px; font-weight:700; line-height:1.5; color:var(--text); }
+.bubble-text b { color:var(--teal-d); }
+
+/* ── 설명해보기 박스 ── */
+.explain-box { background:linear-gradient(180deg, #fef9c3 0%, #fefce8 100%); border:2px solid #fde047; border-radius:16px; padding:18px 20px; margin-bottom:16px; }
+.explain-box .ex-label { font-size:12px; font-weight:900; color:#854d0e; letter-spacing:.06em; margin-bottom:8px; }
+.explain-box .ex-text { font-size:15px; color:#854d0e; font-weight:700; line-height:1.6; }
+.explain-box .note-line { border-bottom:2px dashed #fde047; height:34px; margin-top:12px; }
+
+/* ── 외부 링크 버튼 ── */
+.link-btn { display:flex; align-items:center; gap:12px; background:var(--white); border:2px solid var(--teal-l); border-radius:14px; padding:14px 18px; text-decoration:none; color:var(--text); margin-bottom:12px; transition:.2s; cursor:pointer; }
+.link-btn:hover, .link-btn:active { background:var(--teal-bg); }
+.link-btn.purple { border-color:#c4b5fd; }
+.link-btn.purple:hover, .link-btn.purple:active { background:var(--purple-bg); }
+.link-icon { font-size:26px; flex-shrink:0; }
+.link-info .link-title { font-size:15px; font-weight:900; color:var(--teal-d); }
+.link-info .link-title.purple { color:var(--purple); }
+.link-info .link-url { font-size:12px; color:var(--text-muted); }
+.link-arrow { margin-left:auto; font-size:18px; color:var(--teal-l); }
+
+/* ── 막혔을 때 박스 ── */
+.help-box { background:var(--white); border:2px solid var(--coral); border-radius:14px; padding:14px 16px; margin-bottom:16px; }
+.help-box .help-label { font-size:11px; font-weight:900; color:var(--coral); letter-spacing:.08em; margin-bottom:8px; }
+.help-box .help-text { font-size:13px; color:var(--text-muted); line-height:1.6; }
+.help-box .help-text b { color:var(--text); }
+
+/* ── 완료 배너 ── */
+.complete-banner { background:linear-gradient(135deg, var(--amber), #d97706); color:white; border-radius:16px; padding:24px; text-align:center; margin-bottom:16px; }
+.complete-banner .trophy { font-size:48px; margin-bottom:8px; }
+.complete-banner h2 { font-size:22px; font-weight:900; margin-bottom:6px; }
+.complete-banner p { font-size:14px; opacity:.95; }
+
+/* ── 진행 표시 ── */
+.progress-bar-wrap { background:var(--white); border-bottom:2px solid var(--border); padding:10px 20px; }
+.progress-label { font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:700; }
+.progress-bar { height:8px; background:var(--border); border-radius:99px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg, var(--teal), var(--teal-l)); border-radius:99px; transition:.4s; }
+
+/* ── PC 반응형 ── */
+@media (min-width: 769px) {
+  .top-bar { padding:0 40px; height:72px; }
+  .top-bar h1 { font-size:24px; }
+  .session-tabs { justify-content:center; }
+  .tab { min-width:130px; padding:16px 14px; font-size:14px; }
+  .page { max-width:900px; padding:36px 40px 100px; }
+  .section-hero { padding:36px 32px; border-radius:24px; }
+  .hero-title { font-size:32px; }
+  .hero-sub { font-size:17px; }
+  .card { padding:24px; margin-bottom:20px; border-radius:20px; }
+  .card-title { font-size:20px; }
+  .card-body { font-size:16px; }
+  .mission .m-text { font-size:20px; }
+  .step-circle { width:40px; height:40px; font-size:15px; }
+  .step-title { font-size:17px; }
+  .step-desc { font-size:15px; }
+  .check-item { padding:16px 20px; }
+  .check-label { font-size:16px; }
+  .bubble { padding:20px 22px; }
+  .bubble-text { font-size:18px; }
+  .link-btn { padding:18px 22px; }
+  .link-info .link-title { font-size:17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 상단 헤더 -->
+<div class="top-bar">
+  <span class="logo">🔨</span>
+  <h1>엔트리 ② 두더지 잡기</h1>
+  <span class="step-info">2단계 · 게임 만들기</span>
+</div>
+
+<!-- 진행 탭 -->
+<div class="session-tabs">
+  <div class="tab active" onclick="showPage(0)"><span class="tab-num">1️⃣</span>망치 따라가기</div>
+  <div class="tab" onclick="showPage(1)"><span class="tab-num">2️⃣</span>두더지 숨바꼭질</div>
+  <div class="tab" onclick="showPage(2)"><span class="tab-num">3️⃣</span>신호로 잡기</div>
+  <div class="tab" onclick="showPage(3)"><span class="tab-num">4️⃣</span>제한시간·완성</div>
+</div>
+
+<!-- 진행 바 -->
+<div class="progress-bar-wrap">
+  <div class="progress-label">전체 진행 상황 — <span id="prog-text">0 / 4 완료</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<!-- ══════════════════ 탭 1 — 망치 따라가기 ══════════════════ -->
+<div class="page active" id="page-0">
+  <div class="section-hero">
+    <span class="hero-emoji">🔨</span>
+    <div class="hero-session">단계 1</div>
+    <div class="hero-title">망치 따라가기</div>
+    <div class="hero-sub">망치가 손(마우스)을 졸졸 따라오게!</div>
+    <div class="hero-time">⏱ 15분</div>
+  </div>
+
+  <!-- 엔트리 링크 -->
+  <div class="card teal">
+    <div class="card-label label-teal">🛠️ 오늘 쓸 도구 — 엔트리</div>
+    <a class="link-btn" href="https://playentry.org" target="_blank">
+      <span class="link-icon">🟢</span>
+      <div class="link-info">
+        <div class="link-title">엔트리 접속하기</div>
+        <div class="link-url">playentry.org → 만들기 → 작품 만들기</div>
+      </div>
+      <span class="link-arrow">↗</span>
+    </a>
+    <div class="card-body" style="font-size:13px; margin-top:8px;">
+      엔트리봇은 지우고, <b>"망치"</b>와 <b>"두더지"</b> 오브젝트를 추가해서 시작하자.
+    </div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션</div>
+    <div class="m-text">망치가 마우스를 따라다니게 하자.</div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-teal">📋 과제 — 이걸 해내면 성공!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-teal">①</div><div class="step-content"><div class="step-title">시작하면</div><div class="step-desc">게임이 시작되는 순간부터 동작하게</div></div></div>
+      <div class="step-item"><div class="step-circle sc-teal">②</div><div class="step-content"><div class="step-title">계속</div><div class="step-desc">한 번이 아니라 멈추지 않고 쭉</div></div></div>
+      <div class="step-item"><div class="step-circle sc-teal">③</div><div class="step-content"><div class="step-title">마우스를 따라오기</div><div class="step-desc">망치가 항상 손가락(포인터) 쪽으로</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble">
+    <div class="bubble-label">💡 힌트 1 — 예전 게임 떠올리기</div>
+    <div class="bubble-text">예전 <b>'고양이 피하기'</b>에서 캐릭터가 마우스를 따라오게 한 적 있지? 그때 어떤 블록이었을까?<br>(→ <b>움직임</b> 카테고리를 열어봐!)</div>
+  </div>
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 2 — 한 번만? 계속?</div>
+    <div class="bubble-text">따라오는 동작을 <b>한 번만</b> 할까, <b>계속</b> 할까?<br>계속 하려면 무엇으로 감쌀까? (→ <b>흐름</b> 카테고리)</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">🤫 약속</div>
+    <div class="bubble-text">정답 블록은 안 알려줄게 — <b>카테고리만 힌트야.</b> 블록은 네가 찾는 거야!</div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 과제 체크리스트</div>
+    <div class="checklist" id="check-0">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">시작하면 동작이 시작되게 했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">한 번이 아니라 계속 반복하게 했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">망치가 마우스를 따라온다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">▶ 실행해서 망치가 손을 잘 따라오는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">"계속 반복하기"로 감싸지 않으면 망치가 어떻게 될지, 아빠한테 한 문장으로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
+    <div class="help-text">
+      <b>① 10분 혼자</b> → 어느 카테고리에 있을지 직접 둘러보기<br>
+      <b>② AI에 힌트만</b> → "정답 말고 어느 카테고리인지만!"<br>
+      <b>③ 직접 끼우고 설명</b> → 말로 설명 못 하면 다시!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 탭 2 — 두더지 숨바꼭질 ══════════════════ -->
+<div class="page" id="page-1">
+  <div class="section-hero blue">
+    <span class="hero-emoji">🐹</span>
+    <div class="hero-session">단계 2</div>
+    <div class="hero-title">두더지 숨바꼭질</div>
+    <div class="hero-sub">두더지가 여기저기서 나왔다 숨었다!</div>
+    <div class="hero-time">⏱ 15분</div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션</div>
+    <div class="m-text">두더지가 무작위 위치에서 나타났다 숨게 하자.</div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-blue">📋 과제 — 이걸 해내면 성공!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-blue">①</div><div class="step-content"><div class="step-title">숨어 있다가</div><div class="step-desc">처음엔 안 보이는 상태로 대기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-blue">②</div><div class="step-content"><div class="step-title">무작위 위치로</div><div class="step-desc">매번 다른 자리로 이동</div></div></div>
+      <div class="step-item"><div class="step-circle sc-blue">③</div><div class="step-content"><div class="step-title">잠깐 보이고</div><div class="step-desc">짧은 시간 동안만 모습을 드러내기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-blue">④</div><div class="step-content"><div class="step-title">다시 숨기</div><div class="step-desc">그리고 또 처음으로 (계속 반복!)</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble">
+    <div class="bubble-label">💡 힌트 1 — 보였다 안 보였다</div>
+    <div class="bubble-text">두더지를 <b>보였다 안 보였다</b> 하려면 무엇이 필요할까?<br>(→ <b>생김새</b> 카테고리에서 모양을 보이거나 감추는 블록을 찾아봐!)</div>
+  </div>
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 2 — 매번 다른 자리</div>
+    <div class="bubble-text">두더지가 항상 같은 곳에서만 나오면 재미없겠지? <b>매번 다른 자리</b>에 나오려면 무엇이 필요할까?<br>(→ <b>계산</b> 카테고리의 '무작위 수'를 위치에 끼워봐!)</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">🤫 약속</div>
+    <div class="bubble-text">블록 이름은 안 적어줄게. <b>카테고리 안을 직접 둘러보고</b> 어떤 블록이 있는지 구경해봐!</div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 과제 체크리스트</div>
+    <div class="checklist" id="check-1">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">처음엔 두더지가 숨어 있다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">매번 다른(무작위) 위치에서 나온다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">잠깐 보였다가 다시 숨는다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">▶ 실행해서 두더지가 여기저기 튀어나오는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">'무작위 수'를 왜 두더지 위치에 썼는지 말로 설명해봐. 안 쓰면 어떻게 될까?</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때</div>
+    <div class="help-text">
+      블록을 못 찾겠으면 블록 모음 위쪽 <b>검색창</b>에 "무작위", "보이", "숨" 같은 단어를 일부만 쳐봐.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 탭 3 — 신호로 잡기 ══════════════════ -->
+<div class="page" id="page-2">
+  <div class="section-hero amber">
+    <span class="hero-emoji">📣</span>
+    <div class="hero-session">단계 3</div>
+    <div class="hero-title">신호로 잡기</div>
+    <div class="hero-sub">두더지를 치면 점수판이 "잘했어!"</div>
+    <div class="hero-time">⏱ 20분</div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션 — 오늘의 핵심!</div>
+    <div class="m-text">두더지를 망치로 치면 점수가 오르고, 점수판이 '잘했어!'라고 반응하게 하자.</div>
+  </div>
+
+  <!-- 핵심 개념 안내 -->
+  <div class="card amber">
+    <div class="card-label label-amber">⭐ 오늘의 새로운 개념 — 신호</div>
+    <div class="card-body">
+      지금까지는 한 오브젝트 안에서만 코딩했지? 오늘은 <b>두 오브젝트가 서로 "대화"</b>하게 만들 거야.<br>
+      한 오브젝트가 <span class="em">신호를 보내면</span>, 다른 오브젝트가 그 <span class="em">신호를 받고 반응</span>하는 거지!
+    </div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-amber">📋 과제 — 이걸 해내면 성공!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-amber">①</div><div class="step-content"><div class="step-title">두더지를 클릭(또는 망치로 닿기) 감지</div><div class="step-desc">두더지가 "맞았다!"는 걸 알아채게</div></div></div>
+      <div class="step-item"><div class="step-circle sc-amber">②</div><div class="step-content"><div class="step-title">점수 올리기</div><div class="step-desc">맞으면 점수가 +1 (지난 게임의 점수 변수 기억나지?)</div></div></div>
+      <div class="step-item"><div class="step-circle sc-amber">③</div><div class="step-content"><div class="step-title">다른 오브젝트에게 알리기</div><div class="step-desc">"나 맞았어!"라고 신호를 보내기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-amber">④</div><div class="step-content"><div class="step-title">그 오브젝트가 반응하기</div><div class="step-desc">신호를 받은 점수판이 '잘했어!'라고 말하기</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 1 — 두 오브젝트의 대화</div>
+    <div class="bubble-text">두 오브젝트가 서로 '대화'하려면? 한 오브젝트가 <b>'신호'를 보내고</b> 다른 오브젝트가 <b>그 신호를 받으면</b> 돼.<br>— <b>자료</b> 옆에서 '신호'를 <b>먼저 만들어야</b> 해!</div>
+  </div>
+  <div class="bubble">
+    <div class="bubble-label">💡 힌트 2 — 짝을 찾아봐</div>
+    <div class="bubble-text">정답 블록은 안 알려줄게 — <b>'신호 만들기'</b>를 찾아보고, <b>'보내기'</b>와 <b>'받았을 때'</b>가 어떻게 짝이 되는지 직접 연결해봐.</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">💡 힌트 3 — 맞았는지 어떻게 알까?</div>
+    <div class="bubble-text">두더지가 맞았는지는 어떻게 알 수 있을까? 클릭으로? 망치에 닿는 걸로? <b>판단</b> 카테고리도 둘러봐!</div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 과제 체크리스트</div>
+    <div class="checklist" id="check-2">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">두더지가 맞았는지(클릭/닿기) 알아챈다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">맞으면 점수가 1 올라간다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">신호를 직접 만들어서 보냈다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">신호를 받은 오브젝트가 '잘했어!'라고 반응한다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">'신호'가 뭔지, 그리고 왜 '보내기'와 '받았을 때'가 짝이 되어야 하는지 말로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
+    <div class="help-text">
+      <b>① 10분 혼자</b> → "신호를 먼저 만든다 → 누가 보내고 누가 받을지" 종이에 그려보기<br>
+      <b>② AI에 힌트만</b> → "엔트리에서 한 오브젝트가 다른 오브젝트에게 알리려면 어떤 종류의 블록이 필요해? 정답 말고 힌트만!"<br>
+      <b>③ 직접 끼우고 설명</b>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 탭 4 — 제한시간·완성 ══════════════════ -->
+<div class="page" id="page-3">
+  <div class="section-hero purple">
+    <span class="hero-emoji">⏰</span>
+    <div class="hero-session">단계 4</div>
+    <div class="hero-title">제한시간·완성</div>
+    <div class="hero-sub">시간이 0이 되면 게임 끝! 완성!</div>
+    <div class="hero-time">⏱ 15분</div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션</div>
+    <div class="m-text">시간이 점점 줄어들고, 0이 되면 게임이 끝나게 하자.</div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-purple">📋 과제 — 이걸 해내면 완성!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-purple">①</div><div class="step-content"><div class="step-title">시간 변수 만들기</div><div class="step-desc">남은 시간을 저장할 공간</div></div></div>
+      <div class="step-item"><div class="step-circle sc-purple">②</div><div class="step-content"><div class="step-title">시작값 정하기</div><div class="step-desc">예: 게임 시작 때 30초부터</div></div></div>
+      <div class="step-item"><div class="step-circle sc-purple">③</div><div class="step-content"><div class="step-title">1초마다 줄이기</div><div class="step-desc">시간이 째깍째깍 줄어들게</div></div></div>
+      <div class="step-item"><div class="step-circle sc-purple">④</div><div class="step-content"><div class="step-title">0이 되면 멈추기</div><div class="step-desc">시간이 다 되면 게임 끝!</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble purple">
+    <div class="bubble-label purple">💡 힌트 1 — 시간을 어디에 저장하지?</div>
+    <div class="bubble-text">남은 시간을 <b>저장하려면</b> 무엇이 필요할까?<br>(→ <b>자료</b> 카테고리의 '변수'! 지난 시간에 점수도 변수로 만들었지?)</div>
+  </div>
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 2 — 1초마다 줄이기</div>
+    <div class="bubble-text">시간이 <b>1초마다</b> 줄어들게 하려면, 무엇으로 감싸고 무엇을 <b>기다릴까?</b><br>(→ <b>흐름</b> 카테고리를 떠올려봐!)</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">💡 힌트 3 — 0이 되면?</div>
+    <div class="bubble-text">시간이 <b>0이 되면</b> 게임을 어떻게 모두 멈출까? "만약 ~라면" 같은 판단도 필요할 거야.<br>(→ <b>흐름</b> 카테고리)</div>
+  </div>
+
+  <!-- AI 질문 예시 -->
+  <div class="card purple">
+    <div class="card-label label-purple">🤖 AI에 물어보는 좋은 예 — 학습용</div>
+    <div class="bubble coral" style="margin-bottom:8px;">
+      <div class="bubble-label coral">❌ 이렇게 묻지 마</div>
+      <div class="bubble-text" style="color:#7f1d1d;">"두더지 잡기 게임 코드 전부 알려줘"</div>
+    </div>
+    <div class="bubble">
+      <div class="bubble-label">✅ 이렇게 물어</div>
+      <div class="bubble-text">"엔트리에서 한 오브젝트가 다른 오브젝트에게 신호를 보내려면 어떤 블록이 필요해? <b>정답 말고 힌트만!</b>"</div>
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 완성 체크리스트</div>
+    <div class="checklist" id="check-3">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">"시간(남은시간)" 변수를 만들었다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">시작할 때 시간 시작값을 정했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">1초마다 시간이 줄어든다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">▶ 실행해서 시간이 0이 되면 게임이 끝나는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">시간을 줄이는 부분을 왜 '계속 반복'으로 감쌌는지, 그리고 왜 1초를 기다리는지 말로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 완성 배너 -->
+  <div id="complete-all" class="complete-banner" style="display:none;">
+    <div class="trophy">🏆</div>
+    <h2>두더지 잡기 게임 완성!</h2>
+    <p>망치 따라가기 → 두더지 숨바꼭질 → 신호로 잡기 → 제한시간<br>'신호'로 오브젝트끼리 대화하는 걸 네가 직접 만들었어! 🔨</p>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
+    <div class="help-text">
+      <b>① 10분 혼자</b> → "변수 만들기 → 시작값 → 1초마다 줄이기 → 0이면 끝" 순서를 종이에 그려보기<br>
+      <b>② AI에 힌트만</b> → "정답 말고, 어떤 종류의 블록이 필요한지만!"<br>
+      <b>③ 직접 만들고 설명</b> → 말로 설명 못 하면 다시!
+    </div>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab');
+const pages = document.querySelectorAll('.page');
+const TOTAL_PAGES = 4;
+
+function showPage(i) {
+  tabs.forEach((t,j) => t.classList.toggle('active', i===j));
+  pages.forEach((p,j) => p.classList.toggle('active', i===j));
+  window.scrollTo(0,0);
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  let completed = 0;
+  for(let i=0; i<TOTAL_PAGES; i++) {
+    const checks = document.querySelectorAll(`#page-${i} .check-item`);
+    const done = document.querySelectorAll(`#page-${i} .check-item.done`);
+    if(checks.length > 0 && done.length === checks.length) {
+      completed++;
+      tabs[i].style.background = 'rgba(21,128,61,.08)';
+    } else {
+      tabs[i].style.background = '';
+    }
+  }
+  document.getElementById('prog-text').textContent = `${completed} / ${TOTAL_PAGES} 완료`;
+  document.getElementById('prog-fill').style.width = `${(completed/TOTAL_PAGES)*100}%`;
+  const banner = document.getElementById('complete-all');
+  if(banner) banner.style.display = (completed === TOTAL_PAGES) ? 'block' : 'none';
+}
+
+updateProgress();
+</script>
+</body>
+</html>
