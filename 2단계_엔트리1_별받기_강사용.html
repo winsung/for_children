@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2단계 엔트리 ① — 별 받기 (강사용)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --paper: #161a22;
+  --text: #e5e9f0;
+  --text-muted: #b6bfce;
+  --text-dim: #7c8493;
+  --border: #262c38;
+  --border-strong: #38414f;
+  --teal: #14b8a6;
+  --teal-soft: #0c2c2a;
+  --amber: #f59e0b;
+  --amber-soft: #2e2410;
+  --coral: #f87171;
+  --coral-soft: #2e1517;
+  --blue: #60a5fa;
+  --blue-soft: #11203a;
+  --green: #34d399;
+  --green-soft: #0d2a22;
+  --code-bg: #0a0d14;
+  --code-text: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.7;
+  font-size: 16px;
+  padding-bottom: 80px;
+}
+
+/* 레이아웃 */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+.header {
+  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 60%, #2dd4bf 100%);
+  color: white;
+  padding: 56px 24px 48px;
+  margin-bottom: 32px;
+}
+.header .wrap { color: white; }
+.header h1 { font-size: 36px; font-weight: 900; margin-bottom: 8px; line-height: 1.2; }
+.header .sub { font-size: 17px; opacity: .95; margin-bottom: 18px; }
+.header .meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.header .meta span {
+  background: rgba(255,255,255,.18);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.3);
+  backdrop-filter: blur(6px);
+}
+
+/* TOC */
+.toc {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+.toc h2 { font-size: 14px; font-weight: 700; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+.toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 28px; }
+.toc li { counter-increment: toc; padding: 6px 0; break-inside: avoid; }
+.toc li::before { content: counter(toc) ". "; color: var(--teal); font-weight: 700; margin-right: 6px; }
+.toc a { color: var(--text); text-decoration: none; font-size: 15px; }
+.toc a:hover { color: var(--teal); text-decoration: underline; }
+
+/* 섹션 */
+section { margin-bottom: 52px; scroll-margin-top: 24px; }
+section h2 {
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--teal);
+  display: inline-block;
+  color: var(--text);
+}
+section h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 28px;
+  margin-bottom: 12px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+section h3::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: var(--teal);
+  border-radius: 2px;
+}
+section h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+section p { margin-bottom: 12px; }
+section ul, section ol { padding-left: 24px; margin-bottom: 14px; }
+section li { margin-bottom: 6px; }
+
+/* 강조 박스 */
+.box {
+  border-left: 4px solid var(--teal);
+  background: var(--teal-soft);
+  padding: 16px 20px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+}
+.box.amber { border-color: var(--amber); background: var(--amber-soft); }
+.box.coral { border-color: var(--coral); background: var(--coral-soft); }
+.box.teal { border-color: var(--teal); background: var(--teal-soft); }
+.box.blue { border-color: var(--blue); background: var(--blue-soft); }
+.box.green { border-color: var(--green); background: var(--green-soft); }
+.box .label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.box.amber .label { color: var(--amber); }
+.box.coral .label { color: var(--coral); }
+.box.teal .label { color: var(--teal); }
+.box.blue .label { color: var(--blue); }
+.box.green .label { color: var(--green); }
+.box p:last-child { margin-bottom: 0; }
+
+/* 단계 카드 */
+.step {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 18px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+.step .step-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-strong);
+}
+.step .step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #06231f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.step .step-title { font-size: 18px; font-weight: 700; flex: 1; }
+.step .step-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+}
+
+/* 코드 블록 */
+.code {
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 12px 0;
+  overflow-x: auto;
+  white-space: pre;
+  border: 1px solid var(--border);
+}
+.code .c { color: #94a3b8; } /* comment */
+.code .k { color: #fb923c; } /* keyword (orange) */
+.code .f { color: #c084fc; } /* function (purple) */
+.code .n { color: #38bdf8; } /* number (cyan) */
+.code .s { color: #86efac; } /* string (green) */
+.code .cat { color: #2dd4bf; font-weight: 600; } /* [카테고리] 라벨 */
+
+/* 인라인 강조 */
+.inline-block {
+  display: inline-block;
+  background: #1e2632;
+  color: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  border: 1px solid #38414f;
+}
+strong { color: var(--text); font-weight: 700; }
+.hot { color: var(--coral); font-weight: 700; }
+
+/* 스크린샷 */
+.shot {
+  margin: 16px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+.shot img { display: block; width: 100%; height: auto; }
+.shot .caption {
+  background: #060810;
+  color: #cbd5e1;
+  font-size: 13px;
+  padding: 10px 16px;
+  font-weight: 500;
+}
+.shot .caption b { color: white; }
+
+.shot-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.shot-row .shot { margin: 0; }
+
+/* 표 */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--paper); font-weight: 700; color: var(--text-muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+tr:hover td { background: #12161e; }
+td:first-child, th:first-child { font-weight: 600; }
+
+/* 키캡 */
+kbd {
+  background: #1e2632;
+  border: 1px solid #38414f;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 60px;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+}
+
+@media print {
+  body { background: white; color: #1f2937; padding-bottom: 0; }
+  .header { background: #14b8a6 !important; -webkit-print-color-adjust: exact; }
+  .toc { break-after: page; }
+  section { break-inside: avoid; }
+  .shot { break-inside: avoid; }
+  .step { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <h1>2단계 엔트리 ① — 별 받기</h1>
+    <div class="sub">키보드 조작 + 점수 변수 게임 · 강사용 (Kay)</div>
+    <div class="meta">
+      <span>🌟 2단계 엔트리 게임 ①</span>
+      <span>🎯 선행 40~60분</span>
+      <span>🆕 키보드 입력 · 점수 변수</span>
+      <span>🛠 엔트리 (playentry.org)</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- 목차 -->
+<nav class="toc">
+  <h2>📑 목차</h2>
+  <ol>
+    <li><a href="#about">게임 소개 + 한 줄 규칙</a></li>
+    <li><a href="#step1">STEP 1 — 오브젝트 준비</a></li>
+    <li><a href="#step2">STEP 2 — 바구니를 키보드로</a></li>
+    <li><a href="#step3">STEP 3 — 점수 변수 만들기</a></li>
+    <li><a href="#step4">STEP 4 — 별이 떨어지기 (원본)</a></li>
+    <li><a href="#step5">STEP 5 — 별 복제본 동작</a></li>
+    <li><a href="#concept">신개념 포인트</a></li>
+    <li><a href="#stuck">자주 막히는 곳</a></li>
+    <li><a href="#ai">AI 도움 규칙</a></li>
+    <li><a href="#variants">변형 아이디어</a></li>
+  </ol>
+</nav>
+
+<!-- 1. 게임 소개 -->
+<section id="about">
+  <h2>1. 게임 소개 — 별 받기</h2>
+  <div class="box blue">
+    <div class="label">🎯 게임 규칙 한 줄</div>
+    <p><strong>"좌우 키로 바구니를 움직여 위에서 떨어지는 별을 받자. 받으면 점수 +1!"</strong></p>
+  </div>
+
+  <h3>사용할 오브젝트</h3>
+  <ul>
+    <li><strong>바구니</strong> — 플레이어 (좌우 화살표 키로 움직임)</li>
+    <li><strong>별</strong> — 위에서 복제되어 떨어짐 (받으면 점수 +1)</li>
+    <li><strong>배경</strong> — 선택</li>
+  </ul>
+
+  <div class="box teal">
+    <div class="label">🧱 무엇을 쌓아 올리나</div>
+    <p>이미 만든 <strong>피하기 게임</strong>에서 다룬 <strong>반복 · 복제 · 조건 · 충돌 · 변수</strong> 위에, 이번에는 <strong>키보드 입력</strong>과 <strong>점수 누적 변수</strong> 두 가지 새 개념을 얹습니다.</p>
+  </div>
+
+  <div class="box amber">
+    <div class="label">⚠️ 선행 안내 (Kay)</div>
+    <p>이 문서는 <strong>강사용</strong>입니다. 아래 블록 배열은 <strong>정답</strong>입니다 — 수업 전 한번 직접 만들어 보세요. 단, 수업 중에는 자녀에게 정답 블록을 보여주지 말고 <strong>AI 도움 규칙</strong>(아래)으로 유도하세요.</p>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section id="step1">
+  <h2>STEP 1 — 오브젝트 준비</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">1</div>
+      <div class="step-title">엔트리봇 삭제 + 바구니/별 추가 + 저장</div>
+      <div class="step-time">⏱ 5분</div>
+    </div>
+
+    <h4>1-1. 기본 엔트리봇 삭제</h4>
+    <p>좌측 하단 오브젝트 목록에서 "엔트리봇" 위에 마우스 올리기 → <strong>X 버튼</strong> 클릭.</p>
+
+    <h4>1-2. 바구니(플레이어) 추가</h4>
+    <ol>
+      <li>오브젝트 목록 위쪽 <strong>"+ 오브젝트 추가하기"</strong> 클릭</li>
+      <li>검색창에 <strong>"바구니"</strong> 입력 → 선택 → <strong>추가하기</strong></li>
+    </ol>
+
+    <div class="shot">
+      <img src="assets/screenshots/entry/star/01_search_basket.png" alt="바구니 검색해서 추가">
+      <div class="caption"><b>① 바구니 검색·추가</b> — 검색창에 "바구니" 입력</div>
+    </div>
+
+    <h4>1-3. 별 추가</h4>
+    <ol>
+      <li>다시 <strong>"+ 오브젝트 추가하기"</strong> 클릭</li>
+      <li>검색창에 <strong>"별"</strong> 입력 → 선택 → <strong>추가하기</strong></li>
+    </ol>
+
+    <div class="shot">
+      <img src="assets/screenshots/entry/star/02_search_star.png" alt="별 검색해서 추가">
+      <div class="caption"><b>② 별 검색·추가</b> — 검색창에 "별" 입력</div>
+    </div>
+
+    <h4>1-4. (선택) 배경 추가</h4>
+    <p><strong>+ 오브젝트 추가하기</strong> → <strong>"배경"</strong> 탭 → 원하는 배경 선택.</p>
+
+    <div class="box green">
+      <div class="label">💾 저장</div>
+      <p>상단 우측 <strong>"저장하기"</strong> 클릭 → 작품 이름 <strong>"별 받기"</strong>. 한번 저장해두면 자동저장도 안전합니다.</p>
+    </div>
+  </div>
+
+  <h3>블록 카테고리는 어디에? (참고)</h3>
+  <p>아래 STEP에서 쓰는 카테고리 위치입니다. 막혔을 때만 참고하세요.</p>
+  <div class="shot-row">
+    <div class="shot">
+      <img src="assets/screenshots/cat_시작.png" alt="시작 카테고리 블록">
+      <div class="caption">시작 (시작하기 / 키를 눌렀을 때 / 복제본 생성)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_움직임.png" alt="움직임 카테고리 블록">
+      <div class="caption">움직임 (위치 이동 / x·y좌표 바꾸기)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_흐름.png" alt="흐름 카테고리 블록">
+      <div class="caption">흐름 (반복 / 조건 / 복제 / 삭제)</div>
+    </div>
+    <div class="shot">
+      <img src="assets/screenshots/cat_자료.png" alt="자료 카테고리 블록">
+      <div class="caption">자료 (변수 만들기 / 점수 정하기·더하기)</div>
+    </div>
+  </div>
+  <div class="box">
+    <div class="label">🔍 블록 못 찾을 때</div>
+    <p>블록 모음 위쪽 <strong>검색창</strong>에 일부만 입력해도 찾아줍니다. 예: "키", "닿", "복제", "무작위", "더하기".</p>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section id="step2">
+  <h2>STEP 2 — 바구니를 키보드로 움직이기</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">2</div>
+      <div class="step-title">시작 위치 + 좌우 화살표 키 조작 (3개 흐름)</div>
+      <div class="step-time">⏱ 10분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>오브젝트 목록에서 "바구니" 클릭</strong> (반드시 먼저!)</p>
+
+    <h4>2-1. 시작할 때 바구니를 화면 하단 중앙으로</h4>
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="cat">[움직임]</span>   <span class="f">x:</span> <span class="n">0</span>  <span class="f">y:</span> <span class="n">-110</span>  위치로 이동하기   <span class="c">// 화면 하단 중앙</span></div>
+
+    <h4>2-2. 왼쪽 화살표 키 → 왼쪽으로</h4>
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">← (왼쪽 화살표) 키를 눌렀을 때</span>
+<span class="cat">[움직임]</span>   <span class="f">x좌표를</span> <span class="n">-10</span> 만큼 바꾸기</div>
+
+    <h4>2-3. 오른쪽 화살표 키 → 오른쪽으로</h4>
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">→ (오른쪽 화살표) 키를 눌렀을 때</span>
+<span class="cat">[움직임]</span>   <span class="f">x좌표를</span> <span class="n">10</span> 만큼 바꾸기</div>
+
+    <div class="box amber">
+      <div class="label">🎯 핵심 트릭</div>
+      <p><span class="inline-block">~ 키를 눌렀을 때</span> 블록은 <strong>시작</strong> 카테고리에 있고, 드롭다운에서 <strong>"왼쪽 화살표" / "오른쪽 화살표"</strong>를 골라야 합니다. 기본값은 "스페이스" 같은 다른 키일 수 있습니다.</p>
+    </div>
+
+    <div class="box green">
+      <div class="label">✅ 테스트</div>
+      <p>▶ 시작하기 → 실행 화면을 한 번 클릭(키 입력 활성화) → 좌우 화살표 키를 누르면 바구니가 좌우로 움직입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section id="step3">
+  <h2>STEP 3 — 점수 변수 만들기</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">3</div>
+      <div class="step-title">"점수" 변수 생성 + 0으로 초기화</div>
+      <div class="step-time">⏱ 5분</div>
+    </div>
+
+    <h4>3-1. 변수 만들기</h4>
+    <ol>
+      <li><strong>자료</strong> 카테고리 → <strong>변수 만들기</strong> 클릭</li>
+      <li>변수 이름: <strong>"점수"</strong> → 확인</li>
+    </ol>
+
+    <h4>3-2. 시작할 때 점수를 0으로 (바구니 오브젝트에 붙임)</h4>
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="cat">[자료]</span>   <span class="f">점수</span> 를 <span class="n">0</span> (으)로 정하기</div>
+
+    <div class="box coral">
+      <div class="label">⚠️ 주의 — 초기화 중복</div>
+      <p>이 "점수 0으로 정하기"는 <strong>딱 한 곳</strong>에만 있어야 합니다. 시작 블록을 여러 개 만들어 같은 초기화를 두 번 넣으면 점수가 꼬일 수 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section id="step4">
+  <h2>STEP 4 — 별이 떨어지기 (원본)</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">4</div>
+      <div class="step-title">원본 별은 숨고, 1초마다 자기 복제</div>
+      <div class="step-time">⏱ 10분</div>
+    </div>
+
+    <p class="hot">⚠️ <strong>오브젝트 목록에서 "별" 클릭</strong></p>
+
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">▶ 시작하기 버튼을 클릭했을 때</span>
+<span class="cat">[생김새]</span>   <span class="f">모양 숨기기</span>
+<span class="cat">[흐름]</span>   <span class="k">계속 반복하기</span>
+<span class="cat">[흐름]</span>     ┣ <span class="f">자신의 복제본 만들기</span>
+<span class="cat">[흐름]</span>     ┗ <span class="n">1</span> 초 기다리기</div>
+
+    <div class="box">
+      <div class="label">💡 포인트</div>
+      <p>원본 별은 <strong>모양 숨기기</strong>로 화면에서 안 보이게 두고, <strong>복제본만 떨어지게</strong> 합니다. 그래야 깔끔하게 관리됩니다.</p>
+    </div>
+
+    <div class="box green">
+      <div class="label">✅ 체크포인트</div>
+      <p>▶ 시작하기 → 1초마다 새 별 복제본이 생성됩니다 (아직 떨어지는 동작은 STEP 5에서 추가).</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section id="step5">
+  <h2>STEP 5 — 별 복제본 동작 (떨어지기 + 받기)</h2>
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num">5</div>
+      <div class="step-title">무작위 위치에서 떨어지며 바구니에 닿으면 점수 +1</div>
+      <div class="step-time">⏱ 15분</div>
+    </div>
+
+    <p class="hot">⚠️ 같은 <strong>"별" 오브젝트</strong>의 코드 영역에 <strong>새 시작 블록</strong>으로 별도 흐름을 추가합니다.</p>
+
+    <div class="code"><span class="cat">[시작]</span>   <span class="k">복제본이 처음 생성되었을 때</span>
+<span class="cat">[생김새]</span>   <span class="f">모양 보이기</span>
+<span class="cat">[움직임]</span>   <span class="f">x:</span> (<span class="n">-200</span> 부터 <span class="n">200</span> 사이의 <span class="f">무작위 수</span>)  <span class="f">y:</span> <span class="n">130</span>  위치로 이동하기
+<span class="cat">[흐름]</span>   <span class="k">계속 반복하기</span>
+<span class="cat">[움직임]</span>     ┣ <span class="f">y좌표를</span> <span class="n">-4</span> 만큼 바꾸기
+<span class="cat">[흐름]</span>     ┣ <span class="k">만일</span> ⟨ <span class="f">바구니</span> 에 <span class="f">닿았는가?</span> ⟩ <span class="k">라면</span>
+<span class="cat">[자료]</span>     ┃    ┣ <span class="f">점수</span> 에 <span class="n">1</span> 만큼 더하기
+<span class="cat">[흐름]</span>     ┃    ┗ <span class="f">이 복제본 삭제하기</span>
+<span class="cat">[흐름]</span>     ┗ <span class="k">만일</span> ⟨ <span class="f">y좌표</span> &lt; <span class="n">-130</span> ⟩ <span class="k">라면</span>
+<span class="cat">[흐름]</span>          ┗ <span class="f">이 복제본 삭제하기</span></div>
+
+    <ul>
+      <li><span class="inline-block">(-200 부터 200 사이의 무작위 수)</span> → <strong>계산</strong> 카테고리</li>
+      <li><span class="inline-block">바구니 에 닿았는가?</span> → <strong>판단</strong> 카테고리 (드롭다운을 <strong>"바구니"</strong>로 변경)</li>
+      <li><span class="inline-block">점수 에 1 만큼 더하기</span> → <strong>자료</strong> 카테고리</li>
+      <li><span class="inline-block">y좌표 &lt; -130</span> → <strong>판단</strong>의 비교 블록 + <strong>계산</strong>의 <span class="inline-block">y좌표</span></li>
+      <li><span class="inline-block">이 복제본 삭제하기</span> → <strong>흐름</strong> 카테고리</li>
+    </ul>
+
+    <div class="box amber">
+      <div class="label">🎯 핵심 트릭</div>
+      <p>"닿았는가?"는 처음에 <strong>"마우스포인터에 닿았는가?"</strong>로 나옵니다. <strong>드롭다운을 "바구니"로 변경</strong>해야 합니다. 닿으면 <strong>점수 +1 후 그 별을 삭제</strong>해야 한 번만 점수가 오릅니다.</p>
+    </div>
+
+    <div class="box green">
+      <div class="label">✅ 완성 테스트</div>
+      <p>▶ 시작하기 → 별들이 무작위 위치에서 떨어지고, 바구니로 받으면 점수가 1씩 오르며 받은 별은 사라집니다. 못 받고 바닥(-130)에 닿은 별도 사라집니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 신개념 -->
+<section id="concept">
+  <h2>2. 신개념 포인트</h2>
+  <div class="box teal">
+    <div class="label">🆕 이번에 새로 배우는 것</div>
+    <p>
+      <strong>① 키보드 입력</strong> — <span class="inline-block">~ 키를 눌렀을 때</span> 블록. 마우스 따라가기와 달리, 플레이어가 <strong>키를 눌러 직접 조종</strong>합니다.<br>
+      <strong>② 점수 누적 변수</strong> — <span class="inline-block">점수 에 1 만큼 더하기</span>. 변수에 <strong>값을 쌓아 올리는</strong> 경험.<br>
+      <strong>③ 충돌의 의미 반전</strong> — 피하기 게임에서 "닿으면 게임 오버"였던 충돌이, 여기서는 <strong>"닿으면 좋은 것(점수+1)"</strong>으로 바뀝니다. 같은 <span class="inline-block">닿았는가?</span> 블록을 정반대 의미로 사용하는 것이 핵심 통찰입니다.
+    </p>
+  </div>
+</section>
+
+<!-- 자주 막히는 곳 -->
+<section id="stuck">
+  <h2>3. 자주 막히는 곳</h2>
+  <div class="box coral">
+    <div class="label">⚠️ 디버깅 체크리스트</div>
+    <p>
+      <strong>바구니가 화면 밖으로 나감</strong> → 좌우 끝 제한을 안 걸었기 때문. 지금은 그대로 두고, 아래 <strong>변형 아이디어</strong>에서 다룹니다.<br>
+      <strong>점수가 두 번 초기화됨</strong> → <span class="inline-block">점수 0으로 정하기</span>가 들어간 시작 블록이 중복. 시작 블록을 정리하세요.<br>
+      <strong>별이 한 줄로만 떨어짐</strong> → 복제본 시작 위치 x에 <strong>무작위 수</strong> 블록을 안 끼움.<br>
+      <strong>점수가 한 별에서 여러 번 오름</strong> → 닿았을 때 <span class="inline-block">이 복제본 삭제하기</span>를 빠뜨림 (계속 닿아 있어 +1이 반복됨).<br>
+      <strong>화면이 점점 느려짐</strong> → 바닥(-130) 도달 시 삭제 누락으로 복제본이 무한 누적.<br>
+      <strong>키를 눌러도 안 움직임</strong> → 실행 화면을 한 번 클릭해 키 입력을 활성화했는지, 그리고 오브젝트가 "바구니"로 선택돼 있는지 확인.
+    </p>
+  </div>
+</section>
+
+<!-- AI 도움 규칙 -->
+<section id="ai">
+  <h2>4. AI 도움 규칙 (3단계)</h2>
+  <div class="box amber">
+    <div class="label">💬 이 프로젝트의 핵심 원칙</div>
+    <p>
+      <strong>(1) 10분 혼자 생각</strong> → <strong>(2) AI에게 힌트만 요청</strong> → <strong>(3) 직접 수정 + 말로 설명</strong>
+    </p>
+  </div>
+  <p>자녀가 막혀도 즉답하지 않기. <strong>"어디서 막혔는지 말로 설명해봐"</strong> → <strong>"그럼 어떤 블록이 필요할 것 같아?"</strong> 순서로 유도하세요.</p>
+  <ul>
+    <li><strong>좋은 질문 예:</strong> <em>"엔트리에서 키를 누르면 캐릭터가 움직이게 하려면 어떤 블록이 필요해? 정답 말고 힌트만."</em></li>
+    <li><strong>나쁜 질문 예:</strong> <em>"별 받기 게임 코드 알려줘."</em></li>
+  </ul>
+  <div class="box teal">
+    <div class="label">🎯 핵심 기준</div>
+    <p>완성 후 <strong>"이 블록이 왜 이렇게 동작하는지 말로 설명할 수 있는가?"</strong>를 꼭 확인하세요. 특히 "닿았는가?를 왜 점수 올리는 데 썼는지" 설명하게 해보세요.</p>
+  </div>
+</section>
+
+<!-- 변형 -->
+<section id="variants">
+  <h2>5. 변형 아이디어</h2>
+  <p>자녀가 빨리 끝나거나 더 만들고 싶어할 때:</p>
+  <ul>
+    <li><strong>황금별 (+5)</strong> — 별 오브젝트에 "황금별" 모양/오브젝트를 추가하고, 받으면 <span class="inline-block">점수 에 5 만큼 더하기</span>.</li>
+    <li><strong>폭탄 섞기 (-1)</strong> — 폭탄 오브젝트를 추가해 함께 떨어뜨리고, 닿으면 <span class="inline-block">점수 에 -1 만큼 더하기</span> (또는 게임 오버).</li>
+    <li><strong>제한시간</strong> — "시간" 변수를 만들어 1초마다 -1, 0이 되면 <span class="inline-block">모든 코드 멈추기</span>.</li>
+    <li><strong>바구니 끝 제한</strong> — 바구니 x좌표가 너무 크/작아지지 않게 조건으로 막기 (위 "화면 밖으로 나감" 해결).</li>
+  </ul>
+  <p>이런 변형도 <strong>AI에게 "어떤 블록을 추가해야 할까?"</strong>로 묻게 유도하세요.</p>
+
+  <h3>참고 링크</h3>
+  <ul>
+    <li>엔트리 공식: <a href="https://playentry.org/" target="_blank">https://playentry.org/</a></li>
+    <li>엔트리 매뉴얼: <a href="https://docs.playentry.org/" target="_blank">https://docs.playentry.org/</a></li>
+  </ul>
+
+  <div class="box teal" style="margin-top:24px;">
+    <div class="label">🎯 마무리 한마디</div>
+    <p>이 가이드는 Kay님이 <strong>한번 직접 따라 만들어본 후</strong>의 안정감을 위한 것. 손으로 한번 해보면 자녀가 어디서 막힐지 자연스럽게 보입니다.</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  📁 2단계 엔트리 게임 ① · 별 받기 · 강사용 · for_children 프로젝트<br>
+  피하기 게임의 반복·복제·조건·충돌·변수 위에 키보드 입력·점수 변수를 쌓는 회차
+</footer>
+
+</body>
+</html>
