@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>엔트리 ③ — 간단 RPG ⚔️</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --white: #ffffff;
+  --teal: #0d9488;
+  --teal-d: #0f766e;
+  --teal-l: #5eead4;
+  --teal-bg: #ccfbf1;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --amber: #d97706;
+  --amber-l: #fbbf24;
+  --amber-bg: #fef3c7;
+  --blue: #1d4ed8;
+  --blue-l: #60a5fa;
+  --blue-bg: #dbeafe;
+  --coral: #dc2626;
+  --coral-bg: #fee2e2;
+  --green: #15803d;
+  --green-bg: #dcfce7;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { font-size:16px; }
+body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; min-height:100vh; }
+
+/* ── 상단 헤더 ── */
+.top-bar { background:var(--white); border-bottom:2px solid var(--border); padding:0 20px; position:sticky; top:0; z-index:100; display:flex; align-items:center; height:64px; gap:12px; }
+.top-bar .logo { font-size:28px; }
+.top-bar h1 { font-size:20px; font-weight:900; color:var(--teal); }
+.top-bar .step-info { margin-left:auto; font-size:13px; background:var(--teal-bg); padding:4px 12px; border-radius:99px; font-weight:700; color:var(--teal-d); }
+
+/* ── 진행 탭 (스크롤) ── */
+.session-tabs { display:flex; gap:0; background:var(--white); border-bottom:2px solid var(--border); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.session-tabs::-webkit-scrollbar { display:none; }
+.tab { flex:0 0 auto; min-width:100px; padding:14px 14px; text-align:center; font-size:13px; font-weight:700; color:var(--text-muted); cursor:pointer; border-bottom:3px solid transparent; transition:.2s; white-space:nowrap; }
+.tab.active { color:var(--teal); border-bottom-color:var(--teal); }
+.tab .tab-num { font-size:18px; display:block; margin-bottom:2px; }
+
+/* ── 페이지 ── */
+.page { display:none; padding:24px 20px 100px; max-width:800px; margin:0 auto; }
+.page.active { display:block; }
+
+/* ── 섹션 헤더 ── */
+.section-hero { background:linear-gradient(135deg, var(--teal) 0%, var(--teal-d) 100%); color:white; border-radius:20px; padding:28px 24px; margin-bottom:24px; position:relative; overflow:hidden; }
+.section-hero.blue { background:linear-gradient(135deg, var(--blue) 0%, #1e40af 100%); }
+.section-hero.amber { background:linear-gradient(135deg, var(--amber) 0%, #b45309 100%); }
+.section-hero.purple { background:linear-gradient(135deg, var(--purple) 0%, #5b21b6 100%); }
+.hero-emoji { font-size:48px; margin-bottom:12px; display:block; }
+.hero-session { font-size:12px; font-weight:700; letter-spacing:.1em; opacity:.85; margin-bottom:6px; }
+.hero-title { font-size:26px; font-weight:900; margin-bottom:6px; line-height:1.2; }
+.hero-sub { font-size:15px; opacity:.85; }
+.hero-time { position:absolute; top:20px; right:20px; background:rgba(255,255,255,.2); padding:6px 14px; border-radius:99px; font-size:13px; font-weight:700; }
+
+/* ── 카드 ── */
+.card { background:var(--white); border:2px solid var(--border); border-radius:16px; padding:20px; margin-bottom:16px; }
+.card.teal { border-color:var(--teal-l); background:var(--teal-bg); }
+.card.amber { border-color:var(--amber-l); background:var(--amber-bg); }
+.card.blue { border-color:var(--blue-l); background:var(--blue-bg); }
+.card.coral { border-color:#fca5a5; background:var(--coral-bg); }
+.card.green { border-color:#86efac; background:var(--green-bg); }
+.card.purple { border-color:#c4b5fd; background:var(--purple-bg); }
+.card-label { font-size:11px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.label-teal { color:var(--teal-d); }
+.label-amber { color:var(--amber); }
+.label-blue { color:var(--blue); }
+.label-coral { color:var(--coral); }
+.label-green { color:var(--green); }
+.label-purple { color:var(--purple); }
+.card-title { font-size:18px; font-weight:900; margin-bottom:8px; color:var(--text); }
+.card-body { font-size:15px; line-height:1.8; color:var(--text-muted); }
+.card-body b { color:var(--text); }
+.card-body .em { color:var(--teal-d); font-weight:700; }
+
+/* ── 미션 배너 ── */
+.mission { background:linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border:2px solid var(--amber-l); border-radius:16px; padding:18px 20px; margin-bottom:16px; }
+.mission .m-label { font-size:11px; font-weight:900; color:var(--amber); letter-spacing:.08em; margin-bottom:6px; }
+.mission .m-text { font-size:18px; font-weight:900; color:#7c2d12; line-height:1.4; }
+
+/* ── 과제 스텝 ── */
+.step-list { display:flex; flex-direction:column; gap:12px; margin-top:4px; }
+.step-item { display:flex; gap:14px; align-items:flex-start; }
+.step-circle { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:900; flex-shrink:0; color:white; }
+.sc-teal { background:var(--teal); }
+.sc-amber { background:var(--amber); }
+.sc-blue { background:var(--blue); }
+.sc-purple { background:var(--purple); }
+.step-content { flex:1; }
+.step-title { font-size:16px; font-weight:700; margin-bottom:3px; }
+.step-desc { font-size:14px; color:var(--text-muted); line-height:1.6; }
+
+/* ── 체크리스트 ── */
+.checklist { display:flex; flex-direction:column; gap:10px; }
+.check-item { display:flex; align-items:center; gap:14px; background:var(--white); border:2px solid var(--border); border-radius:12px; padding:14px 16px; cursor:pointer; transition:.2s; -webkit-tap-highlight-color:transparent; }
+.check-item.done { background:var(--green-bg); border-color:#86efac; }
+.check-box { width:28px; height:28px; border:2px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; transition:.2s; color:transparent; }
+.check-item.done .check-box { background:var(--green); border-color:var(--green); color:white; }
+.check-label { font-size:15px; font-weight:700; flex:1; }
+.check-item.done .check-label { color:var(--green); text-decoration:line-through; text-decoration-color:rgba(21,128,61,.3); }
+
+/* ── 힌트 말풍선 ── */
+.bubble { background:var(--teal-bg); border:2px solid var(--teal-l); border-radius:16px 16px 16px 4px; padding:16px 18px; margin-bottom:12px; }
+.bubble.amber { background:var(--amber-bg); border-color:var(--amber-l); }
+.bubble.coral { background:var(--coral-bg); border-color:#fca5a5; }
+.bubble.purple { background:var(--purple-bg); border-color:#c4b5fd; }
+.bubble-label { font-size:11px; font-weight:900; letter-spacing:.08em; color:var(--teal-d); margin-bottom:6px; }
+.bubble-label.amber { color:var(--amber); }
+.bubble-label.coral { color:var(--coral); }
+.bubble-label.purple { color:var(--purple); }
+.bubble-text { font-size:16px; font-weight:700; line-height:1.5; color:var(--text); }
+.bubble-text b { color:var(--teal-d); }
+
+/* ── 설명해보기 박스 ── */
+.explain-box { background:linear-gradient(180deg, #fef9c3 0%, #fefce8 100%); border:2px solid #fde047; border-radius:16px; padding:18px 20px; margin-bottom:16px; }
+.explain-box .ex-label { font-size:12px; font-weight:900; color:#854d0e; letter-spacing:.06em; margin-bottom:8px; }
+.explain-box .ex-text { font-size:15px; color:#854d0e; font-weight:700; line-height:1.6; }
+.explain-box .note-line { border-bottom:2px dashed #fde047; height:34px; margin-top:12px; }
+
+/* ── 외부 링크 버튼 ── */
+.link-btn { display:flex; align-items:center; gap:12px; background:var(--white); border:2px solid var(--teal-l); border-radius:14px; padding:14px 18px; text-decoration:none; color:var(--text); margin-bottom:12px; transition:.2s; cursor:pointer; }
+.link-btn:hover, .link-btn:active { background:var(--teal-bg); }
+.link-btn.purple { border-color:#c4b5fd; }
+.link-btn.purple:hover, .link-btn.purple:active { background:var(--purple-bg); }
+.link-icon { font-size:26px; flex-shrink:0; }
+.link-info .link-title { font-size:15px; font-weight:900; color:var(--teal-d); }
+.link-info .link-title.purple { color:var(--purple); }
+.link-info .link-url { font-size:12px; color:var(--text-muted); }
+.link-arrow { margin-left:auto; font-size:18px; color:var(--teal-l); }
+
+/* ── 막혔을 때 박스 ── */
+.help-box { background:var(--white); border:2px solid var(--coral); border-radius:14px; padding:14px 16px; margin-bottom:16px; }
+.help-box .help-label { font-size:11px; font-weight:900; color:var(--coral); letter-spacing:.08em; margin-bottom:8px; }
+.help-box .help-text { font-size:13px; color:var(--text-muted); line-height:1.6; }
+.help-box .help-text b { color:var(--text); }
+
+/* ── 완료 배너 ── */
+.complete-banner { background:linear-gradient(135deg, var(--amber), #d97706); color:white; border-radius:16px; padding:24px; text-align:center; margin-bottom:16px; }
+.complete-banner .trophy { font-size:48px; margin-bottom:8px; }
+.complete-banner h2 { font-size:22px; font-weight:900; margin-bottom:6px; }
+.complete-banner p { font-size:14px; opacity:.95; }
+
+/* ── 진행 표시 ── */
+.progress-bar-wrap { background:var(--white); border-bottom:2px solid var(--border); padding:10px 20px; }
+.progress-label { font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:700; }
+.progress-bar { height:8px; background:var(--border); border-radius:99px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg, var(--teal), var(--teal-l)); border-radius:99px; transition:.4s; }
+
+/* ── PC 반응형 ── */
+@media (min-width: 769px) {
+  .top-bar { padding:0 40px; height:72px; }
+  .top-bar h1 { font-size:24px; }
+  .session-tabs { justify-content:center; }
+  .tab { min-width:130px; padding:16px 14px; font-size:14px; }
+  .page { max-width:900px; padding:36px 40px 100px; }
+  .section-hero { padding:36px 32px; border-radius:24px; }
+  .hero-title { font-size:32px; }
+  .hero-sub { font-size:17px; }
+  .card { padding:24px; margin-bottom:20px; border-radius:20px; }
+  .card-title { font-size:20px; }
+  .card-body { font-size:16px; }
+  .mission .m-text { font-size:20px; }
+  .step-circle { width:40px; height:40px; font-size:15px; }
+  .step-title { font-size:17px; }
+  .step-desc { font-size:15px; }
+  .check-item { padding:16px 20px; }
+  .check-label { font-size:16px; }
+  .bubble { padding:20px 22px; }
+  .bubble-text { font-size:18px; }
+  .link-btn { padding:18px 22px; }
+  .link-info .link-title { font-size:17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 상단 헤더 -->
+<div class="top-bar">
+  <span class="logo">⚔️</span>
+  <h1>엔트리 ③ 간단 RPG</h1>
+  <span class="step-info">2단계 · 게임 만들기</span>
+</div>
+
+<!-- 진행 탭 -->
+<div class="session-tabs">
+  <div class="tab active" onclick="showPage(0)"><span class="tab-num">1️⃣</span>장면 2개 만들기</div>
+  <div class="tab" onclick="showPage(1)"><span class="tab-num">2️⃣</span>마을→전투 이동</div>
+  <div class="tab" onclick="showPage(2)"><span class="tab-num">3️⃣</span>공격 함수</div>
+  <div class="tab" onclick="showPage(3)"><span class="tab-num">4️⃣</span>승리 판정·완성</div>
+</div>
+
+<!-- 진행 바 -->
+<div class="progress-bar-wrap">
+  <div class="progress-label">전체 진행 상황 — <span id="prog-text">0 / 4 완료</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<!-- ══════════════════ 탭 1 — 장면 2개 만들기 ══════════════════ -->
+<div class="page active" id="page-0">
+  <div class="section-hero">
+    <span class="hero-emoji">🏘️</span>
+    <div class="hero-session">단계 1</div>
+    <div class="hero-title">장면 2개 만들기</div>
+    <div class="hero-sub">마을과 전투, 두 개의 무대를 준비하자!</div>
+    <div class="hero-time">⏱ 15분</div>
+  </div>
+
+  <!-- 엔트리 링크 -->
+  <div class="card teal">
+    <div class="card-label label-teal">🛠️ 오늘 쓸 도구 — 엔트리</div>
+    <a class="link-btn" href="https://playentry.org" target="_blank">
+      <span class="link-icon">🟢</span>
+      <div class="link-info">
+        <div class="link-title">엔트리 접속하기</div>
+        <div class="link-url">playentry.org → 만들기 → 작품 만들기</div>
+      </div>
+      <span class="link-arrow">↗</span>
+    </a>
+    <div class="card-body" style="font-size:13px; margin-top:8px;">
+      엔트리봇은 지우고, <b>"주인공"</b>과 <b>"적"</b> 오브젝트를 추가해서 시작하자.
+    </div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션</div>
+    <div class="m-text">마을과 전투, 두 개의 장면을 만들자.</div>
+  </div>
+
+  <!-- 핵심 개념 안내 -->
+  <div class="card teal">
+    <div class="card-label label-teal">⭐ 오늘의 새로운 개념 — 장면</div>
+    <div class="card-body">
+      RPG는 <b>마을</b>도 있고 <b>전투</b>도 있지? 한 화면에 다 넣지 않고, <span class="em">'장면'을 여러 개</span> 만들어서 무대를 바꿔가며 진행할 수 있어!
+    </div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-teal">📋 과제 — 이걸 해내면 성공!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-teal">①</div><div class="step-content"><div class="step-title">장면 2개 추가</div><div class="step-desc">'마을' 장면과 '전투' 장면, 두 개를 만들기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-teal">②</div><div class="step-content"><div class="step-title">각 장면에 배치</div><div class="step-desc">마을 장면엔 주인공, 전투 장면엔 주인공과 적을 놓기</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble">
+    <div class="bubble-label">💡 힌트 1 — 장면은 어디서 추가하지?</div>
+    <div class="bubble-text">실행 화면 <b>위쪽</b>을 봐 — '장면'을 새로 추가하는 곳이 있어. <b>'+'</b>를 찾아봐!</div>
+  </div>
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 2 — 헷갈리지 않게!</div>
+    <div class="bubble-text"><b>중요!</b> 같은 주인공이라도 <b>마을 장면</b>과 <b>전투 장면</b>에서 코드를 <b>따로</b> 짜야 해. 헷갈리지 않게!</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">🤫 약속</div>
+    <div class="bubble-text">정답 블록은 안 알려줄게 — <b>직접 둘러보고</b> 장면 추가하는 '+'를 네가 찾는 거야!</div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 과제 체크리스트</div>
+    <div class="checklist" id="check-0">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">'마을' 장면을 만들었다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">'전투' 장면을 만들었다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">각 장면에 주인공·적을 배치했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">위쪽 장면 탭을 눌러 두 장면이 잘 바뀌는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">왜 마을과 전투를 한 화면에 다 넣지 않고 '장면'을 두 개로 나눴을까? 아빠한테 한 문장으로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
+    <div class="help-text">
+      <b>① 10분 혼자</b> → 실행 화면 위쪽을 천천히 둘러보기<br>
+      <b>② AI에 힌트만</b> → "엔트리에서 무대(장면)를 새로 추가하는 곳은 어디야? 정답 말고 힌트만!"<br>
+      <b>③ 직접 만들고 설명</b> → 말로 설명 못 하면 다시!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 탭 2 — 마을→전투 이동 ══════════════════ -->
+<div class="page" id="page-1">
+  <div class="section-hero blue">
+    <span class="hero-emoji">🚶</span>
+    <div class="hero-session">단계 2</div>
+    <div class="hero-title">마을→전투 이동</div>
+    <div class="hero-sub">적과 만나면 전투 무대로 넘어가게!</div>
+    <div class="hero-time">⏱ 15분</div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션</div>
+    <div class="m-text">마을에서 적과 만나면 전투 장면으로 넘어가게 하자.</div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-blue">📋 과제 — 이걸 해내면 성공!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-blue">①</div><div class="step-content"><div class="step-title">주인공 움직이기</div><div class="step-desc">마을에서 주인공을 키보드로 움직이게</div></div></div>
+      <div class="step-item"><div class="step-circle sc-blue">②</div><div class="step-content"><div class="step-title">적에 닿았는지 확인</div><div class="step-desc">주인공이 적과 만났는지 알아채기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-blue">③</div><div class="step-content"><div class="step-title">닿으면 전투 장면으로</div><div class="step-desc">만났으면 무대를 전투 장면으로 바꾸기</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble">
+    <div class="bubble-label">💡 힌트 1 — 닿았는지 확인은?</div>
+    <div class="bubble-text">주인공이 적에 <b>닿았는지 확인</b>은 어느 카테고리였지?<br>(→ <b>판단</b> 카테고리를 열어봐!)</div>
+  </div>
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 2 — 화면(장면) 바꾸기</div>
+    <div class="bubble-text">화면(장면)을 바꾸는 블록을 찾아봐 — 어느 카테고리에 <b>'장면'</b>이라는 말이 있을까?<br>(→ <b>시작</b> 카테고리!)</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">🤫 약속</div>
+    <div class="bubble-text">블록 이름은 안 적어줄게. <b>카테고리 안을 직접 둘러보고</b> '장면'이라는 단어가 들어간 블록을 찾아봐!</div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 과제 체크리스트</div>
+    <div class="checklist" id="check-1">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">마을에서 주인공이 움직인다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">주인공이 적에 닿았는지 확인한다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">닿으면 전투 장면으로 넘어간다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">▶ 실행해서 적과 만나면 전투 무대로 바뀌는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">'적에 닿았는지' 확인하는 부분을 왜 '계속'으로 감쌌을까? 안 그러면 어떻게 될지 말로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때</div>
+    <div class="help-text">
+      블록을 못 찾겠으면 블록 모음 위쪽 <b>검색창</b>에 "장면", "닿", "이동" 같은 단어를 일부만 쳐봐.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 탭 3 — 공격 함수 ══════════════════ -->
+<div class="page" id="page-2">
+  <div class="section-hero amber">
+    <span class="hero-emoji">🗡️</span>
+    <div class="hero-session">단계 3</div>
+    <div class="hero-title">공격 함수</div>
+    <div class="hero-sub">반복되는 공격을 '함수' 하나로 묶자!</div>
+    <div class="hero-time">⏱ 20분</div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션 — 오늘의 핵심!</div>
+    <div class="m-text">공격할 때마다 반복되는 동작을 '함수' 하나로 묶어보자.</div>
+  </div>
+
+  <!-- 핵심 개념 안내 -->
+  <div class="card amber">
+    <div class="card-label label-amber">⭐ 오늘의 새로운 개념 — 함수</div>
+    <div class="card-body">
+      공격할 때마다 <b>똑같은 동작</b>을 여러 번 쓰게 되지? 그 묶음에 <span class="em">'이름'</span>을 붙여두면, 다음부터는 <b>이름만 부르면</b> 그 동작이 한꺼번에 실행돼.<br>
+      이렇게 동작을 묶어 이름 붙인 걸 <span class="em">'함수'</span>라고 불러!
+    </div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-amber">📋 과제 — 이걸 해내면 성공!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-amber">①</div><div class="step-content"><div class="step-title">적HP 변수 만들기</div><div class="step-desc">전투가 시작될 때 적HP를 50으로 정해두기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-amber">②</div><div class="step-content"><div class="step-title">공격 동작을 함수로 묶기</div><div class="step-desc">공격 모습(모양 변화)과 적HP 줄이기를 한 묶음(함수)으로</div></div></div>
+      <div class="step-item"><div class="step-circle sc-amber">③</div><div class="step-content"><div class="step-title">키로 함수 부르기</div><div class="step-desc">스페이스 키를 누르면 그 함수를 부르기(호출)</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 1 — 무엇을 찾아볼까?</div>
+    <div class="bubble-text">공격할 때마다 <b>똑같은 동작</b>을 여러 번 쓰지? 이 묶음에 <b>'이름'</b>을 붙여두면 이름만 부르면 돼. 무엇을 찾아볼까? — 힌트: <b>'함수'</b>!</div>
+  </div>
+  <div class="bubble">
+    <div class="bubble-label">💡 힌트 2 — 만들기와 부르기는 따로!</div>
+    <div class="bubble-text">함수는 <b>'만들기(정의)'</b>와 <b>'부르기(호출)'</b> 두 가지가 따로야.<br>만들기만 하고 안 부르면 <b>아무 일도 안 일어나!</b></div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">🤫 약속</div>
+    <div class="bubble-text">정답 블록은 안 알려줄게 — <b>'함수 만들기'</b>를 찾아 직접 묶어봐.</div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 과제 체크리스트</div>
+    <div class="checklist" id="check-2">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">'적HP' 변수를 만들고 전투 시작 때 50으로 정했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">공격 동작(모습 변화 + 적HP 줄이기)을 함수로 묶었다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">스페이스 키로 그 함수를 부르게 했다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">▶ 실행해서 공격할 때마다 적HP가 줄어드는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">'함수'를 왜 만들었을까? 함수로 묶지 않고 매번 똑같은 동작을 따로 쓰면 어떤 점이 불편할지 말로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
+    <div class="help-text">
+      <b>① 10분 혼자</b> → "함수 만들기 → 안에 동작 넣기 → 키로 부르기" 순서를 종이에 그려보기<br>
+      <b>② AI에 힌트만</b> → "엔트리에서 반복되는 동작을 하나로 묶어 이름을 붙이려면 어떤 기능을 써야 해? 정답 말고 힌트만!"<br>
+      <b>③ 직접 만들고 설명</b> → 말로 설명 못 하면 다시!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ 탭 4 — 승리 판정·완성 ══════════════════ -->
+<div class="page" id="page-3">
+  <div class="section-hero purple">
+    <span class="hero-emoji">🏆</span>
+    <div class="hero-session">단계 4</div>
+    <div class="hero-title">승리 판정·완성</div>
+    <div class="hero-sub">적HP가 0이 되면 승리! 게임 완성!</div>
+    <div class="hero-time">⏱ 15분</div>
+  </div>
+
+  <!-- 미션 -->
+  <div class="mission">
+    <div class="m-label">🎯 미션</div>
+    <div class="m-text">적HP가 0이 되면 '승리!'가 뜨고 게임이 멈추게 하자.</div>
+  </div>
+
+  <!-- 과제 -->
+  <div class="card">
+    <div class="card-label label-purple">📋 과제 — 이걸 해내면 완성!</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-circle sc-purple">①</div><div class="step-content"><div class="step-title">적HP를 계속 확인</div><div class="step-desc">적HP가 0 이하인지 멈추지 않고 살펴보기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-purple">②</div><div class="step-content"><div class="step-title">0 이하면 승리 말하기</div><div class="step-desc">적HP가 다 닳으면 '승리!'라고 말하기</div></div></div>
+      <div class="step-item"><div class="step-circle sc-purple">③</div><div class="step-content"><div class="step-title">게임 멈추기</div><div class="step-desc">승리하면 게임이 끝나게(멈추게) 하기</div></div></div>
+    </div>
+  </div>
+
+  <!-- 힌트 -->
+  <div class="bubble purple">
+    <div class="bubble-label purple">💡 힌트 1 — 계속 확인하려면?</div>
+    <div class="bubble-text">적HP가 0이 됐는지 <b>계속 확인</b>하려면 무엇으로 감쌀까?<br>(→ <b>흐름</b> 카테고리!)</div>
+  </div>
+  <div class="bubble amber">
+    <div class="bubble-label amber">💡 힌트 2 — 0 이하인지 비교</div>
+    <div class="bubble-text">적HP가 <b>0 이하인지</b> 비교하는 블록은 어디 있을까?<br>(→ <b>판단</b> 카테고리!)</div>
+  </div>
+  <div class="bubble coral">
+    <div class="bubble-label coral">🤫 약속</div>
+    <div class="bubble-text">정답 블록은 안 알려줄게 — 카테고리만 힌트야. <b>비교·멈춤 블록은 네가 찾는 거야!</b></div>
+  </div>
+
+  <!-- AI 질문 예시 -->
+  <div class="card purple">
+    <div class="card-label label-purple">🤖 AI에 물어보는 좋은 예 — 학습용</div>
+    <div class="bubble coral" style="margin-bottom:8px;">
+      <div class="bubble-label coral">❌ 이렇게 묻지 마</div>
+      <div class="bubble-text" style="color:#7f1d1d;">"RPG 게임 코드 전부 알려줘"</div>
+    </div>
+    <div class="bubble">
+      <div class="bubble-label">✅ 이렇게 물어</div>
+      <div class="bubble-text">"엔트리에서 반복되는 동작을 하나로 묶어 이름을 붙이려면 어떤 기능을 써야 해? <b>정답 말고 힌트만!</b>"</div>
+    </div>
+  </div>
+
+  <!-- 파이썬 연결 호기심 -->
+  <div class="card teal">
+    <div class="card-label label-teal">🐍 살짝 궁금증 — 다음 단계 미리보기</div>
+    <div class="card-body">
+      오늘 만든 <b>'함수'</b>는 나중에 <span class="em">파이썬</span>에서도 똑같이 쓴대! 어떤 점이 닮았을까? 🤔
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="card">
+    <div class="card-label label-green">✅ 완성 체크리스트</div>
+    <div class="checklist" id="check-3">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">적HP가 0 이하인지 계속 확인한다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">0 이하면 '승리!'라고 말한다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">승리하면 게임이 멈춘다</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">▶ 실행해서 적을 다 물리치면 '승리!'가 뜨는지 확인했다</div></div>
+    </div>
+  </div>
+
+  <!-- 설명해보기 -->
+  <div class="explain-box">
+    <div class="ex-label">✏️ 이 블록이 뭐 하는 건지 말로 설명해보기</div>
+    <div class="ex-text">승리 판정을 왜 '계속 반복'으로 감쌌는지, 그리고 왜 '0 이하'로 비교했는지 말로 설명해봐.</div>
+    <div class="note-line"></div>
+  </div>
+
+  <!-- 완성 배너 -->
+  <div id="complete-all" class="complete-banner" style="display:none;">
+    <div class="trophy">🏆</div>
+    <h2>간단 RPG 게임 완성!</h2>
+    <p>장면 2개 → 마을→전투 이동 → 공격 함수 → 승리 판정<br>'함수'로 반복 동작을 묶는 걸 네가 직접 만들었어! ⚔️</p>
+  </div>
+
+  <!-- 막혔을 때 -->
+  <div class="help-box">
+    <div class="help-label">🆘 막혔을 때 — 3단계 규칙</div>
+    <div class="help-text">
+      <b>① 10분 혼자</b> → "계속 확인 → 0 이하면 → 승리 말하기 → 멈추기" 순서를 종이에 그려보기<br>
+      <b>② AI에 힌트만</b> → "정답 말고, 어떤 종류의 블록이 필요한지만!"<br>
+      <b>③ 직접 만들고 설명</b> → 말로 설명 못 하면 다시!
+    </div>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab');
+const pages = document.querySelectorAll('.page');
+const TOTAL_PAGES = 4;
+
+function showPage(i) {
+  tabs.forEach((t,j) => t.classList.toggle('active', i===j));
+  pages.forEach((p,j) => p.classList.toggle('active', i===j));
+  window.scrollTo(0,0);
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  let completed = 0;
+  for(let i=0; i<TOTAL_PAGES; i++) {
+    const checks = document.querySelectorAll(`#page-${i} .check-item`);
+    const done = document.querySelectorAll(`#page-${i} .check-item.done`);
+    if(checks.length > 0 && done.length === checks.length) {
+      completed++;
+      tabs[i].style.background = 'rgba(21,128,61,.08)';
+    } else {
+      tabs[i].style.background = '';
+    }
+  }
+  document.getElementById('prog-text').textContent = `${completed} / ${TOTAL_PAGES} 완료`;
+  document.getElementById('prog-fill').style.width = `${(completed/TOTAL_PAGES)*100}%`;
+  const banner = document.getElementById('complete-all');
+  if(banner) banner.style.display = (completed === TOTAL_PAGES) ? 'block' : 'none';
+}
+
+updateProgress();
+</script>
+</body>
+</html>
