@@ -29,7 +29,7 @@
 9. 변형 아이디어 — 빨리 끝낸 아이를 위한 확장
 
 ## 스크린샷 참조
-- 재사용 가능(이미 `assets/screenshots/`): `01_home.png`, `03_editor_areas.png`, `cat_{시작,흐름,움직임,생김새,판단,계산,자료}.png`
+- 재사용 가능(이미 `assets/screenshots/`): `01_home.png`, `03_editor_areas.png`, 그리고 카테고리 7종 전부 — `cat_시작.png`, `cat_흐름.png`, `cat_움직임.png`, `cat_생김새.png`, `cat_판단.png`, `cat_계산.png`, `cat_자료.png`
 - 게임 신규: `assets/screenshots/entry/{게임폴더}/...png`
 - 참조하는 모든 이미지는 디스크에 실제로 존재해야 한다. 약하거나 없는 스크린샷은 솔직한 캡션으로 위치를 안내하거나 img를 빼고 텍스트만 둔다 (가짜 금지).
 
